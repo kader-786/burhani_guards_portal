@@ -1,0 +1,162 @@
+@use "../variables";
+
+.react-datepicker-popper {
+}
+
+.react-datepicker {
+  background-color: variables.$custom-white !important;
+  color: var(--default-text-color) !important;
+}
+
+.react-datepicker__day.react-datepicker__day--selected {
+  background-color: variables.$primary !important;
+  color: variables.$white !important;
+}
+
+.react-datepicker__day-name {
+  color: variables.$primary !important;
+}
+
+.react-datepicker__current-month {
+  color: variables.$primary !important;
+}
+
+.react-datepicker__header {
+  background-color: var(--primary01) !important;
+}
+
+.react-datepicker__navigation-icon::before {
+  border-color: variables.$primary !important;
+}
+
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__month-text--keyboard-selected,
+.react-datepicker__quarter-text--keyboard-selected,
+.react-datepicker__year-text--keyboard-selected {
+  border-radius: 0.3rem;
+  background-color: variables.$primary !important;
+  color: var(--default-text-color) !important;
+}
+
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker-year-header {
+  margin-top: 0;
+  color: variables.$primary !important;
+  font-weight: bold;
+  font-size: 0.944rem;
+}
+
+.react-datepicker__time-container .react-datepicker__time {
+  position: relative;
+  background: variables.$custom-white !important;
+  border-bottom-right-radius: 0.3rem;
+}
+
+@media (max-width: 350px) {
+  .react-datepicker__navigation--next--with-time:not(
+      .react-datepicker__navigation--next--with-today-button
+    ) {
+    right: 8px;
+  }
+}
+
+@media (min-width: 351px) and (max-width: 424px) {
+  .react-datepicker__navigation--next--with-time:not(
+      .react-datepicker__navigation--next--with-today-button
+    ) {
+    right: 15px;
+  }
+}
+
+@media (min-width: 425px) {
+  .react-datepicker__navigation--next--with-time:not(
+      .react-datepicker__navigation--next--with-today-button
+    ) {
+    right: 74px;
+  }
+}
+
+.react-datepicker__day {
+  color: var(--default-text-color) !important;
+}
+
+.react-datepicker-time__input {
+  background-color: variables.$custom-white !important;
+  color: var(--default-text-color) !important;
+  border: none;
+}
+
+.react-datepicker__time-container
+  .react-datepicker__time
+  .react-datepicker__time-box
+  ul.react-datepicker__time-list
+  li.react-datepicker__time-list-item--selected {
+  background-color: variables.$primary !important;
+  color: var(--default-text-color) !important;
+  font-weight: bold;
+}
+
+.react-datepicker__time-container .react-datepicker__time {
+  position: relative;
+  background: variables.$custom-white !important;
+  border-bottom-right-radius: 0.3rem;
+}
+
+@media (max-width: 350px) {
+  .react-datepicker__navigation--next--with-time:not(
+      .react-datepicker__navigation--next--with-today-button
+    ) {
+    right: 8px;
+  }
+}
+
+@media (min-width: 351px) and (max-width: 424px) {
+  .react-datepicker__navigation--next--with-time:not(
+      .react-datepicker__navigation--next--with-today-button
+    ) {
+    right: 15px;
+  }
+}
+
+@media (min-width: 425px) {
+  .react-datepicker__navigation--next--with-time:not(
+      .react-datepicker__navigation--next--with-today-button
+    ) {
+    right: 74px;
+  }
+}
+
+.react-datepicker__day {
+  color: var(--default-text-color);
+}
+
+.react-datepicker-time__input {
+  background-color: variables.$custom-white !important;
+  color: var(--default-text-color);
+  border: none;
+}
+
+.productdetails-swiper1 {
+  .swiper {
+    height: 75%;
+  }
+}
+.react-datepicker__header,
+.react-datepicker {
+  border-color: variables.$default-border !important;
+}
+.react-datepicker-popper[data-placement^="top"] .react-datepicker__triangle,
+.react-datepicker-popper[data-placement^="bottom"] .react-datepicker__triangle {
+  fill: variables.$default-body-color !important;
+  color: variables.$default-body-color !important;
+}
+.react-datepicker-popper .react-datepicker__triangle {
+  stroke: variables.$default-body-color !important;
+}
+.react-datepicker__time-container{
+    border-left-color: variables.$default-border !important;
+}
+.tooltip {
+    z-index: 9999;
+}

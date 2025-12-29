@@ -1,0 +1,16 @@
+
+@forward "./assets/scss/variables";
+@forward "./assets/scss/switcher";
+
+// custom style sheets 
+@import './assets/css/icons.css';
+@import "./assets/css/styles.css";
+
+//Simplebar
+@import 'simplebar-react/dist/simplebar.min.css';
+
+
+//simonwep colorpicker
+@import "@simonwep/pickr/dist/themes/classic.min.css";
+@import "@simonwep/pickr/dist/themes/monolith.min.css";
+@import "@simonwep/pickr/dist/themes/nano.min.css";
