@@ -10,7 +10,14 @@ export const MenuItems = [
       {
         icon:<i className="fe fe-grid"></i>,
         type: 'sub', active: false, selected: false, title: 'Master', children: [
-         
+          { path: `${import.meta.env.BASE_URL}master/muminmaster`, type: 'link', active: false, selected: false, title: 'Mumin Master' },
+          {
+        path: `${import.meta.env.BASE_URL}master/rolemaster`,
+        type: "link",
+        selected: false,
+        active: false,
+        title: "Role Master",
+      },
           { path: `${import.meta.env.BASE_URL}master/teammaster`, type: 'link', active: false, selected: false, title: 'Team Master' },
           // { path: `${import.meta.env.BASE_URL}master/miqaatmaster`, type: 'link', active: false, selected: false, title: 'Miqaat Master' },
           { path: `${import.meta.env.BASE_URL}master/venuemaster`, type: 'link', active: false, selected: false, title: 'Venue Master' }
@@ -35,11 +42,21 @@ export const MenuItems = [
         active: false,
         title: "Miqaat Master",
       },
+            
       {
         icon:<i className="fe fe-grid"></i>,
         type: 'sub', active: false, selected: false, title: 'Back Office', children: [
          
           { path: `${import.meta.env.BASE_URL}backoffice/duties`, type: 'link', active: false, selected: false, title: 'Duties' },
+          
+          
+        ]
+      },
+            {
+        icon:<i className="fe fe-grid"></i>,
+        type: 'sub', active: false, selected: false, title: 'Reports', children: [
+         
+          { path: `${import.meta.env.BASE_URL}reports/attendancereport`, type: 'link', active: false, selected: false, title: 'Attendance Report' },
           
           
         ]

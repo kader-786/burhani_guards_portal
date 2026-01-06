@@ -13,6 +13,9 @@ import TeamMaster from './container/master/teammaster/TeamMaster.jsx';
 import MiqaatMaster from './container/master/miqaatmaster/MiqaatMaster.jsx';
 import Duties from '././container/back office/Duties.jsx';
 import VenueMaster from './container/master/venuemaster/venuemaster.jsx';
+import MuminMaster from './container/master/muminmaster/MuminMaster.jsx';
+import RoleMaster from './container/master/rolemaster/RoleMaster.jsx';
+import AttendanceReport from './container/reports/attendancereport/AttendanceReport.jsx';
  
 
 window.global = window; // Polyfill for global
@@ -33,8 +36,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path={`${import.meta.env.BASE_URL}master/teammaster`} element={<TeamMaster />} />
             <Route path={`${import.meta.env.BASE_URL}master/miqaatmaster`} element={<MiqaatMaster />} />
             <Route path={`${import.meta.env.BASE_URL}master/venuemaster`} element={<VenueMaster />} />
+            <Route path={`${import.meta.env.BASE_URL}master/muminmaster`} element={<MuminMaster />} />
             <Route path={`${import.meta.env.BASE_URL}backoffice/duties`} element={<Duties />} />
-            
+            <Route path={`${import.meta.env.BASE_URL}master/rolemaster`} element={<RoleMaster />} />
+            <Route path={`${import.meta.env.BASE_URL}reports/attendancereport`} element={<AttendanceReport />} />
+
           </Route>
           
           {/* Public Routes - Error Pages */}
