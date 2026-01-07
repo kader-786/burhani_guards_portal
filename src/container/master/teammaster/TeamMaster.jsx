@@ -2447,7 +2447,7 @@ const TeamTable = () => {
                                             {
                                                 name: 'Action',
                                                 width: '150px',
-                                                sort: false,
+                                                sort: true,
                                                 formatter: (cell) => html(`
                                                     <div class="btn-action-group">
                                                         <button 

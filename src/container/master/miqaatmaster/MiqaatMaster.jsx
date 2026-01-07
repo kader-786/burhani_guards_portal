@@ -1880,7 +1880,7 @@ const MiqaatTable = () => {
                                             {
                                                 name: 'Action',
                                                 width: '150px',
-                                                sort: false,
+                                                sort: true,
                                                 formatter: (cell, row) => {
                                                     const id = row.cells[8].data;
                                                     
