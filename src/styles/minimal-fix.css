@@ -1,0 +1,39 @@
+/* ============================================================================
+   MINIMAL LAYOUT FIX - Only adds spacing after navbar
+   Version: 4.0 - Simplest possible fix
+   ============================================================================ */
+
+/* 
+   This CSS file does ONE thing: ensures proper spacing after navbar
+   Everything else is handled by your existing framework
+*/
+
+/* ============================================================================
+   NAVBAR SPACING FIX
+   ============================================================================ */
+
+/* Add top margin to first card/element on page to create space after navbar */
+.row > .col > .card:first-child,
+.row > .col > .custom-card:first-child,
+.row > [class*="col-"] > .card:first-child {
+    margin-top: 24px;
+}
+
+/* Ensure cards have bottom margin */
+.card,
+.custom-card {
+    margin-bottom: 20px;
+}
+
+/* ============================================================================
+   THAT'S IT!
+   ============================================================================ */
+
+/* 
+   No other changes needed. Your framework already handles:
+   - Page padding (left/right)
+   - Sidebar behavior
+   - Responsive layout
+   
+   This CSS just adds the missing top margin to create space after navbar.
+*/

@@ -1,0 +1,360 @@
+/* ============================================================================
+   COMPLETE LAYOUT FIX - PROPER SPACING FOR ALL PAGES
+   Version: 2.0 - Fixes navbar gap and sidebar collapse issues
+   ============================================================================ */
+
+/* ============================================================================
+   1. GLOBAL PAGE LAYOUT - EQUAL PADDING ON ALL 4 SIDES
+   ============================================================================ */
+
+/* Main page content area - applies to the entire content section */
+.app-content,
+.main-content,
+.page-content-wrapper {
+    padding: 24px !important;
+    margin: 0 !important;
+    background: #f8f9fa;
+    min-height: calc(100vh - 80px);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Ensure consistent spacing from navbar - CRITICAL FIX */
+.app-content {
+    margin-top: 0 !important;
+    padding-top: 24px !important;
+}
+
+/* ============================================================================
+   2. PAGE WRAPPER CLASSES - USE THESE IN YOUR COMPONENTS
+   ============================================================================ */
+
+/* Attendance Report Page Wrapper */
+.attendance-report-wrapper {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.attendance-report-wrapper .row {
+    margin: 0;
+}
+
+.attendance-report-wrapper .custom-card {
+    margin: 0;
+}
+
+/* Duties Page Wrapper */
+.duties-page-wrapper {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+/* Duties Form Container */
+.duties-assign-container {
+    background: #fff;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Miqaat Master Page Wrapper */
+.miqaat-master-wrapper {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.miqaat-master-wrapper .row {
+    margin: 0;
+}
+
+.miqaat-master-wrapper .custom-card {
+    margin: 0;
+}
+
+/* Mumin Master Page Wrapper */
+.mumin-master-wrapper {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.mumin-master-wrapper .row {
+    margin: 0;
+}
+
+.mumin-master-wrapper .custom-card {
+    margin: 0;
+}
+
+/* ============================================================================
+   3. SIDEBAR STATE HANDLING - EQUAL SPACING REGARDLESS OF SIDEBAR
+   ============================================================================ */
+
+/* Remove extra spacing when sidebar is open */
+.main-sidebar-open .app-content,
+.main-sidebar-open .page-content-wrapper {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+}
+
+/* Remove extra spacing when sidebar is closed - CRITICAL FIX */
+.main-sidebar-close .app-content,
+.main-sidebar-close .page-content-wrapper,
+.sidebar-collapsed .app-content,
+.sidebar-collapsed .page-content-wrapper {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+/* Additional sidebar state classes */
+body.main-sidebar-open .app-content,
+body.main-sidebar-close .app-content {
+    padding: 24px !important;
+}
+
+/* ============================================================================
+   4. BOOTSTRAP ROW/COLUMN OVERRIDES
+   ============================================================================ */
+
+/* Fix Bootstrap row negative margins */
+.row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+/* Fix Bootstrap column padding to maintain consistent spacing */
+.col,
+[class*="col-"] {
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+/* First level row inside page wrappers should have no margin */
+.attendance-report-wrapper > .row,
+.miqaat-master-wrapper > .row,
+.mumin-master-wrapper > .row {
+    margin: 0 !important;
+}
+
+/* ============================================================================
+   5. CARD SPACING
+   ============================================================================ */
+
+.custom-card,
+.card.custom-card {
+    margin-bottom: 0 !important;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Remove any default card margins from Bootstrap */
+.card {
+    margin-bottom: 0 !important;
+}
+
+/* ============================================================================
+   6. FORM TITLE STYLING
+   ============================================================================ */
+
+.form-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1f36;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #17a2b8;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.form-title i {
+    font-size: 22px;
+    color: #17a2b8;
+}
+
+/* ============================================================================
+   7. RESPONSIVE SPACING - MAINTAINS EQUAL PADDING ON ALL DEVICES
+   ============================================================================ */
+
+/* Desktop - Large screens (> 1200px) */
+@media (min-width: 1200px) {
+    .app-content,
+    .main-content,
+    .page-content-wrapper {
+        padding: 32px !important;
+    }
+    
+    .duties-assign-container {
+        padding: 40px;
+    }
+    
+    body.main-sidebar-open .app-content,
+    body.main-sidebar-close .app-content {
+        padding: 32px !important;
+    }
+}
+
+/* Laptop - Medium screens (992px - 1199px) */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .app-content,
+    .main-content,
+    .page-content-wrapper {
+        padding: 24px !important;
+    }
+    
+    .duties-assign-container {
+        padding: 32px;
+    }
+    
+    body.main-sidebar-open .app-content,
+    body.main-sidebar-close .app-content {
+        padding: 24px !important;
+    }
+}
+
+/* Tablet - Small screens (768px - 991px) */
+@media (max-width: 991px) {
+    .app-content,
+    .main-content,
+    .page-content-wrapper {
+        padding: 20px !important;
+    }
+    
+    .duties-assign-container {
+        padding: 24px;
+    }
+    
+    body.main-sidebar-open .app-content,
+    body.main-sidebar-close .app-content {
+        padding: 20px !important;
+    }
+}
+
+/* Mobile - Extra small screens (< 768px) */
+@media (max-width: 767px) {
+    .app-content,
+    .main-content,
+    .page-content-wrapper {
+        padding: 16px !important;
+    }
+    
+    .duties-assign-container {
+        padding: 20px;
+        border-radius: 8px;
+    }
+    
+    body.main-sidebar-open .app-content,
+    body.main-sidebar-close .app-content {
+        padding: 16px !important;
+    }
+    
+    .form-title {
+        font-size: 18px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}
+
+/* ============================================================================
+   8. REMOVE CONFLICTING CONTAINER STYLES
+   ============================================================================ */
+
+/* Remove default container padding that causes unequal spacing */
+.container-fluid {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin: 0 !important;
+}
+
+.container {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* ============================================================================
+   9. SMOOTH TRANSITIONS
+   ============================================================================ */
+
+.app-content,
+.page-content-wrapper,
+.main-content {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================================================
+   10. UTILITIES
+   ============================================================================ */
+
+/* Equal padding utility classes */
+.p-equal-24 {
+    padding: 24px !important;
+}
+
+.p-equal-32 {
+    padding: 32px !important;
+}
+
+/* Remove all padding */
+.p-0-important {
+    padding: 0 !important;
+}
+
+/* Remove all margin */
+.m-0-important {
+    margin: 0 !important;
+}
+
+/* Full width */
+.w-100-important {
+    width: 100% !important;
+}
+
+/* ============================================================================
+   11. PRINT STYLES
+   ============================================================================ */
+
+@media print {
+    .app-content,
+    .main-content,
+    .page-content-wrapper {
+        padding: 0 !important;
+    }
+    
+    .custom-card {
+        box-shadow: none !important;
+        border: 1px solid #dee2e6 !important;
+    }
+}
+
+/* ============================================================================
+   12. DEBUGGING - Remove after confirming layout is correct
+   ============================================================================ */
+
+/* Uncomment this section to see visual boundaries during development */
+/*
+.app-content {
+    outline: 2px dashed red !important;
+}
+
+.attendance-report-wrapper,
+.duties-page-wrapper,
+.miqaat-master-wrapper,
+.mumin-master-wrapper {
+    outline: 2px dashed blue !important;
+}
+
+.duties-assign-container,
+.custom-card {
+    outline: 2px dashed green !important;
+}
+*/
