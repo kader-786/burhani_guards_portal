@@ -268,19 +268,19 @@ const MiqaatTeamForm = () => {
         setFormData(prev => ({ ...prev, team: selectedOption }));
         if (errors.team) { setErrors(prev => ({ ...prev, team: '' })); }
         
-        // if (selectedOption?.value) { 
-        //     fetchTeamCount(selectedOption.value); 
+        if (selectedOption?.value) { 
+            fetchTeamCount(selectedOption.value); 
             
-        //     // Auto-select Jamiaat if not already selected and team has mapping
-        //     if (!formData.jamiaat && selectedOption.jamiaat_id) {
-        //         const matchedJamiaat = jamiaatOptions.find(j => j.value === selectedOption.jamiaat_id);
-        //         if (matchedJamiaat) {
-        //             setFormData(prev => ({ ...prev, team: selectedOption, jamiaat: matchedJamiaat }));
-        //         }
-        //     }
-        // } else { 
-        //     setTeamCount(null); 
-        // }
+            // Auto-select Jamiaat if not already selected and team has mapping
+            if (!formData.jamiaat && selectedOption.jamiaat_id) {
+                const matchedJamiaat = jamiaatOptions.find(j => j.value === selectedOption.jamiaat_id);
+                if (matchedJamiaat) {
+                    setFormData(prev => ({ ...prev, team: selectedOption, jamiaat: matchedJamiaat }));
+                }
+            }
+        } else { 
+            setTeamCount(null); 
+        }
     };
 
     const handleLocationChange = (selectedOption) => {

@@ -10,7 +10,7 @@ export const MenuItems = [
       {
         icon:<i className="fe fe-grid"></i>,
         type: 'sub', active: false, selected: false, title: 'Master', children: [
-          { path: `${import.meta.env.BASE_URL}master/muminmaster`, type: 'link', active: false, selected: false, title: 'Mumin Master' },
+          { path: `${import.meta.env.BASE_URL}master/membermaster`, type: 'link', active: false, selected: false, title: 'Member Master' },
           {
         path: `${import.meta.env.BASE_URL}master/rolemaster`,
         type: "link",
@@ -48,7 +48,8 @@ export const MenuItems = [
         type: 'sub', active: false, selected: false, title: 'Back Office', children: [
          
           { path: `${import.meta.env.BASE_URL}backoffice/duties`, type: 'link', active: false, selected: false, title: 'Duties' },
-          
+          { path: `${import.meta.env.BASE_URL}backoffice/miqaatincharge`, type: 'link', active: false, selected: false, title: 'Miqaat Incharge' }
+
           
         ]
       },

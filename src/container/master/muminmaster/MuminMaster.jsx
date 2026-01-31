@@ -107,7 +107,7 @@ const AddMumin = ({
     show, 
     onClose, 
     onSave,
-    title = "Add New Mumin",
+    title = "Add New Member",
     permissions
 }) => {
     
@@ -787,20 +787,20 @@ const AddMumin = ({
                     
                     let message = result.message;
                     if (!message) {
-                        if (result_code === 1) message = 'Mumin added successfully!';
-                        else if (result_code === 2) message = 'Mumin updated successfully!';
-                        else if (result_code === 4) message = 'Mumin restored and updated successfully!';
+                        if (result_code === 1) message = 'Member added successfully!';
+                        else if (result_code === 2) message = 'Member updated successfully!';
+                        else if (result_code === 4) message = 'Member restored and updated successfully!';
                     }
                     
                     showSuccessAlert(message);
                 } else {
-                    throw new Error(result.message || 'Failed to save mumin');
+                    throw new Error(result.message || 'Failed to save member');
                 }
             } else {
-                throw new Error(result.message || 'Failed to save mumin');
+                throw new Error(result.message || 'Failed to save member');
             }
         } catch (error) {
-            console.error('Error saving mumin:', error);
+            console.error('Error saving member:', error);
             setErrors({ submit: error.message });
             Swal.fire({
                 icon: 'error',
@@ -1306,7 +1306,7 @@ const MuminTable = () => {
             Swal.fire({
                 icon: 'error',
                 title: 'Access Denied',
-                text: 'You do not have permission to access Mumin Master module',
+                text: 'You do not have permission to access Member Master module',
                 confirmButtonText: 'OK',
                 allowOutsideClick: false
             }).then(() => {
@@ -1359,10 +1359,10 @@ const MuminTable = () => {
                 }));
                 setTableData(transformedData);
             } else {
-                throw new Error(result.message || 'Failed to fetch mumins');
+                throw new Error(result.message || 'Failed to fetch Members');
             }
         } catch (err) {
-            console.error('Error fetching mumins:', err);
+            console.error('Error fetching Members:', err);
             setError(err.message);
         } finally {
             setLoading(false);
@@ -1376,7 +1376,7 @@ const MuminTable = () => {
             Swal.fire({
                 icon: 'warning',
                 title: 'Permission Denied',
-                text: 'You do not have permission to add mumins',
+                text: 'You do not have permission to add Members',
                 confirmButtonText: 'OK'
             });
             return;
@@ -1397,7 +1397,7 @@ const MuminTable = () => {
             Swal.fire({
                 icon: 'warning',
                 title: 'Permission Denied',
-                text: 'You do not have permission to delete mumins',
+                text: 'You do not have permission to delete Members',
                 confirmButtonText: 'OK'
             });
             return;
@@ -1513,7 +1513,7 @@ const MuminTable = () => {
                                 >
                                     <div className="header-text">
                                         <i className="ri-user-line me-2"></i>
-                                        <span>Mumin Master</span>
+                                        <span>Member Master</span>
                                     </div>
                                     <div className="d-flex gap-2 align-items-center">
                                         <span className="badge badge-primary">

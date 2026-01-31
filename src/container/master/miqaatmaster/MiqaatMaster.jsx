@@ -11,6 +11,8 @@ import HijriDate from 'hijri-converter';
 import { checkModuleAccess } from '../../../utils/accessControl';
 import '../../../styles/shared-styles.css';
 import StandardModal from '../../../components/StandardModal';
+import { useNavigate } from 'react-router-dom';  // ← ADD THIS LINE
+
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -672,6 +674,11 @@ const hijriToGregorian = (hijriDateString) => {
 // ADD MIQAAT COMPONENT (MODIFIED)
 // ========================================
 
+
+// ========================================
+// ADD MIQAAT COMPONENT (MODIFIED FOR NAVIGATION)
+// ========================================
+
 const AddMiqaat = ({ 
     show, 
     onClose, 
@@ -679,6 +686,8 @@ const AddMiqaat = ({
     title = "Add New Miqaat",
     permissions
 }) => {
+    
+    const navigate = useNavigate(); // ADD THIS IMPORT AT TOP OF FILE
     
     const [formData, setFormData] = useState({
         miqaatName: '',
@@ -692,12 +701,12 @@ const AddMiqaat = ({
         jamaat: null,
         jamiaat: null,
         quantity: '',
-        isActive: false,  // CHANGED: Default to false
+        isActive: true,
         hijriStartDate: '',
         hijriEndDate: ''
     });
 
-    // NEW: Clone-related states
+    // Clone-related states
     const [isCloneMode, setIsCloneMode] = useState(false);
     const [sourceMiqaatOptions, setSourceMiqaatOptions] = useState([]);
     const [selectedSourceMiqaat, setSelectedSourceMiqaat] = useState(null);
@@ -707,7 +716,6 @@ const AddMiqaat = ({
     const [jamiaatOptions, setJamiaatOptions] = useState([]);
     const [jamaatOptions, setJamaatOptions] = useState([]);
     
-    // Venue Management States
     const [allVenues, setAllVenues] = useState([]); 
     const [venueOptions, setVenueOptions] = useState([]);
 
@@ -724,22 +732,42 @@ const AddMiqaat = ({
     const hijriStartDateRef = useRef(null);
     const hijriEndDateRef = useRef(null);
 
-    const showSuccessAlert = (message) => {
-        Swal.fire({
-            title: 'Success!',
-            text: `${message}`,
-            icon: 'success',
-            timer: 2000,
-            timerProgressBar: false,
-            showConfirmButton: false,
-            allowOutsideClick: false,
-        }).then((result) => {
-            if (result.dismiss === Swal.DismissReason.timer) {
-                handleClose();
-            }
-        });
-    };
+    // MODIFIED: New success alert with navigation
 
+const showSuccessAlertWithNavigation = (message, newMiqaatId, newMiqaatName, newVenueId) => {
+    const buttonText = isCloneMode ? 'Show Incharges' : 'Add Incharges';
+    
+    Swal.fire({
+        title: 'Success! Miqaat Created',
+        html: `
+            <p style="margin-bottom: 15px;">Miqaat "<strong>${newMiqaatName}</strong>" has been created successfully.</p>
+        `,
+        icon: 'success',
+        showCancelButton: true,
+        confirmButtonColor: '#0d6efd',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: `<i class="ri-user-add-line me-2"></i>${buttonText}`,
+        cancelButtonText: 'Done',
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            handleClose();
+            
+            // FIXED: Use BASE_URL for consistent routing
+            navigate(`${import.meta.env.BASE_URL}backoffice/miqaatincharge`, {
+                state: {
+                    miqaatId: newMiqaatId,
+                    miqaatName: newMiqaatName,
+                    venueId: newVenueId,
+                    fromMiqaatCreation: true
+                }
+            });
+        } else {
+            handleClose();
+        }
+    });
+};
     const openPicker = (ref) => {
         if (ref.current) {
             try {
@@ -756,7 +784,7 @@ const AddMiqaat = ({
             fetchMiqaatTypes();
             fetchJamiaat();
             fetchVenues();
-            fetchSourceMiqaats();  // NEW: Fetch source miqaats for cloning
+            fetchSourceMiqaats();
         }
     }, [show]);
 
@@ -774,7 +802,6 @@ const AddMiqaat = ({
         }
     }, [formData.endDate]);
 
-    // --- VENUE FILTERING LOGIC ---
     useEffect(() => {
         if (allVenues.length > 0) {
             filterVenues();
@@ -868,7 +895,6 @@ const AddMiqaat = ({
         finally { setLoadingVenues(false); }
     };
 
-    // NEW: Fetch source miqaats for cloning
     const fetchSourceMiqaats = async () => {
         setLoadingSourceMiqaats(true);
         try {
@@ -887,11 +913,10 @@ const AddMiqaat = ({
             if (response.ok) {
                 const result = await response.json();
                 if (result.success && result.data) {
-                    // Store full miqaat objects for later population
                     const options = result.data.map(item => ({
                         value: item.miqaat_id,
                         label: item.miqaat_name,
-                        fullData: item  // Store complete miqaat data
+                        fullData: item
                     }));
                     setSourceMiqaatOptions(options);
                 }
@@ -952,15 +977,12 @@ const AddMiqaat = ({
             if (venueDetails) {
                 const updates = { venue: selectedOption };
                 
-                // Handle Jamiaat
                 if (venueDetails.jamiaat_id && (!formData.jamiaat || formData.jamiaat.value !== venueDetails.jamiaat_id)) {
                     const jOpt = jamiaatOptions.find(x => x.value === venueDetails.jamiaat_id) || {value: venueDetails.jamiaat_id, label: 'Loading...'};
                     updates.jamiaat = jOpt;
                     
-                    // Fetch jamaat options for this jamiaat
                     const jamaatOpts = await fetchJamaatByJamiaat(venueDetails.jamiaat_id);
                     
-                    // Handle Jamaat after options are loaded
                     if (venueDetails.jamaat_id && venueDetails.jamaat_id !== 0) {
                         const jmOpt = jamaatOpts.find(x => x.value === venueDetails.jamaat_id);
                         if (jmOpt) {
@@ -990,29 +1012,24 @@ const AddMiqaat = ({
         if (errors.venue) setErrors(prev => ({ ...prev, venue: '' }));
     };
 
-    // NEW: Handle clone checkbox change
     const handleCloneModeChange = (e) => {
         const checked = e.target.checked;
         setIsCloneMode(checked);
         
         if (!checked) {
-            // When unchecking, just disable dropdown but don't clear form
             setSelectedSourceMiqaat(null);
         }
     };
 
-    // NEW: Handle source miqaat selection
     const handleSourceMiqaatChange = async (selectedOption) => {
         setSelectedSourceMiqaat(selectedOption);
         
         if (!selectedOption) {
-            // If cleared, don't populate anything
             return;
         }
         
         const sourceData = selectedOption.fullData;
         
-        // Extract times from datetime strings
         const startTime = sourceData.start_date ? 
             new Date(sourceData.start_date).toTimeString().slice(0, 5) : '';
         const endTime = sourceData.end_date ? 
@@ -1020,48 +1037,42 @@ const AddMiqaat = ({
         const reportingTime = sourceData.reporting_time ? 
             sourceData.reporting_time.slice(0, 5) : '';
         
-        // Build miqaat type option
         const miqaatTypeOption = sourceData.miqaat_type_id ? {
             value: sourceData.miqaat_type_id,
             label: sourceData.miqaat_type_name
         } : null;
         
-        // Build jamiaat option
         const jamiaatOption = sourceData.jamiaat_id ? {
             value: sourceData.jamiaat_id,
             label: sourceData.jamiaat_name
         } : null;
         
-        // Build venue option
         const venueOption = sourceData.venue_id ? {
             value: sourceData.venue_id,
             label: sourceData.venue_name
         } : null;
         
-        // Populate form
         setFormData(prev => ({
             ...prev,
-            miqaatName: '',  // Empty - user must enter
+            miqaatName: '',
             miqaatType: miqaatTypeOption,
-            startDate: '',  // Empty - user must enter
-            startTime: startTime,  // Populated
-            endDate: '',  // Empty - user must enter
-            endTime: endTime,  // Populated
-            reportingTime: reportingTime,  // Populated
+            startDate: '',
+            startTime: startTime,
+            endDate: '',
+            endTime: endTime,
+            reportingTime: reportingTime,
             venue: venueOption,
             jamiaat: jamiaatOption,
-            jamaat: null,  // Will be set after loading jamaats
+            jamaat: null,
             quantity: sourceData.quantity ? String(sourceData.quantity) : '',
-            isActive: false,  // Unchecked by default
-            hijriStartDate: '',  // Empty - will auto-calculate
-            hijriEndDate: ''  // Empty - will auto-calculate
+            isActive: false,
+            hijriStartDate: '',
+            hijriEndDate: ''
         }));
         
-        // Fetch jamaats for the jamiaat and then set jamaat
         if (sourceData.jamiaat_id) {
             const jamaatOpts = await fetchJamaatByJamiaat(sourceData.jamiaat_id);
             
-            // Now set jamaat after options are loaded
             if (sourceData.jamaat_id) {
                 const jamaatOption = jamaatOpts.find(opt => opt.value === sourceData.jamaat_id);
                 if (jamaatOption) {
@@ -1104,7 +1115,6 @@ const AddMiqaat = ({
         if (!formData.hijriEndDate) newErrors.hijriEndDate = 'Hijri End Date is required';
         if (!formData.reportingTime) newErrors.reportingTime = 'Reporting Time is required';
         
-        // NEW: Validate clone mode
         if (isCloneMode && !selectedSourceMiqaat) {
             newErrors.sourceMiqaat = 'Please select a miqaat to clone from';
         }
@@ -1139,7 +1149,7 @@ const AddMiqaat = ({
                 is_active: formData.isActive,
                 hijri_start_date: formData.hijriStartDate,
                 hijri_end_date: formData.hijriEndDate,
-                source_miqaat_id: selectedSourceMiqaat ? selectedSourceMiqaat.value : null  // NEW FIELD
+                source_miqaat_id: selectedSourceMiqaat ? selectedSourceMiqaat.value : null
             };
 
             const response = await fetch(`${API_BASE_URL}/Miqaat/InsertMiqaat`, {
@@ -1151,7 +1161,14 @@ const AddMiqaat = ({
 
             if (response.ok && result.success) {
                 if (onSave) onSave(result.data);
-                showSuccessAlert(result.message || 'Miqaat added successfully!');
+                
+                // MODIFIED: Show navigation dialog
+                showSuccessAlertWithNavigation(
+                    result.message || 'Miqaat added successfully!',
+                    result.data.miqaat_id,
+                    formData.miqaatName,
+                    formData.venue.value
+                );
             } else {
                 if (result.data && result.data.result_code === 4) {
                     setErrors({ miqaatName: 'Miqaat name already exists' });
@@ -1174,12 +1191,11 @@ const AddMiqaat = ({
         setFormData({
             miqaatName: '', miqaatType: null, startDate: '', startTime: '', endDate: '', endTime: '',
             reportingTime: '', venue: null, jamaat: null, jamiaat: null, quantity: '',
-            isActive: false, hijriStartDate: '', hijriEndDate: ''  // Changed default to false
+            isActive: false, hijriStartDate: '', hijriEndDate: ''
         });
         setErrors({});
         setJamaatOptions([]);
         
-        // NEW: Reset clone states
         setIsCloneMode(false);
         setSelectedSourceMiqaat(null);
         
@@ -1236,6 +1252,9 @@ const AddMiqaat = ({
             loading={loading}
             maxWidth="1200px"
         >
+            {/* ... REST OF THE JSX REMAINS EXACTLY THE SAME ... */}
+            {/* (All the form fields - I'll include them but they're unchanged) */}
+            
             <style>
                 {`
                     .clone-section {
@@ -1305,46 +1324,7 @@ const AddMiqaat = ({
                 </div>
             )}
 
-            {/* NEW: Clone Section
-            <div className="clone-section">    
-                <div className="form-row-container">
-                    <div className="horizontal-form-group" style={{ maxWidth: '200px' }}>
-                        <div className="form-input-wrapper">
-                            <div className="checkbox-wrapper">
-                                <Form.Check 
-                                    type="checkbox" 
-                                    id="cloneMode" 
-                                    checked={isCloneMode}
-                                    onChange={handleCloneModeChange}
-                                    label="Clone from previous miqaat" 
-                                    disabled={loading}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div className="horizontal-form-group">
-                        <div className="form-input-wrapper">
-                            <Select 
-                                options={sourceMiqaatOptions}
-                                value={selectedSourceMiqaat}
-                                onChange={handleSourceMiqaatChange}
-                                placeholder="Select a miqaat to clone from"
-                                isClearable
-                                styles={selectStyles}
-                                error={errors.sourceMiqaat}
-                                isDisabled={!isCloneMode || loading}
-                                isLoading={loadingSourceMiqaats}
-                                noOptionsMessage={() => "No miqaats available"}
-                            />
-                            {errors.sourceMiqaat && <div className="error-text">{errors.sourceMiqaat}</div>}
-                        </div>
-                    </div>
-                </div>
-            </div> */}
-
-
-{/* NEW: Clone Section */}
+            {/* Clone Section */}
             <div className="clone-section">    
                 <div className="form-row-container">
                     <div className="horizontal-form-group" style={{ maxWidth: '250px' }}>
@@ -1413,9 +1393,6 @@ const AddMiqaat = ({
                 </div>
             </div>
 
-
-
-            {/* Existing form fields remain the same */}
             <div className="form-row-container">
                 <div className="horizontal-form-group">
                     <Form.Label className="form-label">Miqaat Name <span className="text-danger">*</span></Form.Label>
@@ -1525,7 +1502,6 @@ const AddMiqaat = ({
         </StandardModal>
     );
 };
-
 
 // ========================================
 // EDIT MIQAAT COMPONENT
