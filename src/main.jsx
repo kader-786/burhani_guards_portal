@@ -41,7 +41,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path={`${import.meta.env.BASE_URL}backoffice/duties`} element={<Duties />} />
             <Route path={`${import.meta.env.BASE_URL}master/rolemaster`} element={<RoleMaster />} />
             <Route path={`${import.meta.env.BASE_URL}reports/attendancereport`} element={<AttendanceReport />} />
-            <Route path={`${import.meta.env.BASE_URL}backoffice/miqaatincharge`} element={<MiqaatIncharge />} />
+            <Route path={`${import.meta.env.BASE_URL}backoffice/locationincharge`} element={<MiqaatIncharge />} />
           </Route>
           
           {/* Public Routes - Error Pages */}

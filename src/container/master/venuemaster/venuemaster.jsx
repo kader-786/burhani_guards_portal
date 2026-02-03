@@ -4,7 +4,7 @@ import { Card, Col, Row, Form, Button, Table } from 'react-bootstrap';
 import { Grid } from 'gridjs-react';
 import { html } from 'gridjs';
 import 'gridjs/dist/theme/mermaid.css';
-import IconButton from '../../elements/button'; 
+import IconButton from '../../elements/button';
 import Swal from 'sweetalert2';
 import { checkModuleAccess } from '../../../utils/accessControl';
 import '../../../styles/shared-styles.css';
@@ -20,7 +20,7 @@ const MODULE_ID = '104'; // Venue Master module ID
 // ============================================================================
 // ADD VENUE MODAL COMPONENT
 // ============================================================================
-const AddVenue = ({ 
+const AddVenue = ({
     show,
     onClose,
     onSave,
@@ -159,11 +159,11 @@ const AddVenue = ({
 
     const handleAddLocation = () => {
         const locationName = formData.locationName.trim();
-        
+
         if (!locationName) {
             setErrors(prev => ({
                 ...prev,
-                locationName: 'Please enter a location name'
+                locationName: 'Please enter a Duty Location'
             }));
             return;
         }
@@ -250,7 +250,7 @@ const AddVenue = ({
                     flag: loc.flag
                 }))
             };
-            
+
             const response = await fetch(`${API_BASE_URL}/Venue/InsertVenue`, {
                 method: 'POST',
                 headers: {
@@ -261,7 +261,7 @@ const AddVenue = ({
             });
 
             const result = await response.json();
-            
+
             if (response.status === 401) {
                 Swal.fire({
                     icon: 'error',
@@ -274,12 +274,12 @@ const AddVenue = ({
 
             if (response.ok && result.success) {
                 const resultCode = Number(result.data?.result_code);
-                
+
                 if (resultCode === 1) {
                     if (onSave) {
                         onSave(formData);
                     }
-                    
+
                     showSuccessAlert(result.message || 'Venue added successfully!');
                 } else if (resultCode === 4) {
                     setErrors(prev => ({
@@ -592,9 +592,9 @@ const AddVenue = ({
                 </div>
             </div>
 
-            {/* Row 3: Location Name */}
+            {/* Row 3: Duty Location */}
             <div className="horizontal-form-group">
-                <Form.Label className="form-label">Location Name</Form.Label>
+                <Form.Label className="form-label">Duty Location</Form.Label>
                 <div className="form-input-wrapper">
                     <div className="location-input-group">
                         <div className="form-input-wrapper">
@@ -603,7 +603,7 @@ const AddVenue = ({
                                 name="locationName"
                                 value={formData.locationName}
                                 onChange={handleInputChange}
-                                placeholder="Enter location name"
+                                placeholder="Enter duty location"
                                 className={errors.locationName ? 'is-invalid' : ''}
                                 disabled={isLoading}
                                 onKeyPress={(e) => {
@@ -615,8 +615,8 @@ const AddVenue = ({
                             />
                             {errors.locationName && <div className="error-text">{errors.locationName}</div>}
                         </div>
-                        <Button 
-                            variant="success" 
+                        <Button
+                            variant="success"
                             className="btn-add-location"
                             onClick={handleAddLocation}
                             disabled={isLoading}
@@ -646,7 +646,7 @@ const AddVenue = ({
                             <thead>
                                 <tr>
                                     <th>Sr.</th>
-                                    <th>Location Name</th>
+                                    <th>Duty Location</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -656,8 +656,8 @@ const AddVenue = ({
                                         <td>{index + 1}</td>
                                         <td>{loc.location_name}</td>
                                         <td>
-                                            <Button 
-                                                variant="danger" 
+                                            <Button
+                                                variant="danger"
                                                 size="sm"
                                                 onClick={() => handleDeleteLocation(loc.id)}
                                                 disabled={isLoading}
@@ -683,10 +683,10 @@ const AddVenue = ({
 // ============================================================================
 // EDIT VENUE MODAL COMPONENT
 // ============================================================================
-const EditVenue = ({ 
-    show, 
-    onClose, 
-    onUpdate, 
+const EditVenue = ({
+    show,
+    onClose,
+    onUpdate,
     venueId,
     title = "Edit Venue",
     permissions
@@ -812,7 +812,7 @@ const EditVenue = ({
         setLoadingVenueData(true);
         try {
             const token = sessionStorage.getItem('access_token');
-            
+
             if (!token) {
                 Swal.fire({
                     icon: 'error',
@@ -822,7 +822,7 @@ const EditVenue = ({
                 });
                 return;
             }
-            
+
             const response = await fetch(`${API_BASE_URL}/Venue/GetVenueById`, {
                 method: 'POST',
                 headers: {
@@ -848,7 +848,7 @@ const EditVenue = ({
 
             if (response.ok && result.success && result.data && result.data.length > 0) {
                 const venueData = result.data[0];
-                
+
                 const initialFormData = {
                     venueName: venueData.venue_name || '',
                     venueTypeId: venueData.venue_type_id ? String(venueData.venue_type_id) : '',
@@ -856,7 +856,7 @@ const EditVenue = ({
                     jamaatId: venueData.jamaat_id ? String(venueData.jamaat_id) : '',
                     locationName: ''
                 };
-                
+
                 setFormData(initialFormData);
                 setOriginalData(initialFormData);
 
@@ -903,11 +903,11 @@ const EditVenue = ({
 
     const handleAddLocation = () => {
         const locationName = formData.locationName.trim();
-        
+
         if (!locationName) {
             setErrors(prev => ({
                 ...prev,
-                locationName: 'Please enter a location name'
+                locationName: 'Please enter a Duty Location'
             }));
             return;
         }
@@ -1060,12 +1060,12 @@ const EditVenue = ({
 
             if (response.ok && result.success) {
                 const resultCode = Number(result.data?.result_code);
-                
+
                 if (resultCode === 2) {
                     if (onUpdate) {
                         onUpdate(result.data);
                     }
-                    
+
                     showSuccessAlert(result.message || 'Venue updated successfully!');
                 } else if (resultCode === 4) {
                     setErrors(prev => ({
@@ -1127,7 +1127,7 @@ const EditVenue = ({
         setJamaats([]);
         setLocations([]);
         setLocationCounter(1);
-        
+
         if (onClose) {
             onClose();
         }
@@ -1137,9 +1137,9 @@ const EditVenue = ({
         if (originalData) {
             setFormData({ ...originalData, locationName: '' });
             setErrors({});
-            
+
             fetchVenueData();
-            
+
             Swal.fire({
                 icon: 'info',
                 title: 'Form Reset',
@@ -1413,9 +1413,9 @@ const EditVenue = ({
                         </div>
                     </div>
 
-                    {/* Row 3: Location Name */}
+                    {/* Row 3: Duty Location */}
                     <div className="horizontal-form-group">
-                        <Form.Label className="form-label">Location Name</Form.Label>
+                        <Form.Label className="form-label">Duty Location</Form.Label>
                         <div className="form-input-wrapper">
                             <div className="location-input-group">
                                 <div className="form-input-wrapper">
@@ -1424,7 +1424,7 @@ const EditVenue = ({
                                         name="locationName"
                                         value={formData.locationName}
                                         onChange={handleInputChange}
-                                        placeholder="Enter location name"
+                                        placeholder="Enter duty location"
                                         className={errors.locationName ? 'is-invalid' : ''}
                                         disabled={isLoading}
                                         onKeyPress={(e) => {
@@ -1436,8 +1436,8 @@ const EditVenue = ({
                                     />
                                     {errors.locationName && <div className="error-text">{errors.locationName}</div>}
                                 </div>
-                                <Button 
-                                    variant="success" 
+                                <Button
+                                    variant="success"
                                     className="btn-add-location"
                                     onClick={handleAddLocation}
                                     disabled={isLoading}
@@ -1467,7 +1467,7 @@ const EditVenue = ({
                                     <thead>
                                         <tr>
                                             <th>Sr.</th>
-                                            <th>Location Name</th>
+                                            <th>Duty Location</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -1482,8 +1482,8 @@ const EditVenue = ({
                                                     )}
                                                 </td>
                                                 <td>
-                                                    <Button 
-                                                        variant="danger" 
+                                                    <Button
+                                                        variant="danger"
                                                         size="sm"
                                                         onClick={() => handleDeleteLocation(loc.id)}
                                                         disabled={isLoading}
@@ -1521,7 +1521,7 @@ const VenueTable = () => {
     const [gridKey, setGridKey] = useState(0);
 
     const [checkingPermissions, setCheckingPermissions] = useState(true);
-    
+
     const [permissions, setPermissions] = useState({
         canAdd: false,
         canEdit: false,
@@ -1535,9 +1535,9 @@ const VenueTable = () => {
 
     const checkAccess = () => {
         setCheckingPermissions(true);
-        
+
         const isAdminValue = sessionStorage.getItem('is_admin');
-        
+
         if (isAdminValue === 'true' || isAdminValue === true || isAdminValue === '1') {
             setPermissions({
                 canAdd: true,
@@ -1549,9 +1549,9 @@ const VenueTable = () => {
             fetchVenues();
             return;
         }
-        
+
         const accessRights = sessionStorage.getItem('access_rights');
-        
+
         if (!accessRights) {
             Swal.fire({
                 icon: 'error',
@@ -1564,9 +1564,9 @@ const VenueTable = () => {
             });
             return;
         }
-        
+
         const modulePermissions = checkModuleAccess(accessRights, MODULE_ID);
-        
+
         if (!modulePermissions.hasAccess) {
             Swal.fire({
                 icon: 'error',
@@ -1579,7 +1579,7 @@ const VenueTable = () => {
             });
             return;
         }
-        
+
         setPermissions(modulePermissions);
         setCheckingPermissions(false);
         fetchVenues();
@@ -1591,7 +1591,7 @@ const VenueTable = () => {
             setError(null);
 
             const accessToken = sessionStorage.getItem('access_token');
-            
+
             if (!accessToken) {
                 throw new Error('Access token not found. Please login again.');
             }
@@ -1675,11 +1675,11 @@ const VenueTable = () => {
     const handleUpdate = (data) => {
         setShowEditForm(false);
         setEditVenueId(null);
-        
+
         setTimeout(() => {
             fetchVenues();
         }, 500);
-        
+
         setGridKey(prev => prev + 1);
     };
 
@@ -1710,7 +1710,7 @@ const VenueTable = () => {
 
         const venueToDelete = tableData.find(item => item.id === id);
         const venueName = venueToDelete ? venueToDelete.venueName : 'this venue';
-        
+
         const result = await Swal.fire({
             title: 'Are you sure?',
             text: `You are about to delete "${venueName}". This will also delete all associated locations.`,
@@ -1728,7 +1728,7 @@ const VenueTable = () => {
 
         try {
             const accessToken = sessionStorage.getItem('access_token');
-            
+
             if (!accessToken) {
                 throw new Error('Access token not found. Please login again.');
             }
@@ -1746,10 +1746,10 @@ const VenueTable = () => {
             });
 
             const apiResult = await response.json();
-            
+
             if (response.ok && apiResult.success) {
                 const resultCode = Number(apiResult.data?.result_code);
-                
+
                 if (resultCode === 3) {
                     Swal.fire({
                         title: 'Deleted!',
@@ -1767,9 +1767,9 @@ const VenueTable = () => {
                             srNo: index + 1
                         }));
                     });
-                    
+
                     setGridKey(prev => prev + 1);
-                    
+
                     setTimeout(async () => {
                         try {
                             await fetchVenues();
@@ -1974,8 +1974,8 @@ const VenueTable = () => {
                                     <div className="error-container">
                                         <i className="ri-error-warning-line" style={{ fontSize: '48px' }}></i>
                                         <p className="mt-3">{error}</p>
-                                        <button 
-                                            className="btn btn-primary mt-3" 
+                                        <button
+                                            className="btn btn-primary mt-3"
                                             onClick={fetchVenues}
                                         >
                                             <i className="ri-refresh-line me-2"></i>
@@ -1987,8 +1987,8 @@ const VenueTable = () => {
                                         <i className="ri-inbox-line" style={{ fontSize: '48px' }}></i>
                                         <p className="mt-3">No venues found</p>
                                         {permissions.canAdd && (
-                                            <button 
-                                                className="btn btn-primary mt-2" 
+                                            <button
+                                                className="btn btn-primary mt-2"
                                                 onClick={handleAdd}
                                             >
                                                 <i className="ri-add-line me-2"></i>
@@ -2001,35 +2001,35 @@ const VenueTable = () => {
                                         <Grid
                                             key={gridKey}
                                             data={gridData}
-                                            sort={true}
+                                            // sort={true}
                                             search={{
                                                 enabled: true,
                                                 placeholder: 'Search venues...'
                                             }}
                                             columns={[
-                                                { 
+                                                {
                                                     name: 'Sr',
-                                                    width: '80px',
-                                                    sort: true
-                                                }, 
-                                                { 
+                                                    width: '20px',
+                                                    // sort: true
+                                                },
+                                                {
                                                     name: 'Venue Name',
-                                                    width: '250px',
-                                                    sort: true
-                                                }, 
+                                                    width: '400px',
+                                                    // sort: true
+                                                },
                                                 {
                                                     name: 'Action',
-                                                    width: '150px',
-                                                    sort: false,
+                                                    width: '30px',
+                                                    // sort: false,
                                                     formatter: (cell, row) => {
                                                         const id = row.cells[2].data;
-                                                        
+
                                                         if (!permissions.canEdit && !permissions.canDelete) {
                                                             return html(`<span class="text-muted">-</span>`);
                                                         }
-                                                        
+
                                                         let buttons = '<div class="btn-action-group">';
-                                                        
+
                                                         if (permissions.canEdit) {
                                                             buttons += `
                                                                 <button 
@@ -2041,7 +2041,7 @@ const VenueTable = () => {
                                                                 </button>
                                                             `;
                                                         }
-                                                        
+
                                                         if (permissions.canDelete) {
                                                             buttons += `
                                                                 <button 
@@ -2053,13 +2053,13 @@ const VenueTable = () => {
                                                                 </button>
                                                             `;
                                                         }
-                                                        
+
                                                         buttons += '</div>';
                                                         return html(buttons);
                                                     },
                                                     hidden: false
                                                 }
-                                            ]} 
+                                            ]}
                                             pagination={{
                                                 limit: 10,
                                                 summary: true

@@ -48,7 +48,7 @@ export const MenuItems = [
         type: 'sub', active: false, selected: false, title: 'Back Office', children: [
          
           { path: `${import.meta.env.BASE_URL}backoffice/duties`, type: 'link', active: false, selected: false, title: 'Duties' },
-          { path: `${import.meta.env.BASE_URL}backoffice/miqaatincharge`, type: 'link', active: false, selected: false, title: 'Miqaat Incharge' }
+          { path: `${import.meta.env.BASE_URL}backoffice/locationincharge`, type: 'link', active: false, selected: false, title: 'Location Incharge' }
 
           
         ]

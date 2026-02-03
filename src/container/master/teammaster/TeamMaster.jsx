@@ -24,7 +24,7 @@
 // // // //     editData = null,
 // // // //     title = "Add New Team"
 // // // // }) => {
-    
+
 // // // //     // Form state
 // // // //     const [formData, setFormData] = useState({
 // // // //         name: '',
@@ -77,13 +77,13 @@
 // // // //         setIsLoadingJamiaats(true);
 // // // //         try {
 // // // //             const token = sessionStorage.getItem('access_token');
-            
+
 // // // //             if (!token) {
 // // // //                 toast.error('Authentication token not found. Please login again.');
 // // // //                 setIsLoadingJamiaats(false);
 // // // //                 return;
 // // // //             }
-            
+
 // // // //             const response = await fetch(`${API_BASE_URL}/Team/GetAllJamiaats`, {
 // // // //                 method: 'GET',
 // // // //                 headers: {
@@ -120,16 +120,16 @@
 // // // //     const fetchJamaatsByJamiaat = async (jamiaatId) => {
 // // // //         setIsLoadingJamaats(true);
 // // // //         setJamaatOptions([]);
-        
+
 // // // //         try {
 // // // //             const token = sessionStorage.getItem('access_token');
-            
+
 // // // //             if (!token) {
 // // // //                 toast.error('Authentication token not found. Please login again.');
 // // // //                 setIsLoadingJamaats(false);
 // // // //                 return;
 // // // //             }
-            
+
 // // // //             const response = await fetch(`${API_BASE_URL}/Team/GetAllJamaatsByJamiaat`, {
 // // // //                 method: 'POST',
 // // // //                 headers: {
@@ -176,7 +176,7 @@
 // // // //                 jamaat: editData.jamaat || []
 // // // //             });
 // // // //             setErrors({ name: '', jamiaat: '', jamaat: '' });
-            
+
 // // // //             if (editData.jamiaat?.value) {
 // // // //                 fetchJamaatsByJamiaat(editData.jamiaat.value);
 // // // //             }
@@ -207,14 +207,14 @@
 // // // //             jamiaat: selectedOption,
 // // // //             jamaat: []
 // // // //         }));
-        
+
 // // // //         if (errors.jamiaat) {
 // // // //             setErrors(prev => ({
 // // // //                 ...prev,
 // // // //                 jamiaat: ''
 // // // //             }));
 // // // //         }
-        
+
 // // // //         if (selectedOption?.value) {
 // // // //             fetchJamaatsByJamiaat(selectedOption.value);
 // // // //         } else {
@@ -285,7 +285,7 @@
 // // // //                 jamiaat_id: formData.jamiaat.value,
 // // // //                 jamaat_ids: formData.jamaat.map(j => j.value)
 // // // //             };
-            
+
 // // // //             const response = await fetch(`${API_BASE_URL}/Team/InsertTeam`, {
 // // // //                 method: 'POST',
 // // // //                 headers: {
@@ -298,7 +298,7 @@
 // // // //             const result = await response.json();
 // // // //             const raw_code = result.data.result_code
 // // // //             const result_code = Number(raw_code)
-            
+
 // // // //             if (response.status === 401) {
 // // // //                 Swal.fire({
 // // // //                     icon: 'error',
@@ -324,7 +324,7 @@
 // // // //                         };
 // // // //                         onSave(dataToSave);
 // // // //                     }
-                    
+
 // // // //                     // Show auto-close success alert
 // // // //                     showSuccessAlert(result.message || 'Team added successfully!');
 // // // //                 } else if (result.data?.result_code === 4) {
@@ -651,38 +651,38 @@
 // // // //                             flex-direction: column;
 // // // //                             gap: 15px;
 // // // //                         }
-                        
+
 // // // //                         .horizontal-form-group {
 // // // //                             flex-direction: row !important;
 // // // //                             align-items: flex-start !important;
 // // // //                         }
-                        
+
 // // // //                         .horizontal-form-group .form-label {
 // // // //                             min-width: 100px !important;
 // // // //                             font-size: 13px;
 // // // //                             padding-top: 10px;
 // // // //                         }
-                        
+
 // // // //                         .modal-form-container .form-title {
 // // // //                             font-size: 18px;
 // // // //                         }
-                        
+
 // // // //                         .modal-form-container .form-title .close-btn {
 // // // //                             font-size: 20px;
 // // // //                         }
-                        
+
 // // // //                         .form-buttons {
 // // // //                             flex-wrap: wrap;
 // // // //                             gap: 8px !important;
 // // // //                         }
-                        
+
 // // // //                         .form-buttons .btn {
 // // // //                             flex: 1;
 // // // //                             min-width: calc(50% - 4px);
 // // // //                             font-size: 13px;
 // // // //                             padding: 8px 12px;
 // // // //                         }
-                        
+
 // // // //                         .form-buttons .btn i {
 // // // //                             font-size: 14px;
 // // // //                         }
@@ -692,17 +692,17 @@
 // // // //                         .modal-form-container {
 // // // //                             padding: 15px;
 // // // //                         }
-                        
+
 // // // //                         .horizontal-form-group .form-label {
 // // // //                             min-width: 85px !important;
 // // // //                             font-size: 12px;
 // // // //                         }
-                        
+
 // // // //                         .form-control, 
 // // // //                         .form-control::placeholder {
 // // // //                             font-size: 13px;
 // // // //                         }
-                        
+
 // // // //                         .error-text {
 // // // //                             font-size: 11px;
 // // // //                         }
@@ -786,7 +786,7 @@
 // // // //                         &times;
 // // // //                     </button>
 // // // //                 </div>
-                
+
 // // // //                 {/* Submit Error */}
 // // // //                 {errors.submit && (
 // // // //                     <div className="submit-error">
@@ -891,7 +891,7 @@
 // // // //     teamId,
 // // // //     title = "Edit Team"
 // // // // }) => {
-    
+
 // // // //     // Form state
 // // // //     const [formData, setFormData] = useState({
 // // // //         name: '',
@@ -949,7 +949,7 @@
 // // // //         setIsLoadingTeamData(true);
 // // // //         try {
 // // // //             const token = sessionStorage.getItem('access_token');
-            
+
 // // // //             if (!token) {
 // // // //                 Swal.fire({
 // // // //                     icon: 'error',
@@ -960,7 +960,7 @@
 // // // //                 setIsLoadingTeamData(false);
 // // // //                 return;
 // // // //             }
-            
+
 // // // //             const response = await fetch(`${API_BASE_URL}/Team/GetTeamById`, {
 // // // //                 method: 'POST',
 // // // //                 headers: {
@@ -986,7 +986,7 @@
 
 // // // //             if (response.ok && result.success && result.data && result.data.length > 0) {
 // // // //                 const teamData = result.data[0];
-                
+
 // // // //                 const jamiaatObj = {
 // // // //                     value: teamData.jamiaat_id,
 // // // //                     label: teamData.jamiaat_name
@@ -1031,12 +1031,12 @@
 // // // //         setIsLoadingJamiaats(true);
 // // // //         try {
 // // // //             const token = sessionStorage.getItem('access_token');
-            
+
 // // // //             if (!token) {
 // // // //                 setIsLoadingJamiaats(false);
 // // // //                 return;
 // // // //             }
-            
+
 // // // //             const response = await fetch(`${API_BASE_URL}/Team/GetAllJamiaats`, {
 // // // //                 method: 'GET',
 // // // //                 headers: {
@@ -1064,15 +1064,15 @@
 // // // //     // Fetch Jamaats based on selected Jamiaat and prefill selected jamaats for the team
 // // // //     const fetchJamaatsByJamiaat = async (jamiaatId, currentTeamId = null) => {
 // // // //         setIsLoadingJamaats(true);
-        
+
 // // // //         try {
 // // // //             const token = sessionStorage.getItem('access_token');
-            
+
 // // // //             if (!token) {
 // // // //                 setIsLoadingJamaats(false);
 // // // //                 return;
 // // // //             }
-            
+
 // // // //             const response = await fetch(`${API_BASE_URL}/Team/GetAllJamaatsByJamiaat`, {
 // // // //                 method: 'POST',
 // // // //                 headers: {
@@ -1112,11 +1112,11 @@
 // // // //     const fetchTeamJamaats = async (teamId) => {
 // // // //         try {
 // // // //             const token = sessionStorage.getItem('access_token');
-            
+
 // // // //             if (!token) {
 // // // //                 return;
 // // // //             }
-            
+
 // // // //             const response = await fetch(`${API_BASE_URL}/Team/GetJamaatsByTeamId`, {
 // // // //                 method: 'POST',
 // // // //                 headers: {
@@ -1158,7 +1158,7 @@
 // // // //             ...prev,
 // // // //             [name]: value
 // // // //         }));
-        
+
 // // // //         if (errors[name]) {
 // // // //             setErrors(prev => ({
 // // // //                 ...prev,
@@ -1174,14 +1174,14 @@
 // // // //             jamiaat: selectedOption,
 // // // //             jamaat: [] // Clear jamaats when jamiaat changes
 // // // //         }));
-        
+
 // // // //         if (errors.jamiaat) {
 // // // //             setErrors(prev => ({
 // // // //                 ...prev,
 // // // //                 jamiaat: ''
 // // // //             }));
 // // // //         }
-        
+
 // // // //         if (selectedOption?.value) {
 // // // //             fetchJamaatsByJamiaat(selectedOption.value);
 // // // //         } else {
@@ -1195,7 +1195,7 @@
 // // // //             ...prev,
 // // // //             jamaat: selectedOptions || []
 // // // //         }));
-        
+
 // // // //         if (errors.jamaat) {
 // // // //             setErrors(prev => ({
 // // // //                 ...prev,
@@ -1239,7 +1239,7 @@
 
 // // // //         const nameChanged = formData.name !== originalData.name;
 // // // //         const jamiaatChanged = formData.jamiaat?.value !== originalData.jamiaat?.value;
-        
+
 // // // //         const currentJamaatIds = formData.jamaat.map(j => j.value).sort();
 // // // //         const originalJamaatIds = (originalData.jamaat || []).map(j => j.value).sort();
 // // // //         const jamaatChanged = JSON.stringify(currentJamaatIds) !== JSON.stringify(originalJamaatIds);
@@ -1315,7 +1315,7 @@
 // // // //                     };
 // // // //                     onUpdate(dataToUpdate);
 // // // //                 }
-                
+
 // // // //                 // Show auto-close success alert
 // // // //                 showSuccessAlert(result.message || 'Team updated successfully!');
 // // // //             } else {
@@ -1369,7 +1369,7 @@
 // // // //         });
 // // // //         setOriginalData(null);
 // // // //         setJamaatOptions([]);
-        
+
 // // // //         if (onClose) {
 // // // //             onClose();
 // // // //         }
@@ -1652,38 +1652,38 @@
 // // // //                             flex-direction: column;
 // // // //                             gap: 15px;
 // // // //                         }
-                        
+
 // // // //                         .horizontal-form-group {
 // // // //                             flex-direction: row !important;
 // // // //                             align-items: flex-start !important;
 // // // //                         }
-                        
+
 // // // //                         .horizontal-form-group .form-label {
 // // // //                             min-width: 100px !important;
 // // // //                             font-size: 13px;
 // // // //                             padding-top: 10px;
 // // // //                         }
-                        
+
 // // // //                         .modal-form-container .form-title {
 // // // //                             font-size: 18px;
 // // // //                         }
-                        
+
 // // // //                         .modal-form-container .form-title .close-btn {
 // // // //                             font-size: 20px;
 // // // //                         }
-                        
+
 // // // //                         .form-buttons {
 // // // //                             flex-wrap: wrap;
 // // // //                             gap: 8px !important;
 // // // //                         }
-                        
+
 // // // //                         .form-buttons .btn {
 // // // //                             flex: 1;
 // // // //                             min-width: calc(50% - 4px);
 // // // //                             font-size: 13px;
 // // // //                             padding: 8px 12px;
 // // // //                         }
-                        
+
 // // // //                         .form-buttons .btn i {
 // // // //                             font-size: 14px;
 // // // //                         }
@@ -1693,17 +1693,17 @@
 // // // //                         .modal-form-container {
 // // // //                             padding: 15px;
 // // // //                         }
-                        
+
 // // // //                         .horizontal-form-group .form-label {
 // // // //                             min-width: 85px !important;
 // // // //                             font-size: 12px;
 // // // //                         }
-                        
+
 // // // //                         .form-control, 
 // // // //                         .form-control::placeholder {
 // // // //                             font-size: 13px;
 // // // //                         }
-                        
+
 // // // //                         .error-text {
 // // // //                             font-size: 11px;
 // // // //                         }
@@ -1787,7 +1787,7 @@
 // // // //                         &times;
 // // // //                     </button>
 // // // //                 </div>
-                
+
 // // // //                 {/* Submit Error */}
 // // // //                 {errors.submit && (
 // // // //                     <div className="submit-error">
@@ -1914,7 +1914,7 @@
 // // // //             setError(null);
 
 // // // //             const accessToken = sessionStorage.getItem('access_token');
-            
+
 // // // //             if (!accessToken) {
 // // // //                 throw new Error('Access token not found. Please login again.');
 // // // //             }
@@ -1991,10 +1991,10 @@
 // // // //     // Handle Save (for Add)
 // // // //     const handleSave = (data) => {
 // // // //         setShowAddForm(false);
-        
+
 // // // //         // Refresh the table
 // // // //         fetchTeams();
-        
+
 // // // //         // Force grid refresh
 // // // //         setGridKey(prev => prev + 1);
 // // // //     };
@@ -2003,7 +2003,7 @@
 // // // //     const handleUpdate = (data) => {
 // // // //         setShowEditForm(false);
 // // // //         setEditTeamId(null);
-        
+
 // // // //         // Optimistic update - update the specific row in the table
 // // // //         setTableData(prevData => {
 // // // //             return prevData.map(item => {
@@ -2018,10 +2018,10 @@
 // // // //                 return item;
 // // // //             });
 // // // //         });
-        
+
 // // // //         // Force grid refresh
 // // // //         setGridKey(prev => prev + 1);
-        
+
 // // // //         // Background sync with server
 // // // //         setTimeout(() => {
 // // // //             fetchTeams();
@@ -2039,7 +2039,7 @@
 // // // //         // Find the team to get its name
 // // // //         const teamToDelete = tableData.find(item => item.id === id);
 // // // //         const teamName = teamToDelete ? teamToDelete.teamName : 'this team';
-        
+
 // // // //         // Show confirmation dialog
 // // // //         const result = await Swal.fire({
 // // // //             title: 'Are you sure?',
@@ -2058,7 +2058,7 @@
 
 // // // //         try {
 // // // //             const accessToken = sessionStorage.getItem('access_token');
-            
+
 // // // //             if (!accessToken) {
 // // // //                 throw new Error('Access token not found. Please login again.');
 // // // //             }
@@ -2078,7 +2078,7 @@
 // // // //             const apiResult = await response.json();
 // // // //             if (response.ok && apiResult.success) {
 // // // //                 const resultCode = Number(apiResult.data?.result_code);
-                
+
 // // // //                 if (resultCode === 3) {
 // // // //                     // Success
 // // // //                     Swal.fire({
@@ -2099,10 +2099,10 @@
 // // // //                             srNo: index + 1
 // // // //                         }));
 // // // //                     });
-                    
+
 // // // //                     // ✅ Force Grid to re-render
 // // // //                     setGridKey(prev => prev + 1);
-                    
+
 // // // //                     // ✅ Background sync with server
 // // // //                     setTimeout(async () => {
 // // // //                         try {
@@ -2493,7 +2493,7 @@
 // // // //     window.handleEditClick = (id) => {
 // // // //         window.dispatchEvent(new CustomEvent('editRecord', { detail: { id } }));
 // // // //     };
-    
+
 // // // //     window.handleDeleteClick = (id) => {
 // // // //         window.dispatchEvent(new CustomEvent('deleteRecord', { detail: { id } }));
 // // // //     };
@@ -2520,7 +2520,7 @@
 // // //     editData = null,
 // // //     title = "Add New Team"
 // // // }) => {
-    
+
 // // //     const [formData, setFormData] = useState({
 // // //         name: '',
 // // //         jamiaat: null,
@@ -2566,11 +2566,11 @@
 // // //         setIsLoadingJamiaats(true);
 // // //         try {
 // // //             const token = sessionStorage.getItem('access_token');
-            
+
 // // //             if (!token) {
 // // //                 return;
 // // //             }
-            
+
 // // //             const response = await fetch(`${API_BASE_URL}/Team/GetAllJamiaats`, {
 // // //                 method: 'GET',
 // // //                 headers: {
@@ -2598,15 +2598,15 @@
 // // //     const fetchJamaatsByJamiaat = async (jamiaatId) => {
 // // //         setIsLoadingJamaats(true);
 // // //         setJamaatOptions([]);
-        
+
 // // //         try {
 // // //             const token = sessionStorage.getItem('access_token');
-            
+
 // // //             if (!token) {
 // // //                 setIsLoadingJamaats(false);
 // // //                 return;
 // // //             }
-            
+
 // // //             const response = await fetch(`${API_BASE_URL}/Team/GetAllJamaatsByJamiaat`, {
 // // //                 method: 'POST',
 // // //                 headers: {
@@ -2645,7 +2645,7 @@
 // // //                 jamaat: editData.jamaat || []
 // // //             });
 // // //             setErrors({ name: '', jamiaat: '', jamaat: '' });
-            
+
 // // //             if (editData.jamiaat?.value) {
 // // //                 fetchJamaatsByJamiaat(editData.jamiaat.value);
 // // //             }
@@ -2674,14 +2674,14 @@
 // // //             jamiaat: selectedOption,
 // // //             jamaat: []
 // // //         }));
-        
+
 // // //         if (errors.jamiaat) {
 // // //             setErrors(prev => ({
 // // //                 ...prev,
 // // //                 jamiaat: ''
 // // //             }));
 // // //         }
-        
+
 // // //         if (selectedOption?.value) {
 // // //             fetchJamaatsByJamiaat(selectedOption.value);
 // // //         } else {
@@ -2749,7 +2749,7 @@
 // // //                 jamiaat_id: formData.jamiaat.value,
 // // //                 jamaat_ids: formData.jamaat.map(j => j.value)
 // // //             };
-            
+
 // // //             const response = await fetch(`${API_BASE_URL}/Team/InsertTeam`, {
 // // //                 method: 'POST',
 // // //                 headers: {
@@ -2761,7 +2761,7 @@
 
 // // //             const result = await response.json();
 // // //             const result_code = Number(result.data?.result_code);
-            
+
 // // //             if (response.status === 401) {
 // // //                 Swal.fire({
 // // //                     icon: 'error',
@@ -2786,7 +2786,7 @@
 // // //                         };
 // // //                         onSave(dataToSave);
 // // //                     }
-                    
+
 // // //                     showSuccessAlert(result.message || 'Team added successfully!');
 // // //                 } else if (result_code === 4) {
 // // //                     setErrors(prev => ({
@@ -3181,7 +3181,7 @@
 // // //                         &times;
 // // //                     </button>
 // // //                 </div>
-                
+
 // // //                 {errors.submit && (
 // // //                     <div className="submit-error">
 // // //                         <i className="ri-error-warning-line"></i>
@@ -3327,11 +3327,11 @@
 // // //         setIsLoadingJamiaats(true);
 // // //         try {
 // // //             const token = sessionStorage.getItem('access_token');
-            
+
 // // //             if (!token) {
 // // //                 return;
 // // //             }
-            
+
 // // //             const response = await fetch(`${API_BASE_URL}/Team/GetAllJamiaats`, {
 // // //                 method: 'GET',
 // // //                 headers: {
@@ -3359,15 +3359,15 @@
 // // //     const fetchJamaatsByJamiaat = async (jamiaatId) => {
 // // //         setIsLoadingJamaats(true);
 // // //         setJamaatOptions([]);
-        
+
 // // //         try {
 // // //             const token = sessionStorage.getItem('access_token');
-            
+
 // // //             if (!token) {
 // // //                 setIsLoadingJamaats(false);
 // // //                 return;
 // // //             }
-            
+
 // // //             const response = await fetch(`${API_BASE_URL}/Team/GetAllJamaatsByJamiaat`, {
 // // //                 method: 'POST',
 // // //                 headers: {
@@ -3402,7 +3402,7 @@
 // // //         setIsLoadingTeamData(true);
 // // //         try {
 // // //             const token = sessionStorage.getItem('access_token');
-            
+
 // // //             if (!token) {
 // // //                 Swal.fire({
 // // //                     icon: 'error',
@@ -3412,7 +3412,7 @@
 // // //                 });
 // // //                 return;
 // // //             }
-            
+
 // // //             // Fetch team basic info
 // // //             const teamResponse = await fetch(`${API_BASE_URL}/Team/GetTeamById`, {
 // // //                 method: 'POST',
@@ -3439,7 +3439,7 @@
 
 // // //             if (teamResponse.ok && teamResult.success && teamResult.data && teamResult.data.length > 0) {
 // // //                 const teamData = teamResult.data[0];
-                
+
 // // //                 const jamiaatObj = {
 // // //                     value: teamData.jamiaat_id,
 // // //                     label: teamData.jamiaat_name
@@ -3458,7 +3458,7 @@
 // // //                 });
 
 // // //                 const jamaatResult = await jamaatResponse.json();
-                
+
 // // //                 let jamaatArray = [];
 // // //                 if (jamaatResponse.ok && jamaatResult.success && jamaatResult.data) {
 // // //                     jamaatArray = jamaatResult.data.map(item => ({
@@ -3472,7 +3472,7 @@
 // // //                     jamiaat: jamiaatObj,
 // // //                     jamaat: jamaatArray
 // // //                 };
-                
+
 // // //                 setFormData(initialFormData);
 // // //                 setOriginalData(initialFormData);
 
@@ -3521,14 +3521,14 @@
 // // //             jamiaat: selectedOption,
 // // //             jamaat: []
 // // //         }));
-        
+
 // // //         if (errors.jamiaat) {
 // // //             setErrors(prev => ({
 // // //                 ...prev,
 // // //                 jamiaat: ''
 // // //             }));
 // // //         }
-        
+
 // // //         if (selectedOption?.value) {
 // // //             fetchJamaatsByJamiaat(selectedOption.value);
 // // //         } else {
@@ -3576,7 +3576,7 @@
 // // //         if (!originalData) return false;
 
 // // //         const jamiaatChanged = formData.jamiaat?.value !== originalData.jamiaat?.value;
-        
+
 // // //         const originalJamaatIds = (originalData.jamaat || []).map(j => j.value).sort();
 // // //         const currentJamaatIds = (formData.jamaat || []).map(j => j.value).sort();
 // // //         const jamaatChanged = JSON.stringify(originalJamaatIds) !== JSON.stringify(currentJamaatIds);
@@ -3618,7 +3618,7 @@
 // // //                 jamiaat_id: formData.jamiaat.value,
 // // //                 jamaat_ids: formData.jamaat.map(j => j.value)
 // // //             };
-            
+
 // // //             const response = await fetch(`${API_BASE_URL}/Team/UpdateTeam`, {
 // // //                 method: 'PUT',
 // // //                 headers: {
@@ -3629,7 +3629,7 @@
 // // //             });
 
 // // //             const result = await response.json();
-            
+
 // // //             if (response.status === 401) {
 // // //                 Swal.fire({
 // // //                     icon: 'error',
@@ -3642,7 +3642,7 @@
 
 // // //             if (response.ok && result.success) {
 // // //                 const resultCode = Number(result.data?.result_code);
-                
+
 // // //                 if (resultCode === 2) {
 // // //                     if (onUpdate) {
 // // //                         const dataToUpdate = {
@@ -3657,7 +3657,7 @@
 // // //                         };
 // // //                         onUpdate(dataToUpdate);
 // // //                     }
-                    
+
 // // //                     showSuccessAlert(result.message || 'Team updated successfully!');
 // // //                 } else if (resultCode === 4) {
 // // //                     setErrors(prev => ({
@@ -3706,7 +3706,7 @@
 // // //         setErrors({});
 // // //         setOriginalData(null);
 // // //         setJamaatOptions([]);
-        
+
 // // //         if (onClose) {
 // // //             onClose();
 // // //         }
@@ -3716,11 +3716,11 @@
 // // //         if (originalData) {
 // // //             setFormData({ ...originalData });
 // // //             setErrors({});
-            
+
 // // //             if (originalData.jamiaat?.value) {
 // // //                 fetchJamaatsByJamiaat(originalData.jamiaat.value);
 // // //             }
-            
+
 // // //             Swal.fire({
 // // //                 icon: 'info',
 // // //                 title: 'Form Reset',
@@ -4076,7 +4076,7 @@
 // // //                         &times;
 // // //                     </button>
 // // //                 </div>
-                
+
 // // //                 {errors.submit && (
 // // //                     <div className="submit-error">
 // // //                         <i className="ri-error-warning-line"></i>
@@ -4201,7 +4201,7 @@
 // // //             setError(null);
 
 // // //             const accessToken = sessionStorage.getItem('access_token');
-            
+
 // // //             if (!accessToken) {
 // // //                 throw new Error('Access token not found. Please login again.');
 // // //             }
@@ -4279,7 +4279,7 @@
 // // //     const handleUpdate = (data) => {
 // // //         setShowEditForm(false);
 // // //         setEditTeamId(null);
-        
+
 // // //         setTableData(prevData => {
 // // //             return prevData.map(item => {
 // // //                 if (item.id === data.team_id) {
@@ -4293,9 +4293,9 @@
 // // //                 return item;
 // // //             });
 // // //         });
-        
+
 // // //         setGridKey(prev => prev + 1);
-        
+
 // // //         setTimeout(() => {
 // // //             fetchTeams();
 // // //         }, 500);
@@ -4309,7 +4309,7 @@
 // // //     const handleDelete = async (id) => {
 // // //         const teamToDelete = tableData.find(item => item.id === id);
 // // //         const teamName = teamToDelete ? teamToDelete.teamName : 'this team';
-        
+
 // // //         const result = await Swal.fire({
 // // //             title: 'Are you sure?',
 // // //             text: `You are about to delete "${teamName}".`,
@@ -4327,7 +4327,7 @@
 
 // // //         try {
 // // //             const accessToken = sessionStorage.getItem('access_token');
-            
+
 // // //             if (!accessToken) {
 // // //                 throw new Error('Access token not found. Please login again.');
 // // //             }
@@ -4345,10 +4345,10 @@
 // // //             });
 
 // // //             const apiResult = await response.json();
-            
+
 // // //             if (response.ok && apiResult.success) {
 // // //                 const resultCode = Number(apiResult.data?.result_code);
-                
+
 // // //                 if (resultCode === 3) {
 // // //                     Swal.fire({
 // // //                         title: 'Deleted!',
@@ -4366,9 +4366,9 @@
 // // //                             srNo: index + 1
 // // //                         }));
 // // //                     });
-                    
+
 // // //                     setGridKey(prev => prev + 1);
-                    
+
 // // //                     setTimeout(async () => {
 // // //                         try {
 // // //                             await fetchTeams();
@@ -4788,7 +4788,7 @@
 // //     editData = null,
 // //     title = "Add New Team"
 // // }) => {
-    
+
 // //     const [formData, setFormData] = useState({
 // //         name: '',
 // //         jamiaat: null,
@@ -4834,11 +4834,11 @@
 // //         setIsLoadingJamiaats(true);
 // //         try {
 // //             const token = sessionStorage.getItem('access_token');
-            
+
 // //             if (!token) {
 // //                 return;
 // //             }
-            
+
 // //             const response = await fetch(`${API_BASE_URL}/Team/GetAllJamiaats`, {
 // //                 method: 'GET',
 // //                 headers: {
@@ -4866,15 +4866,15 @@
 // //     const fetchJamaatsByJamiaat = async (jamiaatId) => {
 // //         setIsLoadingJamaats(true);
 // //         setJamaatOptions([]);
-        
+
 // //         try {
 // //             const token = sessionStorage.getItem('access_token');
-            
+
 // //             if (!token) {
 // //                 setIsLoadingJamaats(false);
 // //                 return;
 // //             }
-            
+
 // //             const response = await fetch(`${API_BASE_URL}/Team/GetAllJamaatsByJamiaat`, {
 // //                 method: 'POST',
 // //                 headers: {
@@ -4913,7 +4913,7 @@
 // //                 jamaat: editData.jamaat || []
 // //             });
 // //             setErrors({ name: '', jamiaat: '', jamaat: '' });
-            
+
 // //             if (editData.jamiaat?.value) {
 // //                 fetchJamaatsByJamiaat(editData.jamiaat.value);
 // //             }
@@ -4942,14 +4942,14 @@
 // //             jamiaat: selectedOption,
 // //             jamaat: []
 // //         }));
-        
+
 // //         if (errors.jamiaat) {
 // //             setErrors(prev => ({
 // //                 ...prev,
 // //                 jamiaat: ''
 // //             }));
 // //         }
-        
+
 // //         if (selectedOption?.value) {
 // //             fetchJamaatsByJamiaat(selectedOption.value);
 // //         } else {
@@ -5017,7 +5017,7 @@
 // //                 jamiaat_id: formData.jamiaat.value,
 // //                 jamaat_ids: formData.jamaat.map(j => j.value)
 // //             };
-            
+
 // //             const response = await fetch(`${API_BASE_URL}/Team/InsertTeam`, {
 // //                 method: 'POST',
 // //                 headers: {
@@ -5029,7 +5029,7 @@
 
 // //             const result = await response.json();
 // //             const result_code = Number(result.data?.result_code);
-            
+
 // //             if (response.status === 401) {
 // //                 Swal.fire({
 // //                     icon: 'error',
@@ -5054,7 +5054,7 @@
 // //                         };
 // //                         onSave(dataToSave);
 // //                     }
-                    
+
 // //                     showSuccessAlert(result.message || 'Team added successfully!');
 // //                 } else if (result_code === 4) {
 // //                     setErrors(prev => ({
@@ -5372,11 +5372,11 @@
 // //         setIsLoadingJamiaats(true);
 // //         try {
 // //             const token = sessionStorage.getItem('access_token');
-            
+
 // //             if (!token) {
 // //                 return;
 // //             }
-            
+
 // //             const response = await fetch(`${API_BASE_URL}/Team/GetAllJamiaats`, {
 // //                 method: 'GET',
 // //                 headers: {
@@ -5404,15 +5404,15 @@
 // //     const fetchJamaatsByJamiaat = async (jamiaatId) => {
 // //         setIsLoadingJamaats(true);
 // //         setJamaatOptions([]);
-        
+
 // //         try {
 // //             const token = sessionStorage.getItem('access_token');
-            
+
 // //             if (!token) {
 // //                 setIsLoadingJamaats(false);
 // //                 return;
 // //             }
-            
+
 // //             const response = await fetch(`${API_BASE_URL}/Team/GetAllJamaatsByJamiaat`, {
 // //                 method: 'POST',
 // //                 headers: {
@@ -5447,7 +5447,7 @@
 // //         setIsLoadingTeamData(true);
 // //         try {
 // //             const token = sessionStorage.getItem('access_token');
-            
+
 // //             if (!token) {
 // //                 Swal.fire({
 // //                     icon: 'error',
@@ -5457,7 +5457,7 @@
 // //                 });
 // //                 return;
 // //             }
-            
+
 // //             // Fetch team basic info
 // //             const teamResponse = await fetch(`${API_BASE_URL}/Team/GetTeamById`, {
 // //                 method: 'POST',
@@ -5484,7 +5484,7 @@
 
 // //             if (teamResponse.ok && teamResult.success && teamResult.data && teamResult.data.length > 0) {
 // //                 const teamData = teamResult.data[0];
-                
+
 // //                 const jamiaatObj = {
 // //                     value: teamData.jamiaat_id,
 // //                     label: teamData.jamiaat_name
@@ -5503,7 +5503,7 @@
 // //                 });
 
 // //                 const jamaatResult = await jamaatResponse.json();
-                
+
 // //                 let jamaatArray = [];
 // //                 if (jamaatResponse.ok && jamaatResult.success && jamaatResult.data) {
 // //                     jamaatArray = jamaatResult.data.map(item => ({
@@ -5517,7 +5517,7 @@
 // //                     jamiaat: jamiaatObj,
 // //                     jamaat: jamaatArray
 // //                 };
-                
+
 // //                 setFormData(initialFormData);
 // //                 setOriginalData(initialFormData);
 
@@ -5566,14 +5566,14 @@
 // //             jamiaat: selectedOption,
 // //             jamaat: []
 // //         }));
-        
+
 // //         if (errors.jamiaat) {
 // //             setErrors(prev => ({
 // //                 ...prev,
 // //                 jamiaat: ''
 // //             }));
 // //         }
-        
+
 // //         if (selectedOption?.value) {
 // //             fetchJamaatsByJamiaat(selectedOption.value);
 // //         } else {
@@ -5621,7 +5621,7 @@
 // //         if (!originalData) return false;
 
 // //         const jamiaatChanged = formData.jamiaat?.value !== originalData.jamiaat?.value;
-        
+
 // //         const originalJamaatIds = (originalData.jamaat || []).map(j => j.value).sort();
 // //         const currentJamaatIds = (formData.jamaat || []).map(j => j.value).sort();
 // //         const jamaatChanged = JSON.stringify(originalJamaatIds) !== JSON.stringify(currentJamaatIds);
@@ -5663,7 +5663,7 @@
 // //                 jamiaat_id: formData.jamiaat.value,
 // //                 jamaat_ids: formData.jamaat.map(j => j.value)
 // //             };
-            
+
 // //             const response = await fetch(`${API_BASE_URL}/Team/UpdateTeam`, {
 // //                 method: 'PUT',
 // //                 headers: {
@@ -5674,7 +5674,7 @@
 // //             });
 
 // //             const result = await response.json();
-            
+
 // //             if (response.status === 401) {
 // //                 Swal.fire({
 // //                     icon: 'error',
@@ -5687,7 +5687,7 @@
 
 // //             if (response.ok && result.success) {
 // //                 const resultCode = Number(result.data?.result_code);
-                
+
 // //                 if (resultCode === 2) {
 // //                     if (onUpdate) {
 // //                         const dataToUpdate = {
@@ -5702,7 +5702,7 @@
 // //                         };
 // //                         onUpdate(dataToUpdate);
 // //                     }
-                    
+
 // //                     showSuccessAlert(result.message || 'Team updated successfully!');
 // //                 } else if (resultCode === 4) {
 // //                     setErrors(prev => ({
@@ -5751,7 +5751,7 @@
 // //         setErrors({});
 // //         setOriginalData(null);
 // //         setJamaatOptions([]);
-        
+
 // //         if (onClose) {
 // //             onClose();
 // //         }
@@ -5761,11 +5761,11 @@
 // //         if (originalData) {
 // //             setFormData({ ...originalData });
 // //             setErrors({});
-            
+
 // //             if (originalData.jamiaat?.value) {
 // //                 fetchJamaatsByJamiaat(originalData.jamiaat.value);
 // //             }
-            
+
 // //             Swal.fire({
 // //                 icon: 'info',
 // //                 title: 'Form Reset',
@@ -5998,7 +5998,7 @@
 // //             setError(null);
 
 // //             const accessToken = sessionStorage.getItem('access_token');
-            
+
 // //             if (!accessToken) {
 // //                 throw new Error('Access token not found. Please login again.');
 // //             }
@@ -6076,7 +6076,7 @@
 // //     const handleUpdate = (data) => {
 // //         setShowEditForm(false);
 // //         setEditTeamId(null);
-        
+
 // //         setTableData(prevData => {
 // //             return prevData.map(item => {
 // //                 if (item.id === data.team_id) {
@@ -6090,9 +6090,9 @@
 // //                 return item;
 // //             });
 // //         });
-        
+
 // //         setGridKey(prev => prev + 1);
-        
+
 // //         setTimeout(() => {
 // //             fetchTeams();
 // //         }, 500);
@@ -6106,7 +6106,7 @@
 // //     const handleDelete = async (id) => {
 // //         const teamToDelete = tableData.find(item => item.id === id);
 // //         const teamName = teamToDelete ? teamToDelete.teamName : 'this team';
-        
+
 // //         const result = await Swal.fire({
 // //             title: 'Are you sure?',
 // //             text: `You are about to delete "${teamName}".`,
@@ -6124,7 +6124,7 @@
 
 // //         try {
 // //             const accessToken = sessionStorage.getItem('access_token');
-            
+
 // //             if (!accessToken) {
 // //                 throw new Error('Access token not found. Please login again.');
 // //             }
@@ -6142,10 +6142,10 @@
 // //             });
 
 // //             const apiResult = await response.json();
-            
+
 // //             if (response.ok && apiResult.success) {
 // //                 const resultCode = Number(apiResult.data?.result_code);
-                
+
 // //                 if (resultCode === 3) {
 // //                     Swal.fire({
 // //                         title: 'Deleted!',
@@ -6163,9 +6163,9 @@
 // //                             srNo: index + 1
 // //                         }));
 // //                     });
-                    
+
 // //                     setGridKey(prev => prev + 1);
-                    
+
 // //                     setTimeout(async () => {
 // //                         try {
 // //                             await fetchTeams();
@@ -6456,7 +6456,7 @@
 //     editData = null,
 //     title = "Add New Team"
 // }) => {
-    
+
 //     const [formData, setFormData] = useState({
 //         name: '',
 //         jamiaat: null,
@@ -6502,11 +6502,11 @@
 //         setIsLoadingJamiaats(true);
 //         try {
 //             const token = sessionStorage.getItem('access_token');
-            
+
 //             if (!token) {
 //                 return;
 //             }
-            
+
 //             const response = await fetch(`${API_BASE_URL}/Team/GetAllJamiaats`, {
 //                 method: 'GET',
 //                 headers: {
@@ -6534,15 +6534,15 @@
 //     const fetchJamaatsByJamiaat = async (jamiaatId) => {
 //         setIsLoadingJamaats(true);
 //         setJamaatOptions([]);
-        
+
 //         try {
 //             const token = sessionStorage.getItem('access_token');
-            
+
 //             if (!token) {
 //                 setIsLoadingJamaats(false);
 //                 return;
 //             }
-            
+
 //             const response = await fetch(`${API_BASE_URL}/Team/GetAllJamaatsByJamiaat`, {
 //                 method: 'POST',
 //                 headers: {
@@ -6581,7 +6581,7 @@
 //                 jamaat: editData.jamaat || []
 //             });
 //             setErrors({ name: '', jamiaat: '', jamaat: '' });
-            
+
 //             if (editData.jamiaat?.value) {
 //                 fetchJamaatsByJamiaat(editData.jamiaat.value);
 //             }
@@ -6610,14 +6610,14 @@
 //             jamiaat: selectedOption,
 //             jamaat: []
 //         }));
-        
+
 //         if (errors.jamiaat) {
 //             setErrors(prev => ({
 //                 ...prev,
 //                 jamiaat: ''
 //             }));
 //         }
-        
+
 //         if (selectedOption?.value) {
 //             fetchJamaatsByJamiaat(selectedOption.value);
 //         } else {
@@ -6685,7 +6685,7 @@
 //                 jamiaat_id: formData.jamiaat.value,
 //                 jamaat_ids: formData.jamaat.map(j => j.value)
 //             };
-            
+
 //             const response = await fetch(`${API_BASE_URL}/Team/InsertTeam`, {
 //                 method: 'POST',
 //                 headers: {
@@ -6697,7 +6697,7 @@
 
 //             const result = await response.json();
 //             const result_code = Number(result.data?.result_code);
-            
+
 //             if (response.status === 401) {
 //                 Swal.fire({
 //                     icon: 'error',
@@ -6722,7 +6722,7 @@
 //                         };
 //                         onSave(dataToSave);
 //                     }
-                    
+
 //                     showSuccessAlert(result.message || 'Team added successfully!');
 //                 } else if (result_code === 4) {
 //                     setErrors(prev => ({
@@ -7046,11 +7046,11 @@
 //         setIsLoadingJamiaats(true);
 //         try {
 //             const token = sessionStorage.getItem('access_token');
-            
+
 //             if (!token) {
 //                 return;
 //             }
-            
+
 //             const response = await fetch(`${API_BASE_URL}/Team/GetAllJamiaats`, {
 //                 method: 'GET',
 //                 headers: {
@@ -7078,15 +7078,15 @@
 //     const fetchJamaatsByJamiaat = async (jamiaatId) => {
 //         setIsLoadingJamaats(true);
 //         setJamaatOptions([]);
-        
+
 //         try {
 //             const token = sessionStorage.getItem('access_token');
-            
+
 //             if (!token) {
 //                 setIsLoadingJamaats(false);
 //                 return;
 //             }
-            
+
 //             const response = await fetch(`${API_BASE_URL}/Team/GetAllJamaatsByJamiaat`, {
 //                 method: 'POST',
 //                 headers: {
@@ -7121,7 +7121,7 @@
 //         setIsLoadingTeamData(true);
 //         try {
 //             const token = sessionStorage.getItem('access_token');
-            
+
 //             if (!token) {
 //                 Swal.fire({
 //                     icon: 'error',
@@ -7131,7 +7131,7 @@
 //                 });
 //                 return;
 //             }
-            
+
 //             // Fetch team basic info
 //             const teamResponse = await fetch(`${API_BASE_URL}/Team/GetTeamById`, {
 //                 method: 'POST',
@@ -7158,7 +7158,7 @@
 
 //             if (teamResponse.ok && teamResult.success && teamResult.data && teamResult.data.length > 0) {
 //                 const teamData = teamResult.data[0];
-                
+
 //                 const jamiaatObj = {
 //                     value: teamData.jamiaat_id,
 //                     label: teamData.jamiaat_name
@@ -7177,7 +7177,7 @@
 //                 });
 
 //                 const jamaatResult = await jamaatResponse.json();
-                
+
 //                 let jamaatArray = [];
 //                 if (jamaatResponse.ok && jamaatResult.success && jamaatResult.data) {
 //                     jamaatArray = jamaatResult.data.map(item => ({
@@ -7191,7 +7191,7 @@
 //                     jamiaat: jamiaatObj,
 //                     jamaat: jamaatArray
 //                 };
-                
+
 //                 setFormData(initialFormData);
 //                 setOriginalData(initialFormData);
 
@@ -7240,14 +7240,14 @@
 //             jamiaat: selectedOption,
 //             jamaat: []
 //         }));
-        
+
 //         if (errors.jamiaat) {
 //             setErrors(prev => ({
 //                 ...prev,
 //                 jamiaat: ''
 //             }));
 //         }
-        
+
 //         if (selectedOption?.value) {
 //             fetchJamaatsByJamiaat(selectedOption.value);
 //         } else {
@@ -7295,7 +7295,7 @@
 //         if (!originalData) return false;
 
 //         const jamiaatChanged = formData.jamiaat?.value !== originalData.jamiaat?.value;
-        
+
 //         const originalJamaatIds = (originalData.jamaat || []).map(j => j.value).sort();
 //         const currentJamaatIds = (formData.jamaat || []).map(j => j.value).sort();
 //         const jamaatChanged = JSON.stringify(originalJamaatIds) !== JSON.stringify(currentJamaatIds);
@@ -7337,7 +7337,7 @@
 //                 jamiaat_id: formData.jamiaat.value,
 //                 jamaat_ids: formData.jamaat.map(j => j.value)
 //             };
-            
+
 //             const response = await fetch(`${API_BASE_URL}/Team/UpdateTeam`, {
 //                 method: 'PUT',
 //                 headers: {
@@ -7348,7 +7348,7 @@
 //             });
 
 //             const result = await response.json();
-            
+
 //             if (response.status === 401) {
 //                 Swal.fire({
 //                     icon: 'error',
@@ -7361,7 +7361,7 @@
 
 //             if (response.ok && result.success) {
 //                 const resultCode = Number(result.data?.result_code);
-                
+
 //                 if (resultCode === 2) {
 //                     if (onUpdate) {
 //                         const dataToUpdate = {
@@ -7376,7 +7376,7 @@
 //                         };
 //                         onUpdate(dataToUpdate);
 //                     }
-                    
+
 //                     showSuccessAlert(result.message || 'Team updated successfully!');
 //                 } else if (resultCode === 4) {
 //                     setErrors(prev => ({
@@ -7425,7 +7425,7 @@
 //         setErrors({});
 //         setOriginalData(null);
 //         setJamaatOptions([]);
-        
+
 //         if (onClose) {
 //             onClose();
 //         }
@@ -7435,11 +7435,11 @@
 //         if (originalData) {
 //             setFormData({ ...originalData });
 //             setErrors({});
-            
+
 //             if (originalData.jamiaat?.value) {
 //                 fetchJamaatsByJamiaat(originalData.jamiaat.value);
 //             }
-            
+
 //             Swal.fire({
 //                 icon: 'info',
 //                 title: 'Form Reset',
@@ -7678,7 +7678,7 @@
 //             setError(null);
 
 //             const accessToken = sessionStorage.getItem('access_token');
-            
+
 //             if (!accessToken) {
 //                 throw new Error('Access token not found. Please login again.');
 //             }
@@ -7756,7 +7756,7 @@
 //     const handleUpdate = (data) => {
 //         setShowEditForm(false);
 //         setEditTeamId(null);
-        
+
 //         setTableData(prevData => {
 //             return prevData.map(item => {
 //                 if (item.id === data.team_id) {
@@ -7770,9 +7770,9 @@
 //                 return item;
 //             });
 //         });
-        
+
 //         setGridKey(prev => prev + 1);
-        
+
 //         setTimeout(() => {
 //             fetchTeams();
 //         }, 500);
@@ -7786,7 +7786,7 @@
 //     const handleDelete = async (id) => {
 //         const teamToDelete = tableData.find(item => item.id === id);
 //         const teamName = teamToDelete ? teamToDelete.teamName : 'this team';
-        
+
 //         const result = await Swal.fire({
 //             title: 'Are you sure?',
 //             text: `You are about to delete "${teamName}".`,
@@ -7804,7 +7804,7 @@
 
 //         try {
 //             const accessToken = sessionStorage.getItem('access_token');
-            
+
 //             if (!accessToken) {
 //                 throw new Error('Access token not found. Please login again.');
 //             }
@@ -7822,10 +7822,10 @@
 //             });
 
 //             const apiResult = await response.json();
-            
+
 //             if (response.ok && apiResult.success) {
 //                 const resultCode = Number(apiResult.data?.result_code);
-                
+
 //                 if (resultCode === 3) {
 //                     Swal.fire({
 //                         title: 'Deleted!',
@@ -7843,9 +7843,9 @@
 //                             srNo: index + 1
 //                         }));
 //                     });
-                    
+
 //                     setGridKey(prev => prev + 1);
-                    
+
 //                     setTimeout(async () => {
 //                         try {
 //                             await fetchTeams();
@@ -8119,7 +8119,7 @@ import { Grid } from 'gridjs-react';
 import { html } from 'gridjs';
 import 'gridjs/dist/theme/mermaid.css';
 import Select from 'react-select';
-import IconButton from '../../elements/button'; 
+import IconButton from '../../elements/button';
 import Swal from 'sweetalert2';
 import '../../../styles/shared-styles.css';
 import StandardModal from '../../../components/StandardModal';
@@ -8129,14 +8129,14 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 // ============================================================================
 // ADD TEAM COMPONENT
 // ============================================================================
-const AddJamaat = ({ 
+const AddJamaat = ({
     show,
     onClose,
     onSave,
     editData = null,
     title = "Add New Team"
 }) => {
-    
+
     const [formData, setFormData] = useState({
         name: '',
         jamiaat: null,
@@ -8182,11 +8182,11 @@ const AddJamaat = ({
         setIsLoadingJamiaats(true);
         try {
             const token = sessionStorage.getItem('access_token');
-            
+
             if (!token) {
                 return;
             }
-            
+
             const response = await fetch(`${API_BASE_URL}/Team/GetAllJamiaats`, {
                 method: 'GET',
                 headers: {
@@ -8214,15 +8214,15 @@ const AddJamaat = ({
     const fetchJamaatsByJamiaat = async (jamiaatId) => {
         setIsLoadingJamaats(true);
         setJamaatOptions([]);
-        
+
         try {
             const token = sessionStorage.getItem('access_token');
-            
+
             if (!token) {
                 setIsLoadingJamaats(false);
                 return;
             }
-            
+
             const response = await fetch(`${API_BASE_URL}/Team/GetAllJamaatsByJamiaat`, {
                 method: 'POST',
                 headers: {
@@ -8261,7 +8261,7 @@ const AddJamaat = ({
                 jamaat: editData.jamaat || []
             });
             setErrors({ name: '', jamiaat: '', jamaat: '' });
-            
+
             if (editData.jamiaat?.value) {
                 fetchJamaatsByJamiaat(editData.jamiaat.value);
             }
@@ -8290,14 +8290,14 @@ const AddJamaat = ({
             jamiaat: selectedOption,
             jamaat: []
         }));
-        
+
         if (errors.jamiaat) {
             setErrors(prev => ({
                 ...prev,
                 jamiaat: ''
             }));
         }
-        
+
         if (selectedOption?.value) {
             fetchJamaatsByJamiaat(selectedOption.value);
         } else {
@@ -8365,7 +8365,7 @@ const AddJamaat = ({
                 jamiaat_id: formData.jamiaat.value,
                 jamaat_ids: formData.jamaat.map(j => j.value)
             };
-            
+
             const response = await fetch(`${API_BASE_URL}/Team/InsertTeam`, {
                 method: 'POST',
                 headers: {
@@ -8377,7 +8377,7 @@ const AddJamaat = ({
 
             const result = await response.json();
             const result_code = Number(result.data?.result_code);
-            
+
             if (response.status === 401) {
                 Swal.fire({
                     icon: 'error',
@@ -8402,7 +8402,7 @@ const AddJamaat = ({
                         };
                         onSave(dataToSave);
                     }
-                    
+
                     showSuccessAlert(result.message || 'Team added successfully!');
                 } else if (result_code === 4) {
                     setErrors(prev => ({
@@ -8515,9 +8515,9 @@ const AddJamaat = ({
             maxHeight: '200px',
             overflowY: 'auto'
         }),
-        menuPortal: (base) => ({ 
-            ...base, 
-            zIndex: 9999 
+        menuPortal: (base) => ({
+            ...base,
+            zIndex: 9999
         }),
         placeholder: (base) => ({
             ...base,
@@ -8580,7 +8580,7 @@ const AddJamaat = ({
             icon={editData ? 'ri-edit-line' : 'ri-team-line'}
             buttons={modalButtons}
             loading={isLoading}
-            maxWidth="900px" 
+            maxWidth="900px"
         >
             {errors.submit && (
                 <div className="submit-error">
@@ -8648,10 +8648,10 @@ const AddJamaat = ({
                                     value={formData.jamaat}
                                     onChange={handleJamaatChange}
                                     placeholder={
-                                        !formData.jamiaat 
-                                            ? "First select a jamiaat" 
-                                            : isLoadingJamaats 
-                                                ? "Loading jamaats..." 
+                                        !formData.jamiaat
+                                            ? "First select a jamiaat"
+                                            : isLoadingJamaats
+                                                ? "Loading jamaats..."
                                                 : "Select jamaat (multiple)"
                                     }
                                     isMulti
@@ -8660,9 +8660,9 @@ const AddJamaat = ({
                                     isLoading={isLoadingJamaats}
                                     styles={selectStyles}
                                     error={errors.jamaat}
-                                    noOptionsMessage={() => 
-                                        !formData.jamiaat 
-                                            ? "Please select a jamiaat first" 
+                                    noOptionsMessage={() =>
+                                        !formData.jamiaat
+                                            ? "Please select a jamiaat first"
                                             : "No jamaats available for selected jamiaat"
                                     }
                                 />
@@ -8679,10 +8679,10 @@ const AddJamaat = ({
 // ============================================================================
 // EDIT TEAM COMPONENT
 // ============================================================================
-const EditJamaat = ({ 
-    show, 
-    onClose, 
-    onUpdate, 
+const EditJamaat = ({
+    show,
+    onClose,
+    onUpdate,
     teamId,
     title = "Edit Team"
 }) => {
@@ -8729,11 +8729,11 @@ const EditJamaat = ({
         setIsLoadingJamiaats(true);
         try {
             const token = sessionStorage.getItem('access_token');
-            
+
             if (!token) {
                 return;
             }
-            
+
             const response = await fetch(`${API_BASE_URL}/Team/GetAllJamiaats`, {
                 method: 'GET',
                 headers: {
@@ -8761,15 +8761,15 @@ const EditJamaat = ({
     const fetchJamaatsByJamiaat = async (jamiaatId) => {
         setIsLoadingJamaats(true);
         setJamaatOptions([]);
-        
+
         try {
             const token = sessionStorage.getItem('access_token');
-            
+
             if (!token) {
                 setIsLoadingJamaats(false);
                 return;
             }
-            
+
             const response = await fetch(`${API_BASE_URL}/Team/GetAllJamaatsByJamiaat`, {
                 method: 'POST',
                 headers: {
@@ -8804,7 +8804,7 @@ const EditJamaat = ({
         setIsLoadingTeamData(true);
         try {
             const token = sessionStorage.getItem('access_token');
-            
+
             if (!token) {
                 Swal.fire({
                     icon: 'error',
@@ -8814,7 +8814,7 @@ const EditJamaat = ({
                 });
                 return;
             }
-            
+
             // Fetch team basic info
             const teamResponse = await fetch(`${API_BASE_URL}/Team/GetTeamById`, {
                 method: 'POST',
@@ -8841,7 +8841,7 @@ const EditJamaat = ({
 
             if (teamResponse.ok && teamResult.success && teamResult.data && teamResult.data.length > 0) {
                 const teamData = teamResult.data[0];
-                
+
                 const jamiaatObj = {
                     value: teamData.jamiaat_id,
                     label: teamData.jamiaat_name
@@ -8860,7 +8860,7 @@ const EditJamaat = ({
                 });
 
                 const jamaatResult = await jamaatResponse.json();
-                
+
                 let jamaatArray = [];
                 if (jamaatResponse.ok && jamaatResult.success && jamaatResult.data) {
                     jamaatArray = jamaatResult.data.map(item => ({
@@ -8874,7 +8874,7 @@ const EditJamaat = ({
                     jamiaat: jamiaatObj,
                     jamaat: jamaatArray
                 };
-                
+
                 setFormData(initialFormData);
                 setOriginalData(initialFormData);
 
@@ -8923,14 +8923,14 @@ const EditJamaat = ({
             jamiaat: selectedOption,
             jamaat: []
         }));
-        
+
         if (errors.jamiaat) {
             setErrors(prev => ({
                 ...prev,
                 jamiaat: ''
             }));
         }
-        
+
         if (selectedOption?.value) {
             fetchJamaatsByJamiaat(selectedOption.value);
         } else {
@@ -8978,7 +8978,7 @@ const EditJamaat = ({
         if (!originalData) return false;
 
         const jamiaatChanged = formData.jamiaat?.value !== originalData.jamiaat?.value;
-        
+
         const originalJamaatIds = (originalData.jamaat || []).map(j => j.value).sort();
         const currentJamaatIds = (formData.jamaat || []).map(j => j.value).sort();
         const jamaatChanged = JSON.stringify(originalJamaatIds) !== JSON.stringify(currentJamaatIds);
@@ -9020,7 +9020,7 @@ const EditJamaat = ({
                 jamiaat_id: formData.jamiaat.value,
                 jamaat_ids: formData.jamaat.map(j => j.value)
             };
-            
+
             const response = await fetch(`${API_BASE_URL}/Team/UpdateTeam`, {
                 method: 'PUT',
                 headers: {
@@ -9031,7 +9031,7 @@ const EditJamaat = ({
             });
 
             const result = await response.json();
-            
+
             if (response.status === 401) {
                 Swal.fire({
                     icon: 'error',
@@ -9044,7 +9044,7 @@ const EditJamaat = ({
 
             if (response.ok && result.success) {
                 const resultCode = Number(result.data?.result_code);
-                
+
                 if (resultCode === 2) {
                     if (onUpdate) {
                         const dataToUpdate = {
@@ -9059,7 +9059,7 @@ const EditJamaat = ({
                         };
                         onUpdate(dataToUpdate);
                     }
-                    
+
                     showSuccessAlert(result.message || 'Team updated successfully!');
                 } else if (resultCode === 4) {
                     setErrors(prev => ({
@@ -9108,7 +9108,7 @@ const EditJamaat = ({
         setErrors({});
         setOriginalData(null);
         setJamaatOptions([]);
-        
+
         if (onClose) {
             onClose();
         }
@@ -9118,11 +9118,11 @@ const EditJamaat = ({
         if (originalData) {
             setFormData({ ...originalData });
             setErrors({});
-            
+
             if (originalData.jamiaat?.value) {
                 fetchJamaatsByJamiaat(originalData.jamiaat.value);
             }
-            
+
             Swal.fire({
                 icon: 'info',
                 title: 'Form Reset',
@@ -9181,9 +9181,9 @@ const EditJamaat = ({
             maxHeight: '200px',
             overflowY: 'auto'
         }),
-        menuPortal: (base) => ({ 
-            ...base, 
-            zIndex: 9999 
+        menuPortal: (base) => ({
+            ...base,
+            zIndex: 9999
         }),
         placeholder: (base) => ({
             ...base,
@@ -9315,10 +9315,10 @@ const EditJamaat = ({
                                         value={formData.jamaat}
                                         onChange={handleJamaatChange}
                                         placeholder={
-                                            !formData.jamiaat 
-                                                ? "First select a jamiaat" 
-                                                : isLoadingJamaats 
-                                                    ? "Loading jamaats..." 
+                                            !formData.jamiaat
+                                                ? "First select a jamiaat"
+                                                : isLoadingJamaats
+                                                    ? "Loading jamaats..."
                                                     : "Select jamaat (multiple)"
                                         }
                                         isMulti
@@ -9327,9 +9327,9 @@ const EditJamaat = ({
                                         isLoading={isLoadingJamaats}
                                         styles={selectStyles}
                                         error={errors.jamaat}
-                                        noOptionsMessage={() => 
-                                            !formData.jamiaat 
-                                                ? "Please select a jamiaat first" 
+                                        noOptionsMessage={() =>
+                                            !formData.jamiaat
+                                                ? "Please select a jamiaat first"
                                                 : "No jamaats available for selected jamiaat"
                                         }
                                     />
@@ -9362,7 +9362,7 @@ const TeamTable = () => {
             setError(null);
 
             const accessToken = sessionStorage.getItem('access_token');
-            
+
             if (!accessToken) {
                 throw new Error('Access token not found. Please login again.');
             }
@@ -9440,7 +9440,7 @@ const TeamTable = () => {
     const handleUpdate = (data) => {
         setShowEditForm(false);
         setEditTeamId(null);
-        
+
         setTableData(prevData => {
             return prevData.map(item => {
                 if (item.id === data.team_id) {
@@ -9454,9 +9454,9 @@ const TeamTable = () => {
                 return item;
             });
         });
-        
+
         setGridKey(prev => prev + 1);
-        
+
         setTimeout(() => {
             fetchTeams();
         }, 500);
@@ -9470,7 +9470,7 @@ const TeamTable = () => {
     const handleDelete = async (id) => {
         const teamToDelete = tableData.find(item => item.id === id);
         const teamName = teamToDelete ? teamToDelete.teamName : 'this team';
-        
+
         const result = await Swal.fire({
             title: 'Are you sure?',
             text: `You are about to delete "${teamName}".`,
@@ -9488,7 +9488,7 @@ const TeamTable = () => {
 
         try {
             const accessToken = sessionStorage.getItem('access_token');
-            
+
             if (!accessToken) {
                 throw new Error('Access token not found. Please login again.');
             }
@@ -9506,10 +9506,10 @@ const TeamTable = () => {
             });
 
             const apiResult = await response.json();
-            
+
             if (response.ok && apiResult.success) {
                 const resultCode = Number(apiResult.data?.result_code);
-                
+
                 if (resultCode === 3) {
                     Swal.fire({
                         title: 'Deleted!',
@@ -9527,9 +9527,9 @@ const TeamTable = () => {
                             srNo: index + 1
                         }));
                     });
-                    
+
                     setGridKey(prev => prev + 1);
-                    
+
                     setTimeout(async () => {
                         try {
                             await fetchTeams();
@@ -9704,8 +9704,8 @@ const TeamTable = () => {
                                     <div className="error-container">
                                         <i className="ri-error-warning-line" style={{ fontSize: '48px' }}></i>
                                         <p className="mt-3">{error}</p>
-                                        <button 
-                                            className="btn btn-primary mt-3" 
+                                        <button
+                                            className="btn btn-primary mt-3"
                                             onClick={fetchTeams}
                                         >
                                             <i className="ri-refresh-line me-2"></i>
@@ -9716,8 +9716,8 @@ const TeamTable = () => {
                                     <div className="loading-container">
                                         <i className="ri-inbox-line" style={{ fontSize: '48px' }}></i>
                                         <p className="mt-3">No teams found</p>
-                                        <button 
-                                            className="btn btn-primary mt-2" 
+                                        <button
+                                            className="btn btn-primary mt-2"
                                             onClick={handleAdd}
                                         >
                                             <i className="ri-add-line me-2"></i>
@@ -9729,31 +9729,31 @@ const TeamTable = () => {
                                         <Grid
                                             key={gridKey}
                                             data={gridData}
-                                            sort={true}
+                                            // sort={true}
                                             search={{
                                                 enabled: true,
                                                 placeholder: 'Search teams...'
                                             }}
                                             columns={[
-                                                { 
+                                                {
                                                     name: 'Sr',
-                                                    width: '100px',
-                                                    sort: true
-                                                }, 
-                                                { 
+                                                    width: '20px',
+                                                    // sort: true
+                                                },
+                                                {
                                                     name: 'Team Name',
                                                     width: '200px',
-                                                    sort: true
-                                                }, 
-                                                { 
+                                                    // sort: true
+                                                },
+                                                {
                                                     name: 'Jamiaat',
-                                                    width: '200px',
-                                                    sort: true
-                                                }, 
+                                                    width: '150px',
+                                                    // sort: true
+                                                },
                                                 {
                                                     name: 'Action',
-                                                    width: '150px',
-                                                    sort: true,
+                                                    width: '20px',
+                                                    // sort: true,
                                                     formatter: (cell) => html(`
                                                         <div class="btn-action-group">
                                                             <button 
@@ -9773,7 +9773,7 @@ const TeamTable = () => {
                                                         </div>
                                                     `)
                                                 }
-                                            ]} 
+                                            ]}
                                             pagination={{
                                                 limit: 5,
                                                 summary: true

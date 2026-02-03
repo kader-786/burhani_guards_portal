@@ -100,6 +100,31 @@
     z-index: 1;
 }
 
+/* Force scrollbar to always be visible */
+.modal-form-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-form-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.modal-form-content::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.modal-form-content::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Firefox scrollbar */
+.modal-form-content {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+}
+
 /* Modal Footer - Fixed at Bottom */
 .modal-form-container .form-buttons {
     display: flex;
@@ -115,101 +140,7 @@
     border-radius: 0 0 12px 12px;
 }
 
-/* ============================================
-   UNIVERSAL SCROLLBAR STYLES
-   Applied to all scrollable elements
-   ============================================ */
-
-/* Chrome, Safari, Edge (Webkit) */
-.modal-form-content::-webkit-scrollbar,
-.table-responsive::-webkit-scrollbar,
-.gridjs-wrapper::-webkit-scrollbar,
-.custom-scrollbar::-webkit-scrollbar {
-    width: 12px;
-    height: 12px;
-}
-
-.modal-form-content::-webkit-scrollbar-track,
-.table-responsive::-webkit-scrollbar-track,
-.gridjs-wrapper::-webkit-scrollbar-track,
-.custom-scrollbar::-webkit-scrollbar-track {
-    background: #f1f3f5;
-    border-radius: 10px;
-    margin: 2px;
-}
-
-.modal-form-content::-webkit-scrollbar-thumb,
-.table-responsive::-webkit-scrollbar-thumb,
-.gridjs-wrapper::-webkit-scrollbar-thumb,
-.custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #0d6efd;
-    border-radius: 10px;
-    border: 3px solid #f1f3f5;
-    transition: background 0.2s ease;
-}
-
-.modal-form-content::-webkit-scrollbar-thumb:hover,
-.table-responsive::-webkit-scrollbar-thumb:hover,
-.gridjs-wrapper::-webkit-scrollbar-thumb:hover,
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #0b5ed7;
-}
-
-.modal-form-content::-webkit-scrollbar-thumb:active,
-.table-responsive::-webkit-scrollbar-thumb:active,
-.gridjs-wrapper::-webkit-scrollbar-thumb:active,
-.custom-scrollbar::-webkit-scrollbar-thumb:active {
-    background: #0a58ca;
-}
-
-/* Firefox */
-.modal-form-content,
-.table-responsive,
-.gridjs-wrapper,
-.custom-scrollbar {
-    scrollbar-width: auto;
-    scrollbar-color: #0d6efd #f1f3f5;
-}
-
-/* ============================================
-   TABLE RESPONSIVE CONTAINER
-   Better scrolling for tables
-   ============================================ */
-
-.table-responsive {
-    overflow-x: auto;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    border-radius: 8px;
-    margin-top: 1rem;
-}
-
-/* Grid.js Specific Scrollbar Enhancements */
-.gridjs-wrapper {
-    overflow-x: auto;
-    border-radius: 8px;
-    margin-top: 0.5rem;
-    border: 1px solid #e9ecef;
-}
-
-.gridjs-container {
-    overflow-x: auto !important;
-}
-
-/* Force scrollbar to always be visible and styled */
-.gridjs-wrapper::-webkit-scrollbar {
-    width: 12px;
-    height: 12px;
-}
-
-.gridjs-wrapper::-webkit-scrollbar-corner {
-    background: #f1f3f5;
-}
-
-/* ============================================
-   FORM ELEMENTS
-   ============================================ */
-
+/* Form Elements */
 .horizontal-form-group {
     margin-bottom: 20px;
     display: flex;
@@ -454,126 +385,6 @@
 }
 
 /* ============================================
-   GRID STYLES
-   ============================================ */
-
-.btn-action-group {
-    display: inline-flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.btn-action-group .btn {
-    margin: 0 !important;
-}
-
-.gridjs-search {
-    width: 100%;
-    margin-bottom: 1rem;
-}
-
-.gridjs-search-input {
-    width: 100%;
-    padding: 8px 12px;
-    border: 1px solid #dee2e6;
-    border-radius: 6px;
-}
-
-/* ============================================
-   PAGE HEADER
-   ============================================ */
-
-.page-header-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid #e9ecef;
-}
-
-.page-header-title .header-text {
-    display: flex;
-    align-items: center;
-    font-size: 18px;
-    font-weight: 600;
-    color: #333;
-}
-
-.page-header-title .header-text i {
-    margin-right: 8px;
-    font-size: 20px;
-}
-
-/* ============================================
-   ENHANCED GRID.JS TABLE STYLING
-   ============================================ */
-
-.gridjs-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-}
-
-.gridjs-th {
-    background: #f8f9fa;
-    color: #495057;
-    font-weight: 600;
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 2px solid #dee2e6;
-    padding: 12px 8px;
-    white-space: nowrap;
-}
-
-.gridjs-td {
-    padding: 10px 8px;
-    border-bottom: 1px solid #f0f0f0;
-    font-size: 14px;
-    color: #495057;
-}
-
-.gridjs-tr:hover {
-    background: #f8f9fa;
-}
-
-/* Grid.js Pagination */
-.gridjs-pagination {
-    padding: 15px 10px;
-    background: #fff;
-    border-top: 1px solid #e9ecef;
-}
-
-.gridjs-pagination .gridjs-summary {
-    color: #6c757d;
-    font-size: 14px;
-}
-
-.gridjs-pagination .gridjs-pages button {
-    background: #fff;
-    border: 1px solid #dee2e6;
-    color: #0d6efd;
-    font-weight: 500;
-    padding: 6px 12px;
-    margin: 0 2px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.gridjs-pagination .gridjs-pages button:hover {
-    background: #e9ecef;
-    border-color: #0d6efd;
-}
-
-.gridjs-pagination .gridjs-pages button.gridjs-currentPage {
-    background: #0d6efd;
-    color: #fff;
-    border-color: #0d6efd;
-}
-
-/* ============================================
    RESPONSIVE DESIGN
    ============================================ */
 
@@ -630,27 +441,58 @@
     .profile-image-container {
         height: 120px;
     }
-
-    /* Mobile scrollbar - thinner but still visible */
-    .modal-form-content::-webkit-scrollbar,
-    .table-responsive::-webkit-scrollbar,
-    .gridjs-wrapper::-webkit-scrollbar,
-    .custom-scrollbar::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-    }
 }
 
 /* ============================================
-   UTILITY CLASSES
+   GRID STYLES
    ============================================ */
 
-/* Add custom-scrollbar class to any element for styled scrolling */
-.custom-scrollbar {
-    overflow: auto;
+.btn-action-group {
+    display: inline-flex;
+    gap: 10px;
+    align-items: center;
 }
 
-/* Smooth scrolling for all scrollable elements */
-* {
-    scroll-behavior: smooth;
+.btn-action-group .btn {
+    margin: 0 !important;
+}
+
+.gridjs-search {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.gridjs-search-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+}
+
+.gridjs-wrapper {
+    margin-top: 0.5rem;
+}
+
+/* ============================================
+   PAGE HEADER
+   ============================================ */
+
+.page-header-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.page-header-title .header-text {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.page-header-title .header-text i {
+    margin-right: 8px;
+    font-size: 20px;
 }

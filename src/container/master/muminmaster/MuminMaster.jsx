@@ -4,7 +4,7 @@ import { Grid } from 'gridjs-react';
 import { html } from 'gridjs';
 import 'gridjs/dist/theme/mermaid.css';
 import { Card, Row, Col, Form, Button } from 'react-bootstrap';
-import IconButton from '../../elements/button'; 
+import IconButton from '../../elements/button';
 import Select from 'react-select';
 import Swal from 'sweetalert2';
 import { checkModuleAccess } from '../../../utils/accessControl';
@@ -103,14 +103,14 @@ const MARITAL_STATUS_OPTIONS = [
 // ADD MUMIN COMPONENT
 // ========================================
 
-const AddMumin = ({ 
-    show, 
-    onClose, 
+const AddMumin = ({
+    show,
+    onClose,
     onSave,
     title = "Add New Member",
     permissions
 }) => {
-    
+
     const [formData, setFormData] = useState({
         its_id: '',
         full_name: '',
@@ -142,7 +142,7 @@ const AddMumin = ({
     });
 
     const [errors, setErrors] = useState({});
-    
+
     const [teamOptions, setTeamOptions] = useState([]);
     const [roleOptions, setRoleOptions] = useState([]);
     const [positionOptions, setPositionOptions] = useState([]);
@@ -161,7 +161,7 @@ const AddMumin = ({
     const [recordExists, setRecordExists] = useState(false);
     const [wasDeleted, setWasDeleted] = useState(false);
     const [fieldsEditable, setFieldsEditable] = useState(false);
-    
+
     const [profileImage, setProfileImage] = useState(null);
 
     const showSuccessAlert = (message) => {
@@ -193,7 +193,7 @@ const AddMumin = ({
                 setLoadingRoles(false);
                 return;
             }
-            
+
             const response = await fetch(`${API_BASE_URL}/Mumin/GetAllRoles`, {
                 method: 'GET',
                 headers: {
@@ -226,7 +226,7 @@ const AddMumin = ({
                 setLoadingPositions(false);
                 return;
             }
-            
+
             const response = await fetch(`${API_BASE_URL}/Mumin/GetAllPositions`, {
                 method: 'GET',
                 headers: {
@@ -259,7 +259,7 @@ const AddMumin = ({
                 setLoadingJamiaats(false);
                 return;
             }
-            
+
             const response = await fetch(`${API_BASE_URL}/Venue/GetAllJamiaats`, {
                 method: 'GET',
                 headers: {
@@ -287,14 +287,14 @@ const AddMumin = ({
     const fetchJamaatsByJamiaat = async (jamiaatId) => {
         setLoadingJamaats(true);
         setJamaatOptions([]);
-        
+
         try {
             const token = sessionStorage.getItem('access_token');
             if (!token) {
                 setLoadingJamaats(false);
                 return;
             }
-            
+
             const response = await fetch(`${API_BASE_URL}/Venue/GetAllJamaatsByJamiaat`, {
                 method: 'POST',
                 headers: {
@@ -323,14 +323,14 @@ const AddMumin = ({
     const fetchTeamsByJamiaat = async (jamiaatId) => {
         setLoadingTeams(true);
         setTeamOptions([]);
-        
+
         try {
             const token = sessionStorage.getItem('access_token');
             if (!token) {
                 setLoadingTeams(false);
                 return;
             }
-            
+
             const response = await fetch(`${API_BASE_URL}/Duty/GetTeamsByJamiaat`, {
                 method: 'POST',
                 headers: {
@@ -361,11 +361,11 @@ const AddMumin = ({
 
     const fetchProfileImage = async (itsId) => {
         setProfileImage(null);
-        
+
         try {
             const token = sessionStorage.getItem('access_token');
             if (!token) return;
-            
+
             const response = await fetch(`${API_BASE_URL}/ITS-API/HandlerE1`, {
                 method: 'POST',
                 headers: {
@@ -380,7 +380,7 @@ const AddMumin = ({
             if (response.ok && result.success && result.raw_response) {
                 const xmlString = result.raw_response;
                 const base64Match = xmlString.match(/>([A-Za-z0-9+/=]+)</);
-                
+
                 if (base64Match && base64Match[1]) {
                     const base64Image = base64Match[1];
                     setProfileImage(`data:image/png;base64,${base64Image}`);
@@ -395,7 +395,7 @@ const AddMumin = ({
         try {
             const token = sessionStorage.getItem('access_token');
             if (!token) return null;
-            
+
             const response = await fetch(`${API_BASE_URL}/Mumin/GetMuminById`, {
                 method: 'POST',
                 headers: {
@@ -449,10 +449,10 @@ const AddMumin = ({
             label: muminData.role_name
         } : null;
 
-        const genderObj = muminData.gender ? 
+        const genderObj = muminData.gender ?
             GENDER_OPTIONS.find(opt => opt.value === muminData.gender) : null;
 
-        const maritalStatusObj = muminData.marital_status ? 
+        const maritalStatusObj = muminData.marital_status ?
             MARITAL_STATUS_OPTIONS.find(opt => opt.value === muminData.marital_status) : null;
 
         setFormData(prev => ({
@@ -495,11 +495,11 @@ const AddMumin = ({
 
     const fetchITSData = async (itsId) => {
         if (!itsId || itsId.trim() === '') {
-            Swal.fire({ 
-                icon: 'error', 
-                title: 'Error', 
-                text: 'Please enter a valid ITS ID', 
-                confirmButtonText: 'OK' 
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Please enter a valid ITS ID',
+                confirmButtonText: 'OK'
             });
             return;
         }
@@ -509,7 +509,7 @@ const AddMumin = ({
         setRecordExists(false);
         setWasDeleted(false);
         setFieldsEditable(false);
-        
+
         try {
             const response = await fetch(`${API_BASE_URL}/ITS-API/HandlerB2`, {
                 method: 'POST',
@@ -521,16 +521,16 @@ const AddMumin = ({
 
             if (response.ok && result.success && result.data?.Table && result.data.Table.length > 0) {
                 const itsData = result.data.Table[0];
-                
+
                 setDataSource('ITS');
                 setFieldsEditable(false);
 
-                const genderObj = itsData.Gender ? 
+                const genderObj = itsData.Gender ?
                     GENDER_OPTIONS.find(opt => opt.value === itsData.Gender) : null;
 
-                const maritalStatusObj = itsData.Marital_Status ? 
+                const maritalStatusObj = itsData.Marital_Status ?
                     MARITAL_STATUS_OPTIONS.find(opt => opt.value === itsData.Marital_Status) : null;
-                
+
                 setFormData(prev => ({
                     ...prev,
                     its_id: itsData.ITS_ID || itsId,
@@ -607,7 +607,7 @@ const AddMumin = ({
 
             console.log('ITS API failed, checking database...');
             const dbData = await checkMuminInDB(itsId);
-            
+
             if (dbData) {
                 console.log('Found in database, loading data...');
                 loadDataFromDB(dbData);
@@ -619,7 +619,7 @@ const AddMumin = ({
             setDataSource('MANUAL');
             setFieldsEditable(true);
             setRecordExists(false);
-            
+
             Swal.fire({
                 icon: 'info',
                 title: 'Manual Entry Mode',
@@ -629,14 +629,14 @@ const AddMumin = ({
 
         } catch (error) {
             console.error('Error in fetch flow:', error);
-            
+
             const dbData = await checkMuminInDB(itsId);
             if (dbData) {
                 loadDataFromDB(dbData);
             } else {
                 setDataSource('MANUAL');
                 setFieldsEditable(true);
-                
+
                 Swal.fire({
                     icon: 'warning',
                     title: 'Error Fetching Data',
@@ -652,7 +652,7 @@ const AddMumin = ({
     const handleITSIdChange = (e) => {
         const value = e.target.value;
         setFormData(prev => ({ ...prev, its_id: value }));
-        
+
         if (dataSource) {
             setDataSource('');
             setRecordExists(false);
@@ -660,7 +660,7 @@ const AddMumin = ({
             setFieldsEditable(false);
             setProfileImage(null);
         }
-        
+
         if (errors.its_id) {
             setErrors(prev => ({ ...prev, its_id: '' }));
         }
@@ -680,7 +680,7 @@ const AddMumin = ({
 
     const handleSelectChange = (name, selectedOption) => {
         setFormData(prev => ({ ...prev, [name]: selectedOption }));
-        
+
         // Handle cascading dropdowns
         if (name === 'jamiaat_id' && selectedOption) {
             fetchJamaatsByJamiaat(selectedOption.value);
@@ -688,7 +688,7 @@ const AddMumin = ({
             // Reset jamaat and team when jamiaat changes
             setFormData(prev => ({ ...prev, jamaat_id: null, team_id: null }));
         }
-        
+
         if (errors[name]) {
             setErrors(prev => ({ ...prev, [name]: '' }));
         }
@@ -696,15 +696,15 @@ const AddMumin = ({
 
     const validateForm = () => {
         const newErrors = {};
-        
+
         if (!formData.its_id || formData.its_id.trim() === '') {
             newErrors.its_id = 'ITS ID is required';
         }
-        
+
         if (!dataSource) {
             newErrors.its_id = 'Please fetch data first';
         }
-        
+
         if (dataSource === 'MANUAL') {
             if (!formData.full_name || formData.full_name.trim() === '') {
                 newErrors.full_name = 'Full name is required';
@@ -716,14 +716,14 @@ const AddMumin = ({
                 newErrors.jamaat_id = 'Jamaat is required';
             }
         }
-        
+
         if (!formData.team_id) newErrors.team_id = 'Team is required';
         if (!formData.position_id) newErrors.position_id = 'Position is required';
         if (!formData.role_id) newErrors.role_id = 'Role is required';
         if (!formData.password || formData.password.trim() === '') {
             newErrors.password = 'Password is required';
         }
-        
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -767,7 +767,7 @@ const AddMumin = ({
                 role_id: formData.role_id?.value || 0,
                 password: formData.password
             };
-            
+
             const response = await fetch(`${API_BASE_URL}/Mumin/InsertMumin`, {
                 method: 'POST',
                 headers: {
@@ -781,17 +781,17 @@ const AddMumin = ({
 
             if (response.ok && result.success) {
                 const result_code = Number(result.data?.result_code || 0);
-                
+
                 if (result_code === 1 || result_code === 2 || result_code === 4) {
                     if (onSave) onSave(formData);
-                    
+
                     let message = result.message;
                     if (!message) {
                         if (result_code === 1) message = 'Member added successfully!';
                         else if (result_code === 2) message = 'Member updated successfully!';
                         else if (result_code === 4) message = 'Member restored and updated successfully!';
                     }
-                    
+
                     showSuccessAlert(message);
                 } else {
                     throw new Error(result.message || 'Failed to save member');
@@ -820,10 +820,10 @@ const AddMumin = ({
 
     const handleClear = () => {
         setFormData({
-            its_id: '', full_name: '', full_name_arabic: '', prefix: '', age: null, gender: null, 
-            marital_status: null, misaq: false, idara: '', category: '', organization: '', email: '', 
-            mobile: '', whatsapp_mobile: '', address: '', jamaat_id: null, jamaat: '', jamiaat_id: null, 
-            jamiaat: '', nationality: '', vatan: '', city: '', country: '', team_id: null, position_id: null, 
+            its_id: '', full_name: '', full_name_arabic: '', prefix: '', age: null, gender: null,
+            marital_status: null, misaq: false, idara: '', category: '', organization: '', email: '',
+            mobile: '', whatsapp_mobile: '', address: '', jamaat_id: null, jamaat: '', jamiaat_id: null,
+            jamiaat: '', nationality: '', vatan: '', city: '', country: '', team_id: null, position_id: null,
             role_id: null, password: ''
         });
         setErrors({});
@@ -840,7 +840,7 @@ const AddMumin = ({
         control: (base, state) => ({
             ...base, minHeight: '36px', height: '36px',
             borderColor: state.selectProps.error ? '#dc3545' : (state.isFocused ? '#0d6efd' : '#dee2e6'),
-            borderWidth: '2px', borderRadius: '8px', 
+            borderWidth: '2px', borderRadius: '8px',
             boxShadow: state.isFocused ? '0 0 0 0.2rem rgba(13, 110, 253, 0.15)' : 'none',
             '&:hover': { borderColor: state.selectProps.error ? '#dc3545' : '#adb5bd' }
         }),
@@ -856,7 +856,7 @@ const AddMumin = ({
 
     let badgeComponent = null;
     let buttonText = 'Save';
-    
+
     if (wasDeleted) {
         badgeComponent = <span className="badge-deleted">Previously Deleted - Will Restore</span>;
         buttonText = 'Restore & Update';
@@ -893,7 +893,7 @@ const AddMumin = ({
                         &times;
                     </button>
                 </div>
-                
+
                 <div className="modal-form-content">
                     {errors.submit && (
                         <div className="submit-error">
@@ -921,18 +921,18 @@ const AddMumin = ({
                         <Form.Label>ITS ID <span className="text-danger">*</span></Form.Label>
                         <div className="form-input-wrapper">
                             <div className="input-group-fetch">
-                                <Form.Control 
-                                    type="text" 
-                                    name="its_id" 
-                                    value={formData.its_id} 
-                                    onChange={handleITSIdChange} 
-                                    placeholder="Enter ITS ID" 
-                                    className={errors.its_id ? 'is-invalid' : ''} 
-                                    disabled={loading || !!dataSource} 
+                                <Form.Control
+                                    type="text"
+                                    name="its_id"
+                                    value={formData.its_id}
+                                    onChange={handleITSIdChange}
+                                    placeholder="Enter ITS ID"
+                                    className={errors.its_id ? 'is-invalid' : ''}
+                                    disabled={loading || !!dataSource}
                                 />
-                                <Button 
-                                    variant="primary" 
-                                    onClick={handleFetchITSData} 
+                                <Button
+                                    variant="primary"
+                                    onClick={handleFetchITSData}
                                     disabled={loading || loadingITS || !formData.its_id || !!dataSource}
                                 >
                                     <i className="ri-search-line me-1"></i>Fetch Data
@@ -969,12 +969,12 @@ const AddMumin = ({
                                         <div className="horizontal-form-group">
                                             <Form.Label>Full Name {dataSource === 'MANUAL' && <span className="text-danger">*</span>}</Form.Label>
                                             <div className="form-input-wrapper">
-                                                <Form.Control 
-                                                    type="text" 
+                                                <Form.Control
+                                                    type="text"
                                                     name="full_name"
-                                                    value={formData.full_name} 
+                                                    value={formData.full_name}
                                                     onChange={handleInputChange}
-                                                    readOnly={!fieldsEditable} 
+                                                    readOnly={!fieldsEditable}
                                                     disabled={!fieldsEditable}
                                                     className={errors.full_name ? 'is-invalid' : ''}
                                                 />
@@ -984,14 +984,14 @@ const AddMumin = ({
                                         <div className="horizontal-form-group">
                                             <Form.Label>Arabic Name</Form.Label>
                                             <div className="form-input-wrapper">
-                                                <Form.Control 
-                                                    type="text" 
+                                                <Form.Control
+                                                    type="text"
                                                     name="full_name_arabic"
-                                                    value={formData.full_name_arabic} 
+                                                    value={formData.full_name_arabic}
                                                     onChange={handleInputChange}
-                                                    readOnly={!fieldsEditable} 
-                                                    disabled={!fieldsEditable} 
-                                                    style={{ direction: 'rtl' }} 
+                                                    readOnly={!fieldsEditable}
+                                                    disabled={!fieldsEditable}
+                                                    style={{ direction: 'rtl' }}
                                                 />
                                             </div>
                                         </div>
@@ -1001,20 +1001,20 @@ const AddMumin = ({
                                         <div className="horizontal-form-group">
                                             <Form.Label>Age</Form.Label>
                                             <div className="form-input-wrapper">
-                                                <Form.Control 
-                                                    type="number" 
+                                                <Form.Control
+                                                    type="number"
                                                     name="age"
-                                                    value={formData.age || ''} 
+                                                    value={formData.age || ''}
                                                     onChange={handleInputChange}
-                                                    readOnly={!fieldsEditable} 
-                                                    disabled={!fieldsEditable} 
+                                                    readOnly={!fieldsEditable}
+                                                    disabled={!fieldsEditable}
                                                 />
                                             </div>
                                         </div>
                                         <div className="horizontal-form-group">
                                             <Form.Label>Gender</Form.Label>
                                             <div className="form-input-wrapper">
-                                                <Select 
+                                                <Select
                                                     options={GENDER_OPTIONS}
                                                     value={formData.gender}
                                                     onChange={(option) => handleSelectChange('gender', option)}
@@ -1028,7 +1028,7 @@ const AddMumin = ({
                                         <div className="horizontal-form-group">
                                             <Form.Label>Marital Status</Form.Label>
                                             <div className="form-input-wrapper">
-                                                <Select 
+                                                <Select
                                                     options={MARITAL_STATUS_OPTIONS}
                                                     value={formData.marital_status}
                                                     onChange={(option) => handleSelectChange('marital_status', option)}
@@ -1045,26 +1045,26 @@ const AddMumin = ({
                                         <div className="horizontal-form-group">
                                             <Form.Label>Email</Form.Label>
                                             <div className="form-input-wrapper">
-                                                <Form.Control 
-                                                    type="text" 
+                                                <Form.Control
+                                                    type="text"
                                                     name="email"
-                                                    value={formData.email} 
+                                                    value={formData.email}
                                                     onChange={handleInputChange}
-                                                    readOnly={!fieldsEditable} 
-                                                    disabled={!fieldsEditable} 
+                                                    readOnly={!fieldsEditable}
+                                                    disabled={!fieldsEditable}
                                                 />
                                             </div>
                                         </div>
                                         <div className="horizontal-form-group">
                                             <Form.Label>Mobile</Form.Label>
                                             <div className="form-input-wrapper">
-                                                <Form.Control 
-                                                    type="text" 
+                                                <Form.Control
+                                                    type="text"
                                                     name="mobile"
-                                                    value={formData.mobile} 
+                                                    value={formData.mobile}
                                                     onChange={handleInputChange}
-                                                    readOnly={!fieldsEditable} 
-                                                    disabled={!fieldsEditable} 
+                                                    readOnly={!fieldsEditable}
+                                                    disabled={!fieldsEditable}
                                                 />
                                             </div>
                                         </div>
@@ -1076,16 +1076,16 @@ const AddMumin = ({
                                             <div className="horizontal-form-group">
                                                 <Form.Label>Jamiaat <span className="text-danger">*</span></Form.Label>
                                                 <div className="form-input-wrapper">
-                                                    <Select 
-                                                        options={jamiaatOptions} 
-                                                        value={formData.jamiaat_id} 
-                                                        onChange={(option) => handleSelectChange('jamiaat_id', option)} 
-                                                        placeholder="Select jamiaat" 
-                                                        isClearable 
-                                                        isDisabled={loading || loadingJamiaats} 
-                                                        isLoading={loadingJamiaats} 
-                                                        styles={selectStyles} 
-                                                        error={errors.jamiaat_id} 
+                                                    <Select
+                                                        options={jamiaatOptions}
+                                                        value={formData.jamiaat_id}
+                                                        onChange={(option) => handleSelectChange('jamiaat_id', option)}
+                                                        placeholder="Select jamiaat"
+                                                        isClearable
+                                                        isDisabled={loading || loadingJamiaats}
+                                                        isLoading={loadingJamiaats}
+                                                        styles={selectStyles}
+                                                        error={errors.jamiaat_id}
                                                     />
                                                     {errors.jamiaat_id && <div className="error-text">{errors.jamiaat_id}</div>}
                                                 </div>
@@ -1093,16 +1093,16 @@ const AddMumin = ({
                                             <div className="horizontal-form-group">
                                                 <Form.Label>Jamaat <span className="text-danger">*</span></Form.Label>
                                                 <div className="form-input-wrapper">
-                                                    <Select 
-                                                        options={jamaatOptions} 
-                                                        value={formData.jamaat_id} 
-                                                        onChange={(option) => handleSelectChange('jamaat_id', option)} 
-                                                        placeholder={loadingJamaats ? "Loading..." : "Select jamaat"} 
-                                                        isClearable 
-                                                        isDisabled={loading || loadingJamaats || !formData.jamiaat_id} 
-                                                        isLoading={loadingJamaats} 
-                                                        styles={selectStyles} 
-                                                        error={errors.jamaat_id} 
+                                                    <Select
+                                                        options={jamaatOptions}
+                                                        value={formData.jamaat_id}
+                                                        onChange={(option) => handleSelectChange('jamaat_id', option)}
+                                                        placeholder={loadingJamaats ? "Loading..." : "Select jamaat"}
+                                                        isClearable
+                                                        isDisabled={loading || loadingJamaats || !formData.jamiaat_id}
+                                                        isLoading={loadingJamaats}
+                                                        styles={selectStyles}
+                                                        error={errors.jamaat_id}
                                                     />
                                                     {errors.jamaat_id && <div className="error-text">{errors.jamaat_id}</div>}
                                                 </div>
@@ -1128,13 +1128,13 @@ const AddMumin = ({
                                     <div className="horizontal-form-group">
                                         <Form.Label>Organization</Form.Label>
                                         <div className="form-input-wrapper">
-                                            <Form.Control 
-                                                type="text" 
+                                            <Form.Control
+                                                type="text"
                                                 name="organization"
-                                                value={formData.organization} 
+                                                value={formData.organization}
                                                 onChange={handleInputChange}
-                                                readOnly={!fieldsEditable} 
-                                                disabled={!fieldsEditable} 
+                                                readOnly={!fieldsEditable}
+                                                disabled={!fieldsEditable}
                                             />
                                         </div>
                                     </div>
@@ -1150,16 +1150,16 @@ const AddMumin = ({
                             <div className="horizontal-form-group">
                                 <Form.Label>Team <span className="text-danger">*</span></Form.Label>
                                 <div className="form-input-wrapper">
-                                    <Select 
-                                        options={teamOptions} 
-                                        value={formData.team_id} 
-                                        onChange={(option) => handleSelectChange('team_id', option)} 
-                                        placeholder={loadingTeams ? "Loading..." : "Select team"} 
-                                        isClearable 
-                                        isDisabled={loading || loadingTeams} 
-                                        isLoading={loadingTeams} 
-                                        styles={selectStyles} 
-                                        error={errors.team_id} 
+                                    <Select
+                                        options={teamOptions}
+                                        value={formData.team_id}
+                                        onChange={(option) => handleSelectChange('team_id', option)}
+                                        placeholder={loadingTeams ? "Loading..." : "Select team"}
+                                        isClearable
+                                        isDisabled={loading || loadingTeams}
+                                        isLoading={loadingTeams}
+                                        styles={selectStyles}
+                                        error={errors.team_id}
                                     />
                                     {errors.team_id && <div className="error-text">{errors.team_id}</div>}
                                 </div>
@@ -1169,16 +1169,16 @@ const AddMumin = ({
                                 <div className="horizontal-form-group">
                                     <Form.Label>Position <span className="text-danger">*</span></Form.Label>
                                     <div className="form-input-wrapper">
-                                        <Select 
-                                            options={positionOptions} 
-                                            value={formData.position_id} 
-                                            onChange={(option) => handleSelectChange('position_id', option)} 
-                                            placeholder="Select position" 
-                                            isClearable 
-                                            isDisabled={loading || loadingPositions} 
-                                            isLoading={loadingPositions} 
-                                            styles={selectStyles} 
-                                            error={errors.position_id} 
+                                        <Select
+                                            options={positionOptions}
+                                            value={formData.position_id}
+                                            onChange={(option) => handleSelectChange('position_id', option)}
+                                            placeholder="Select position"
+                                            isClearable
+                                            isDisabled={loading || loadingPositions}
+                                            isLoading={loadingPositions}
+                                            styles={selectStyles}
+                                            error={errors.position_id}
                                         />
                                         {errors.position_id && <div className="error-text">{errors.position_id}</div>}
                                     </div>
@@ -1186,16 +1186,16 @@ const AddMumin = ({
                                 <div className="horizontal-form-group">
                                     <Form.Label>Role <span className="text-danger">*</span></Form.Label>
                                     <div className="form-input-wrapper">
-                                        <Select 
-                                            options={roleOptions} 
-                                            value={formData.role_id} 
-                                            onChange={(option) => handleSelectChange('role_id', option)} 
-                                            placeholder="Select role" 
-                                            isClearable 
-                                            isDisabled={loading || loadingRoles} 
-                                            isLoading={loadingRoles} 
-                                            styles={selectStyles} 
-                                            error={errors.role_id} 
+                                        <Select
+                                            options={roleOptions}
+                                            value={formData.role_id}
+                                            onChange={(option) => handleSelectChange('role_id', option)}
+                                            placeholder="Select role"
+                                            isClearable
+                                            isDisabled={loading || loadingRoles}
+                                            isLoading={loadingRoles}
+                                            styles={selectStyles}
+                                            error={errors.role_id}
                                         />
                                         {errors.role_id && <div className="error-text">{errors.role_id}</div>}
                                     </div>
@@ -1206,14 +1206,14 @@ const AddMumin = ({
                                 <div className="horizontal-form-group">
                                     <Form.Label>Password <span className="text-danger">*</span></Form.Label>
                                     <div className="form-input-wrapper">
-                                        <Form.Control 
-                                            type="password" 
-                                            name="password" 
-                                            value={formData.password} 
-                                            onChange={handleInputChange} 
-                                            placeholder="Enter password" 
-                                            className={errors.password ? 'is-invalid' : ''} 
-                                            disabled={loading} 
+                                        <Form.Control
+                                            type="password"
+                                            name="password"
+                                            value={formData.password}
+                                            onChange={handleInputChange}
+                                            placeholder="Enter password"
+                                            className={errors.password ? 'is-invalid' : ''}
+                                            disabled={loading}
                                         />
                                         {errors.password && <div className="error-text">{errors.password}</div>}
                                     </div>
@@ -1248,7 +1248,7 @@ const AddMumin = ({
 
 const MuminTable = () => {
     const navigate = useNavigate();
-    
+
     const [showAddForm, setShowAddForm] = useState(false);
     const [tableData, setTableData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -1256,7 +1256,7 @@ const MuminTable = () => {
     const [gridKey, setGridKey] = useState(0);
 
     const [checkingPermissions, setCheckingPermissions] = useState(true);
-    
+
     const [permissions, setPermissions] = useState({
         canAdd: false,
         canEdit: false,
@@ -1270,9 +1270,9 @@ const MuminTable = () => {
 
     const checkAccess = () => {
         setCheckingPermissions(true);
-        
+
         const isAdminValue = sessionStorage.getItem('is_admin');
-        
+
         if (isAdminValue === 'true' || isAdminValue === true || isAdminValue === '1') {
             setPermissions({
                 canAdd: true,
@@ -1284,9 +1284,9 @@ const MuminTable = () => {
             fetchMumins();
             return;
         }
-        
+
         const accessRights = sessionStorage.getItem('access_rights');
-        
+
         if (!accessRights) {
             Swal.fire({
                 icon: 'error',
@@ -1299,9 +1299,9 @@ const MuminTable = () => {
             });
             return;
         }
-        
+
         const modulePermissions = checkModuleAccess(accessRights, MODULE_ID);
-        
+
         if (!modulePermissions.hasAccess) {
             Swal.fire({
                 icon: 'error',
@@ -1314,7 +1314,7 @@ const MuminTable = () => {
             });
             return;
         }
-        
+
         setPermissions(modulePermissions);
         setCheckingPermissions(false);
         fetchMumins();
@@ -1342,7 +1342,7 @@ const MuminTable = () => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            
+
             const result = await response.json();
 
             if (result.success && result.data) {
@@ -1449,14 +1449,14 @@ const MuminTable = () => {
 
     const gridData = useMemo(() => {
         return tableData.map(item => [
-            item.srNo, 
-            item.itsId, 
-            item.fullName, 
-            item.email, 
+            item.srNo,
+            item.itsId,
+            item.fullName,
+            item.email,
             item.mobile,
-            item.teamName, 
-            item.positionName, 
-            item.jamiaatName, 
+            item.teamName,
+            item.positionName,
+            item.jamiaatName,
             item.itsId
         ]);
     }, [tableData]);
@@ -1491,10 +1491,10 @@ const MuminTable = () => {
 
             <ModalStyles />
 
-            <AddMumin 
-                show={showAddForm} 
-                onClose={handleCloseModal} 
-                onSave={handleSave} 
+            <AddMumin
+                show={showAddForm}
+                onClose={handleCloseModal}
+                onSave={handleSave}
                 permissions={permissions}
             />
 
@@ -1503,12 +1503,12 @@ const MuminTable = () => {
                     <Col xl={12}>
                         <Card className="custom-card">
                             <Card.Body>
-                                <div 
-                                    className="page-header-title" 
+                                <div
+                                    className="page-header-title"
                                     style={{
-                                        display:'flex', 
-                                        justifyContent:'space-between', 
-                                        marginBottom:'20px'
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        marginBottom: '20px'
                                     }}
                                 >
                                     <div className="header-text">
@@ -1554,7 +1554,7 @@ const MuminTable = () => {
                                                 { name: 'Jamiaat', width: '120px' },
                                                 {
                                                     name: 'Action',
-                                                    width: '100px',
+                                                    width: '70px',
                                                     formatter: (cell, row) => {
                                                         if (!permissions.canDelete) {
                                                             return html(`<span class="text-muted">-</span>`);

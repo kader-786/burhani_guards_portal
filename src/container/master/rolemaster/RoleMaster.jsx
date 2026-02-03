@@ -14,9 +14,9 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 // ============================================================================
 // ADD ROLE COMPONENT
 // ============================================================================
-const AddRole = ({ 
-    show, 
-    onClose, 
+const AddRole = ({
+    show,
+    onClose,
     onSave,
     title = "Add New Role"
 }) => {
@@ -41,8 +41,8 @@ const AddRole = ({
     const fetchModules = async () => {
         setLoadingModules(true);
         try {
-            const accessToken  = sessionStorage.getItem('access_token');
-            
+            const accessToken = sessionStorage.getItem('access_token');
+
             if (!accessToken) {
                 console.error('Access token not found');
                 return;
@@ -102,7 +102,7 @@ const AddRole = ({
     const handlePermissionChange = (moduleId, permissionType) => {
         setModulePermissions(prev => {
             const currentPerms = prev[moduleId] || {};
-            
+
             if (permissionType === 'all') {
                 const newAllState = !currentPerms.all;
                 return {
@@ -144,11 +144,11 @@ const AddRole = ({
                     [permissionType]: newState,
                     view: true
                 };
-                
-                const allChecked = updatedPerms.view && updatedPerms.add && 
-                                 updatedPerms.edit && updatedPerms.delete;
+
+                const allChecked = updatedPerms.view && updatedPerms.add &&
+                    updatedPerms.edit && updatedPerms.delete;
                 updatedPerms.all = allChecked;
-                
+
                 return {
                     ...prev,
                     [moduleId]: updatedPerms
@@ -217,7 +217,7 @@ const AddRole = ({
 
         try {
             const accessToken = sessionStorage.getItem('access_token');
-            
+
             if (!accessToken) {
                 throw new Error('Access token not found. Please login again.');
             }
@@ -593,10 +593,10 @@ const AddRole = ({
 // ============================================================================
 // EDIT ROLE COMPONENT
 // ============================================================================
-const EditRole = ({ 
-    show, 
-    onClose, 
-    onUpdate, 
+const EditRole = ({
+    show,
+    onClose,
+    onUpdate,
     roleId,
     title = "Edit Role"
 }) => {
@@ -631,7 +631,7 @@ const EditRole = ({
         setLoadingModules(true);
         try {
             const accessToken = sessionStorage.getItem('access_token');
-            
+
             if (!accessToken) {
                 console.error('Access token not found');
                 return;
@@ -661,10 +661,10 @@ const EditRole = ({
 
     const parseAccessRights = (accessRightsString) => {
         if (!accessRightsString) return {};
-        
+
         const permissions = {};
         const parts = accessRightsString.split(',');
-        
+
         parts.forEach(part => {
             const match = part.match(/\[(\d+)\](\d)(\d)(\d)/);
             if (match) {
@@ -678,7 +678,7 @@ const EditRole = ({
                 };
             }
         });
-        
+
         return permissions;
     };
 
@@ -686,7 +686,7 @@ const EditRole = ({
         setLoadingRoleData(true);
         try {
             const token = sessionStorage.getItem('access_token');
-            
+
             if (!token) {
                 Swal.fire({
                     icon: 'error',
@@ -697,7 +697,7 @@ const EditRole = ({
                 setLoadingRoleData(false);
                 return;
             }
-            
+
             const response = await fetch(`${API_BASE_URL}/Role/GetRoleById`, {
                 method: 'POST',
                 headers: {
@@ -723,23 +723,23 @@ const EditRole = ({
 
             if (response.ok && result.success && result.data && result.data.length > 0) {
                 const roleData = result.data[0];
-                
+
                 const roleType = roleData.is_admin ? 'admin' : 'user';
                 const accessRights = roleData.access_rights || '';
-                
+
                 const initialFormData = {
                     roleName: roleData.role_name || '',
                     roleType: roleType,
                     remarks: roleData.remarks || ''
                 };
-                
+
                 setFormData(initialFormData);
                 setOriginalData(initialFormData);
                 setOriginalAccessRights(accessRights);
 
                 if (roleType === 'user') {
                     const parsedPermissions = parseAccessRights(accessRights);
-                    
+
                     const allPermissions = {};
                     modules.forEach(module => {
                         allPermissions[module.module_id] = parsedPermissions[module.module_id] || {
@@ -750,7 +750,7 @@ const EditRole = ({
                             all: false
                         };
                     });
-                    
+
                     setModulePermissions(allPermissions);
                 } else {
                     const allPermissions = {};
@@ -807,7 +807,7 @@ const EditRole = ({
     const handlePermissionChange = (moduleId, permissionType) => {
         setModulePermissions(prev => {
             const currentPerms = prev[moduleId] || {};
-            
+
             if (permissionType === 'all') {
                 const newAllState = !currentPerms.all;
                 return {
@@ -849,11 +849,11 @@ const EditRole = ({
                     [permissionType]: newState,
                     view: true
                 };
-                
-                const allChecked = updatedPerms.view && updatedPerms.add && 
-                                 updatedPerms.edit && updatedPerms.delete;
+
+                const allChecked = updatedPerms.view && updatedPerms.add &&
+                    updatedPerms.edit && updatedPerms.delete;
                 updatedPerms.all = allChecked;
-                
+
                 return {
                     ...prev,
                     [moduleId]: updatedPerms
@@ -989,12 +989,12 @@ const EditRole = ({
 
             if (response.ok && result.success) {
                 const resultCode = Number(result.data?.result_code);
-                
+
                 if (resultCode === 2) {
                     if (onUpdate) {
                         onUpdate(result.data);
                     }
-                    
+
                     showSuccessAlert(result.message || 'Role updated successfully!');
                 } else if (resultCode === 4) {
                     setErrors(prev => ({
@@ -1053,7 +1053,7 @@ const EditRole = ({
         setOriginalData(null);
         setOriginalAccessRights('');
         setModulePermissions({});
-        
+
         if (onClose) {
             onClose();
         }
@@ -1063,9 +1063,9 @@ const EditRole = ({
         if (originalData) {
             setFormData({ ...originalData });
             setErrors({});
-            
+
             fetchRoleData(roleId);
-            
+
             Swal.fire({
                 icon: 'info',
                 title: 'Form Reset',
@@ -1379,7 +1379,7 @@ const RoleTable = () => {
             setError(null);
 
             const accessToken = sessionStorage.getItem('access_token');
-            
+
             if (!accessToken) {
                 throw new Error('Access token not found. Please login again.');
             }
@@ -1458,11 +1458,11 @@ const RoleTable = () => {
     const handleUpdate = (data) => {
         setShowEditForm(false);
         setEditRoleId(null);
-        
+
         setTimeout(() => {
             fetchRoleData();
         }, 500);
-        
+
         setGridKey(prev => prev + 1);
     };
 
@@ -1474,7 +1474,7 @@ const RoleTable = () => {
     const handleDelete = async (id) => {
         const roleToDelete = tableData.find(item => item.id === id);
         const roleName = roleToDelete ? roleToDelete.roleName : 'this role';
-        
+
         const result = await Swal.fire({
             title: 'Are you sure?',
             text: `You are about to delete "${roleName}".`,
@@ -1492,7 +1492,7 @@ const RoleTable = () => {
 
         try {
             const accessToken = sessionStorage.getItem('access_token');
-            
+
             if (!accessToken) {
                 throw new Error('Access token not found. Please login again.');
             }
@@ -1513,7 +1513,7 @@ const RoleTable = () => {
 
             if (response.ok && apiResult.success) {
                 const resultCode = Number(apiResult.data?.result_code);
-                
+
                 if (resultCode === 3) {
                     Swal.fire({
                         title: 'Deleted!',
@@ -1531,9 +1531,9 @@ const RoleTable = () => {
                             srNo: index + 1
                         }));
                     });
-                    
+
                     setGridKey(prev => prev + 1);
-                    
+
                     setTimeout(async () => {
                         try {
                             await fetchRoleData();
@@ -1710,8 +1710,8 @@ const RoleTable = () => {
                                     <div className="error-container">
                                         <i className="ri-error-warning-line" style={{ fontSize: '48px' }}></i>
                                         <p className="mt-3">{error}</p>
-                                        <button 
-                                            className="btn btn-primary mt-3" 
+                                        <button
+                                            className="btn btn-primary mt-3"
                                             onClick={fetchRoleData}
                                         >
                                             <i className="ri-refresh-line me-2"></i>
@@ -1722,8 +1722,8 @@ const RoleTable = () => {
                                     <div className="loading-container">
                                         <i className="ri-inbox-line" style={{ fontSize: '48px' }}></i>
                                         <p className="mt-3">No role records found</p>
-                                        <button 
-                                            className="btn btn-primary mt-2" 
+                                        <button
+                                            className="btn btn-primary mt-2"
                                             onClick={handleAdd}
                                         >
                                             <i className="ri-add-line me-2"></i>
@@ -1735,39 +1735,39 @@ const RoleTable = () => {
                                         <Grid
                                             key={gridKey}
                                             data={gridData}
-                                            sort={true}
+                                            // sort={true}
                                             search={{
                                                 enabled: true,
                                                 placeholder: 'Search roles...'
                                             }}
                                             columns={[
-                                                { 
+                                                {
                                                     name: 'Sr',
-                                                    width: '80px',
-                                                    sort: true
-                                                }, 
-                                                { 
-                                                    name: 'Role Name',
-                                                    width: '250px',
-                                                    sort: true
-                                                }, 
-                                                { 
-                                                    name: 'Role Type',
-                                                    width: '150px',
-                                                    sort: true
+                                                    width: '20px',
+                                                    // sort: true
                                                 },
-                                                { 
+                                                {
+                                                    name: 'Role Name',
+                                                    width: '120px',
+                                                    // sort: true
+                                                },
+                                                {
+                                                    name: 'Role Type',
+                                                    width: '100px',
+                                                    // sort: true
+                                                },
+                                                {
                                                     name: 'Remarks',
                                                     width: '300px',
-                                                    sort: true
+                                                    // sort: true
                                                 },
                                                 {
                                                     name: 'Action',
-                                                    width: '150px',
-                                                    sort: true,
+                                                    width: '40px',
+                                                    // sort: true,
                                                     formatter: (cell, row) => {
                                                         const id = row.cells[4].data;
-                                                        
+
                                                         return html(`
                                                             <div class="btn-action-group">
                                                                 <button 
@@ -1789,7 +1789,7 @@ const RoleTable = () => {
                                                     },
                                                     hidden: false
                                                 }
-                                            ]} 
+                                            ]}
                                             pagination={{
                                                 limit: 10,
                                                 summary: true
