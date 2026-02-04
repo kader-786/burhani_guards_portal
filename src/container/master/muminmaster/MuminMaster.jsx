@@ -1554,7 +1554,7 @@ const MuminTable = () => {
                                                 { name: 'Jamiaat', width: '120px' },
                                                 {
                                                     name: 'Action',
-                                                    width: '70px',
+                                                    width: '80px',
                                                     formatter: (cell, row) => {
                                                         if (!permissions.canDelete) {
                                                             return html(`<span class="text-muted">-</span>`);

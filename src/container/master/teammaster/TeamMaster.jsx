@@ -9742,12 +9742,12 @@ const TeamTable = () => {
                                                 },
                                                 {
                                                     name: 'Team Name',
-                                                    width: '200px',
+                                                    width: '150px',
                                                     // sort: true
                                                 },
                                                 {
                                                     name: 'Jamiaat',
-                                                    width: '150px',
+                                                    width: '100px',
                                                     // sort: true
                                                 },
                                                 {

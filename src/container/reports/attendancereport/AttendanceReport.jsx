@@ -394,9 +394,9 @@ const AttendanceReport = () => {
                                                 { name: 'TEAM', width: '120px', sort: true },
                                                 { name: 'VENUE', width: '120px', sort: true },
                                                 { name: 'LOCATION', width: '120px', sort: true },
-                                                { name: 'QUOTA', width: '80px', sort: true },
-                                                { name: 'ATTENDEE TYPE', width: '130px', sort: true },
-                                                { name: 'SCANNED BY', width: '120px', sort: true },
+                                                { name: 'QUOTA', width: '100px', sort: true },
+                                                { name: 'ATTENDEE TYPE', width: '150px', sort: true },
+                                                { name: 'SCANNED BY', width: '150px', sort: true },
                                                 { name: 'SCANNED DATE', width: '150px', sort: true }
                                             ]}
                                             pagination={{ limit: 10, summary: true }}

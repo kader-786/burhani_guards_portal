@@ -6289,17 +6289,17 @@ const MiqaatTable = () => {
                                             key={gridKey}
                                             data={gridData}
                                             columns={[
-                                                { name: 'Sr', width: '20px' },
-                                                { name: 'Miqaat Name', width: '250px' },
-                                                { name: 'Miqaat Type', width: '75px' },
+                                                { name: 'Sr', width: '35px' },
+                                                { name: 'Miqaat Name', width: '200px' },
+                                                { name: 'Miqaat Type', width: '100px' },
                                                 { name: 'Venue', width: '75px' },
                                                 { name: 'Jamaat', width: '120px' },
-                                                { name: 'HR Req', width: '40px' },
-                                                { name: 'Status', width: '40px' },
-                                                { name: ' Start Time', width: '55px', formatter: (cell) => html(cell.replace('\n', '<br>')) },
+                                                { name: 'HR Req', width: '65px' },
+                                                { name: 'Status', width: '65px' },
+                                                { name: ' Start Time', width: '90px', formatter: (cell) => html(cell.replace('\n', '<br>')) },
                                                 {
                                                     name: 'Action',
-                                                    width: '45px',
+                                                    width: '75px',
                                                     formatter: (cell, row) => {
                                                         const id = row.cells[8].data;
 

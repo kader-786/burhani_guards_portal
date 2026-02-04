@@ -1758,7 +1758,7 @@ const RoleTable = () => {
                                                 },
                                                 {
                                                     name: 'Remarks',
-                                                    width: '300px',
+                                                    width: '220px',
                                                     // sort: true
                                                 },
                                                 {
