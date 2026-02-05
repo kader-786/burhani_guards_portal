@@ -262,17 +262,17 @@ const AddMiqaat = ({
             title: 'Success! Miqaat Created',
             html: `
                 <p style="margin-bottom: 15px;">Miqaat "<strong>${newMiqaatName}</strong>" has been ${isClone ? 'Cloned successfully along with the location incharges and duties' : 'created successfully'}.</p>
-                <p style="font-size: 14px; color: #6c757d;">What would you like to do next?</p>
+                <p style="font-size: 14px; color: #6c757d;">Click on Next to add Incharges</p>
             `,
             icon: 'success',
-            showDenyButton: true,
+            // showDenyButton: true,
             showCancelButton: true,
             confirmButtonColor: '#0d6efd',
-            denyButtonColor: '#28a745',
+            // denyButtonColor: '#28a745',
             cancelButtonColor: '#6c757d',
-            confirmButtonText: `<i class="ri-user-add-line me-2"></i>${isClone ? 'Show Incharges' : 'Add Incharges'}`,
-            denyButtonText: `<i class="ri-shield-user-line me-2"></i>${isClone ? 'Show Duties' : 'Add Duties'}`,
-            cancelButtonText: 'Done',
+            confirmButtonText: `<i class="ri-user-add-line me-2"></i>${isClone ? 'Next' : 'Next'}`,
+            // denyButtonText: `<i class="ri-shield-user-line me-2"></i>${isClone ? 'Show Duties' : 'Add Duties'}`,
+            // cancelButtonText: 'Done',
             allowOutsideClick: false,
             allowEscapeKey: false,
             customClass: {

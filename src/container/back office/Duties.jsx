@@ -3233,15 +3233,15 @@ const MiqaatTeamForm = () => {
         }
     };
 
-    const fetchLocationsByVenue = async (venueId) => {
+    const fetchLocationsByVenue = async (venueId, miqaatId) => {
         try {
             setLoadingLocations(true);
             const accessToken = sessionStorage.getItem('access_token');
             if (!accessToken) { console.error('Access token not found'); return; }
-            const response = await fetch(`${API_BASE_URL}/Duty/GetLocationsByVenue`, {
+            const response = await fetch(`${API_BASE_URL}/Duty/GetLocationsWithIncharges`, {
                 method: 'POST',
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
-                body: JSON.stringify({ venue_id: venueId })
+                body: JSON.stringify({ venue_id: venueId, miqaat_id: miqaatId })
             });
             if (response.ok) {
                 const result = await response.json();
@@ -3399,7 +3399,7 @@ const MiqaatTeamForm = () => {
         if (selectedOption?.value) {
             setTotalQuota(selectedOption.quantity || null);
             setShowFormSections(true);
-            if (selectedOption.venue_id) { fetchLocationsByVenue(selectedOption.venue_id); }
+            if (selectedOption.venue_id) { fetchLocationsByVenue(selectedOption.venue_id, selectedOption.value); }
 
             fetchJamiaatOptions();
             fetchTeamOptions(null);
@@ -3958,7 +3958,7 @@ const MiqaatTeamForm = () => {
 
             // Load locations for the venue
             if (duty.venue_id) {
-                await fetchLocationsByVenue(duty.venue_id);
+                await fetchLocationsByVenue(duty.venue_id, duty.miqaat_id);
             }
 
             // Populate form with duty data
