@@ -2787,7 +2787,7 @@ const AddVenue = ({
                 <div className="locations-section">
                     <div className="locations-section-title">
                         <i className="ri-map-pin-2-line me-2"></i>
-                        Locations
+                        Duty Locations
                     </div>
                     <div className="table-responsive">
                         <Table className="locations-table" bordered>
@@ -3721,7 +3721,7 @@ const EditVenue = ({
                         <div className="locations-section">
                             <div className="locations-section-title">
                                 <i className="ri-map-pin-2-line me-2"></i>
-                                Locations
+                                Duty Locations
                             </div>
                             <div className="table-responsive">
                                 <Table className="locations-table" bordered>
