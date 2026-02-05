@@ -71,6 +71,9 @@ const MiqaatTeamForm = () => {
     // Store team counts for pending duties validation
     const [teamCountsCache, setTeamCountsCache] = useState({});
 
+    // Store location reporting time
+    const [locationReportingTime, setLocationReportingTime] = useState(null);
+
     // Navigation detection
     useEffect(() => {
         if (location.state?.fromMiqaatCreation && location.state?.miqaatId) {
@@ -295,7 +298,7 @@ const MiqaatTeamForm = () => {
             if (response.ok) {
                 const result = await response.json();
                 if (result.success && result.data) {
-                    const options = result.data.map(item => ({ value: item.location_id, label: item.location_name }));
+                    const options = result.data.map(item => ({ value: item.location_id, label: item.location_name, reporting_time: item.reporting_time }));
                     setLocationOptions(options);
                 } else {
                     setLocationOptions([]);
@@ -444,6 +447,7 @@ const MiqaatTeamForm = () => {
         // Clear pending duties when changing miqaat
         setPendingDuties([]);
         setTeamCountsCache({});
+        setLocationReportingTime(null); // Clear location reporting time when miqaat changes
 
         if (selectedOption?.value) {
             setTotalQuota(selectedOption.quantity || null);
@@ -501,6 +505,13 @@ const MiqaatTeamForm = () => {
     const handleLocationChange = (selectedOption) => {
         setFormData(prev => ({ ...prev, location: selectedOption }));
         if (errors.location) { setErrors(prev => ({ ...prev, location: '' })); }
+
+        // Check if location has a valid reporting time (not null and not 00:00:00)
+        if (selectedOption?.reporting_time && selectedOption.reporting_time !== '00:00:00') {
+            setLocationReportingTime(selectedOption.reporting_time);
+        } else {
+            setLocationReportingTime(null);
+        }
     };
 
     const handleQuotaChange = (e) => {
@@ -1054,7 +1065,7 @@ const MiqaatTeamForm = () => {
 
     // Navigate back to MiqaatIncharge page with miqaat pre-selected
     const handleBackToMiqaat = () => {
-        navigate(`${import.meta.env.BASE_URL}backoffice/LocationIncharge`, {
+        navigate(`${import.meta.env.BASE_URL}backoffice/locationincharge`, {
             state: {
                 fromDuties: true,
                 miqaatId: formData.miqaat?.value,
@@ -1180,6 +1191,7 @@ const MiqaatTeamForm = () => {
         setMiqaatInfo(null);
         setTempIdCounter(1);
         setTeamCountsCache({});
+        setLocationReportingTime(null);
     };
 
     const selectStyles = {
@@ -1523,6 +1535,25 @@ const MiqaatTeamForm = () => {
                                                     noOptionsMessage={() => "No locations found"}
                                                 />
                                                 {errors.location && <span className="error-text">{errors.location}</span>}
+                                                {locationReportingTime && (
+                                                    <div className="location-reporting-time-info" style={{
+                                                        marginTop: '8px',
+                                                        padding: '8px 12px',
+                                                        background: 'linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%)',
+                                                        border: '1px solid #81c784',
+                                                        borderRadius: '6px',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: '8px',
+                                                        fontSize: '14px',
+                                                        color: '#2e7d32'
+                                                    }}>
+                                                        <i className="ri-time-line" style={{ fontSize: '16px' }}></i>
+                                                        <span><strong>Reporting Time:</strong> {
+                                                            new Date(`2000-01-01T${locationReportingTime}`).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })
+                                                        }</span>
+                                                    </div>
+                                                )}
                                             </Col>
                                             <Col md={6}>
                                                 <label className="form-label">Jamiaat</label>
