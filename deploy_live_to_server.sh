@@ -1,10 +1,7 @@
-cd ~/Projects/burhani_guards_portal_live
-
-cat > deploy_live_to_server.sh << 'EOFSCRIPT'
 #!/bin/bash
 
 # Burhani Guards Portal - LIVE Deployment Script
-# Deploys LIVE frontend to server
+# Deploys LIVE frontend to server using SCP
 
 set -e  # Exit on error
 
@@ -23,15 +20,16 @@ echo ""
 # Configuration
 SERVER_USER="ubuntu"
 SERVER_IP="13.204.161.209"
-PEM_KEY="$HOME/.ssh/burhani-guards.pem"  # Update this path!
+PEM_KEY="$HOME/Downloads/LinuxServer.pem"
 REMOTE_PATH="/home/ubuntu/frontends/burhani_guards_live"
-LOCAL_DIST="dist/"
+LOCAL_DIST="dist"
 BACKUP_PATH="/home/ubuntu/backups/portal_live"
 
 # Check if PEM key exists
 if [ ! -f "$PEM_KEY" ]; then
     echo -e "${RED}Error: PEM key not found at: $PEM_KEY${NC}"
     echo "Please update the PEM_KEY variable in this script"
+    echo "Current location checked: $PEM_KEY"
     exit 1
 fi
 
@@ -42,18 +40,21 @@ if [ ! -d "$LOCAL_DIST" ]; then
     exit 1
 fi
 
-echo -e "${YELLOW}⚠  DEPLOYING TO LIVE ENVIRONMENT ⚠${NC}"
+# LIVE environment safety check
+echo -e "${RED}⚠️  DEPLOYING TO LIVE ENVIRONMENT ⚠️${NC}"
+echo ""
+echo -e "${YELLOW}This will deploy to the PRODUCTION system used by all users.${NC}"
 echo ""
 read -p "Are you sure you want to deploy to LIVE? (yes/no): " confirm
 if [ "$confirm" != "yes" ]; then
-    echo "Deployment cancelled"
+    echo -e "${YELLOW}Deployment cancelled${NC}"
     exit 0
 fi
 echo ""
 
 echo -e "${GREEN}Step 1: Creating backup on server...${NC}"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-ssh -i "$PEM_KEY" ${SERVER_USER}@${SERVER_IP} << ENDSSH
+ssh -o StrictHostKeyChecking=no -i "$PEM_KEY" ${SERVER_USER}@${SERVER_IP} << ENDSSH
 if [ -d "$REMOTE_PATH/dist" ] && [ "\$(ls -A $REMOTE_PATH/dist 2>/dev/null)" ]; then
     cd $REMOTE_PATH
     tar -czf $BACKUP_PATH/backup_${TIMESTAMP}.tar.gz dist/
@@ -67,14 +68,16 @@ else
 fi
 ENDSSH
 
-echo -e "${GREEN}Step 2: Deploying to server...${NC}"
-echo "  Source: $LOCAL_DIST"
+echo -e "${GREEN}Step 2: Removing old files from server...${NC}"
+ssh -o StrictHostKeyChecking=no -i "$PEM_KEY" ${SERVER_USER}@${SERVER_IP} "rm -rf $REMOTE_PATH/dist/*"
+echo "  ✓ Old files removed"
+
+echo -e "${GREEN}Step 3: Uploading new files to server...${NC}"
+echo "  Source: $LOCAL_DIST/"
 echo "  Target: ${SERVER_USER}@${SERVER_IP}:${REMOTE_PATH}/dist/"
 
-rsync -avz --delete \
-    -e "ssh -i $PEM_KEY" \
-    ${LOCAL_DIST} \
-    ${SERVER_USER}@${SERVER_IP}:${REMOTE_PATH}/dist/
+# Use scp to upload files (recursive, preserves permissions)
+scp -o StrictHostKeyChecking=no -i "$PEM_KEY" -r ${LOCAL_DIST}/* ${SERVER_USER}@${SERVER_IP}:${REMOTE_PATH}/dist/
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}  ✓ Files uploaded successfully${NC}"
@@ -83,11 +86,11 @@ else
     exit 1
 fi
 
-echo -e "${GREEN}Step 3: Verifying deployment...${NC}"
+echo -e "${GREEN}Step 4: Verifying deployment...${NC}"
 sleep 2
 
 # Test if index.html exists
-ssh -i "$PEM_KEY" ${SERVER_USER}@${SERVER_IP} "test -f $REMOTE_PATH/dist/index.html"
+ssh -o StrictHostKeyChecking=no -i "$PEM_KEY" ${SERVER_USER}@${SERVER_IP} "test -f $REMOTE_PATH/dist/index.html"
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}  ✓ index.html found${NC}"
 else
@@ -95,12 +98,20 @@ else
     exit 1
 fi
 
+# Count uploaded files
+FILE_COUNT=$(ssh -o StrictHostKeyChecking=no -i "$PEM_KEY" ${SERVER_USER}@${SERVER_IP} "find $REMOTE_PATH/dist -type f | wc -l")
+echo -e "${GREEN}  ✓ Total files deployed: $FILE_COUNT${NC}"
+
 # Test HTTP endpoint
+echo -e "${GREEN}Step 5: Testing HTTP endpoint...${NC}"
 HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://${SERVER_IP}:8080/BURHANI_GUARDS/ 2>/dev/null)
 if [ "$HTTP_CODE" = "200" ]; then
     echo -e "${GREEN}  ✓ LIVE frontend accessible (HTTP 200)${NC}"
+elif [ "$HTTP_CODE" = "301" ] || [ "$HTTP_CODE" = "302" ]; then
+    echo -e "${YELLOW}  ⚠ Redirect detected (HTTP $HTTP_CODE)${NC}"
 else
     echo -e "${YELLOW}  ⚠ LIVE frontend returned HTTP $HTTP_CODE${NC}"
+    echo -e "${YELLOW}  This might be normal for first deployment${NC}"
 fi
 
 echo ""
@@ -111,14 +122,14 @@ echo ""
 echo -e "${GREEN}LIVE Frontend URL:${NC}"
 echo "  http://13.204.161.209:8080/BURHANI_GUARDS/"
 echo ""
-echo -e "${BLUE}Backup location:${NC}"
-echo "  ${BACKUP_PATH}/backup_${TIMESTAMP}.tar.gz"
+echo -e "${BLUE}Deployment Stats:${NC}"
+echo "  Files deployed: $FILE_COUNT"
+echo "  Backup: ${BACKUP_PATH}/backup_${TIMESTAMP}.tar.gz"
 echo ""
 echo -e "${YELLOW}Next steps:${NC}"
 echo "  1. Open http://13.204.161.209:8080/BURHANI_GUARDS/ in browser"
-echo "  2. Test all functionality"
-echo "  3. Check browser console for errors"
+echo "  2. Test navigation and functionality"
+echo "  3. Check browser console (F12) for errors"
+echo "  4. Verify API calls work"
+echo "  5. Notify users if needed"
 echo ""
-EOFSCRIPT
-
-chmod +x deploy_live_to_server.sh

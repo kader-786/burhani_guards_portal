@@ -269,7 +269,8 @@ const MiqaatTeamForm = () => {
                             value: item.team_id,
                             label: label,
                             jamiaat_id: item.jamiaat_id,
-                            member_count: count
+                            member_count: count,
+                            jamiaat_name: item.jamiaat_name
                         };
                     });
                     setTeamOptions(options);
@@ -654,8 +655,10 @@ const MiqaatTeamForm = () => {
             tempId: tempIdCounter + index,
             team_id: team.value,
             team_name: team.label,
-            jamiaat_id: formData.jamiaat?.value || null,
-            jamiaat_name: formData.jamiaat?.label || 'N/A',
+            // jamiaat_id: formData.jamiaat?.value || null,
+            // jamiaat_name: formData.jamiaat?.label || 'N/A',
+            jamiaat_id: team.jamiaat_id || null,
+            jamiaat_name: team.jamiaat_name || 'N/A',
             location_id: formData.location.value,
             location_name: formData.location.label,
             quota: parseInt(formData.quota),
@@ -664,7 +667,7 @@ const MiqaatTeamForm = () => {
             miqaat_id: formData.miqaat.value
         }));
 
-        setPendingDuties(prev => [...prev, ...newPendingDuties]);
+        setPendingDuties(prev => [...newPendingDuties, ...prev]);
         setTempIdCounter(prev => prev + newPendingDuties.length);
 
         // Clear form fields except miqaat
@@ -693,9 +696,14 @@ const MiqaatTeamForm = () => {
             return;
         }
 
-        // Find the duty to get its member count
+        // Find the duty to get its member count and current quota
         const duty = pendingDuties.find(d => d.tempId === tempId);
-        if (duty && duty.member_count !== null && quota > duty.member_count) {
+        if (!duty) {
+            return;
+        }
+
+        // Check if quota exceeds team member count
+        if (duty.member_count !== null && quota > duty.member_count) {
             Swal.fire({
                 icon: 'error',
                 title: 'Invalid Quota',
@@ -703,6 +711,24 @@ const MiqaatTeamForm = () => {
                 confirmButtonText: 'OK'
             });
             return;
+        }
+
+        // Calculate the difference in quota
+        const quotaDifference = quota - duty.quota;
+
+        // If increasing quota, check if available quota allows it
+        if (quotaDifference > 0) {
+            const effectiveRemaining = getEffectiveRemainingQuota();
+
+            if (effectiveRemaining !== null && quotaDifference > effectiveRemaining) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Quota Exceeded',
+                    text: `Cannot increase quota by ${quotaDifference}. Only ${effectiveRemaining} quota available.`,
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
         }
 
         // Update only the specific duty with this tempId
@@ -759,7 +785,7 @@ const MiqaatTeamForm = () => {
         const effectiveRemaining = getEffectiveRemainingQuota();
         const totalPendingQuota = pendingDuties.reduce((sum, duty) => sum + duty.quota, 0);
 
-        if (effectiveRemaining !== null && totalPendingQuota > effectiveRemaining) {
+        if (effectiveRemaining !== null && totalPendingQuota > (effectiveRemaining + totalPendingQuota)) {
             Swal.fire({
                 icon: 'error',
                 title: 'Insufficient Quota',

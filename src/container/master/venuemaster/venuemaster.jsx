@@ -2275,7 +2275,7 @@ const AddVenue = ({
             flag: 'I'
         };
 
-        setLocations(prev => [...prev, newLocation]);
+        setLocations(prev => [newLocation, ...prev]);
         setLocationCounter(prev => prev + 1);
         setFormData(prev => ({
             ...prev,
@@ -2385,13 +2385,13 @@ const AddVenue = ({
                         text: 'Venue name already exists',
                         confirmButtonText: 'OK'
                     });
-                } else if (resultCode === 5) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Color Conflict',
-                        text: 'One or more colors are already assigned to other locations. Please choose different colors.',
-                        confirmButtonText: 'OK'
-                    });
+                    // } else if (resultCode === 5) {
+                    //     Swal.fire({
+                    //         icon: 'error',
+                    //         title: 'Color Conflict',
+                    //         text: 'One or more colors are already assigned to other locations. Please choose different colors.',
+                    //         confirmButtonText: 'OK'
+                    //     });
                 } else {
                     throw new Error(result.message || 'Failed to add venue');
                 }
@@ -3090,7 +3090,7 @@ const EditVenue = ({
             flag: 'I'
         };
 
-        setLocations(prev => [...prev, newLocation]);
+        setLocations(prev => [newLocation, ...prev]);
         setLocationCounter(prev => prev + 1);
         setFormData(prev => ({
             ...prev,
@@ -3258,13 +3258,13 @@ const EditVenue = ({
                         text: 'Venue name already exists',
                         confirmButtonText: 'OK'
                     });
-                } else if (resultCode === 5) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Color Conflict',
-                        text: 'One or more colors are already assigned to other locations. Please choose different colors.',
-                        confirmButtonText: 'OK'
-                    });
+                    // } else if (resultCode === 5) {
+                    //     Swal.fire({
+                    //         icon: 'error',
+                    //         title: 'Color Conflict',
+                    //         text: 'One or more colors are already assigned to other locations. Please choose different colors.',
+                    //         confirmButtonText: 'OK'
+                    //     });
                 } else if (resultCode === 0) {
                     Swal.fire({
                         icon: 'error',
