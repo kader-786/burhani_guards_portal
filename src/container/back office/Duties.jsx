@@ -141,6 +141,27 @@ const MiqaatTeamForm = () => {
         setCheckingPermissions(false);
     };
 
+    // Helper function to trigger background notifications
+    const triggerBackgroundNotification = async () => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/Notification/burhani_background_notification`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: ''
+            });
+
+            if (!response.ok) {
+                console.warn('Background notification API returned non-OK status:', response.status);
+            }
+        } catch (error) {
+            // Silently log error - don't interrupt user flow for notification failures
+            console.error('Failed to trigger background notification:', error);
+        }
+    };
+
     const getEffectiveRemainingQuota = () => {
         if (remainingQuota === null) return null;
 
@@ -261,7 +282,7 @@ const MiqaatTeamForm = () => {
                             }
 
                             if (count !== null) {
-                                label = `${item.team_name} | Members: ${count}`;
+                                label = `${item.team_name}`;
                             } else {
                                 label = item.team_name;
                             }
@@ -866,6 +887,9 @@ const MiqaatTeamForm = () => {
                     allowOutsideClick: false
                 });
 
+                // Trigger background notifications for push
+                await triggerBackgroundNotification();
+
                 // Clear pending duties and refresh
                 setPendingDuties([]);
                 if (formData.miqaat?.value) {
@@ -886,6 +910,11 @@ const MiqaatTeamForm = () => {
                     icon: 'warning',
                     confirmButtonText: 'OK'
                 });
+
+                // Trigger background notifications for push (partial success)
+                if (successCount > 0) {
+                    await triggerBackgroundNotification();
+                }
 
                 // Remove successful duties from pending
                 setPendingDuties(prev => prev.filter((duty, index) => {
@@ -979,6 +1008,9 @@ const MiqaatTeamForm = () => {
                         showConfirmButton: false,
                         allowOutsideClick: false
                     });
+
+                    // Trigger background notifications for push
+                    await triggerBackgroundNotification();
 
                     if (formData.miqaat?.value) {
                         await fetchSavedDutiesByMiqaat(formData.miqaat.value);

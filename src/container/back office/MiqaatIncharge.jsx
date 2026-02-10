@@ -438,33 +438,44 @@ const MiqaatIncharge = () => {
             return;
         }
 
-        const checkModuleAccessLocal = (accessRightsString, moduleId) => {
-            try {
-                const rights = JSON.parse(accessRightsString);
-                const moduleAccess = rights.find(module => module.module_id === moduleId);
-                if (!moduleAccess) return { hasAccess: false, canAdd: false, canEdit: false, canDelete: false };
-                return {
-                    hasAccess: true,
-                    canAdd: moduleAccess.can_add === true || moduleAccess.can_add === 1,
-                    canEdit: moduleAccess.can_edit === true || moduleAccess.can_edit === 1,
-                    canDelete: moduleAccess.can_delete === true || moduleAccess.can_delete === 1
-                };
-            } catch (error) {
-                console.error('Error parsing rights', error);
-                return { hasAccess: false, canAdd: false, canEdit: false, canDelete: false };
-            }
-        };
-
-        const modulePermissions = checkModuleAccessLocal(accessRights, MODULE_ID);
+        const modulePermissions = checkModuleAccess(accessRights, MODULE_ID);
 
         if (!modulePermissions.hasAccess) {
-            Swal.fire({ icon: 'warning', title: 'Access Denied', text: 'You do not have permission to access this module.', confirmButtonText: 'OK' }).then(() => { navigate(`${import.meta.env.BASE_URL}dashboard/`); });
+            Swal.fire({
+                icon: 'warning',
+                title: 'Access Denied',
+                text: 'You do not have permission to access this module.',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                navigate(`${import.meta.env.BASE_URL}dashboard/`);
+            });
             return;
         }
 
         setPermissions(modulePermissions);
         setCheckingPermissions(false);
         fetchInitialData();
+    };
+
+    // Helper function to trigger background notifications
+    const triggerBackgroundNotification = async () => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/Notification/burhani_background_notification`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: ''
+            });
+
+            if (!response.ok) {
+                console.warn('Background notification API returned non-OK status:', response.status);
+            }
+        } catch (error) {
+            // Silently log error - don't interrupt user flow for notification failures
+            console.error('Failed to trigger background notification:', error);
+        }
     };
 
     // ============================================================================
@@ -896,6 +907,9 @@ const MiqaatIncharge = () => {
                         timerProgressBar: false,
                         showConfirmButton: false
                     });
+
+                    // Trigger background notifications for push
+                    await triggerBackgroundNotification();
 
                     // Refresh incharges list and rebuild map
                     if (formData.miqaat?.value) {
