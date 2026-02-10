@@ -6,10 +6,13 @@ import { Card, Row, Col } from 'react-bootstrap';
 import IconButton from '../../elements/button';
 import { Form, Button, Table } from 'react-bootstrap';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
+import { checkModuleAccess } from '../../../utils/accessControl';
 import '../../../styles/shared-styles.css';
 import StandardModal from '../../../components/StandardModal';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const MODULE_ID = '106';
 
 // ============================================================================
 // ADD ROLE COMPONENT
@@ -626,6 +629,42 @@ const EditRole = ({
             fetchAllData();
         }
     }, [show, roleId]);
+
+    // Re-apply permissions when modules are loaded
+    useEffect(() => {
+        if (modules.length > 0 && originalAccessRights !== undefined) {
+            const roleType = formData.roleType;
+
+            if (roleType === 'user' && originalAccessRights) {
+                const parsedPermissions = parseAccessRights(originalAccessRights);
+
+                const allPermissions = {};
+                modules.forEach(module => {
+                    allPermissions[module.module_id] = parsedPermissions[module.module_id] || {
+                        view: false,
+                        add: false,
+                        edit: false,
+                        delete: false,
+                        all: false
+                    };
+                });
+
+                setModulePermissions(allPermissions);
+            } else if (roleType === 'admin') {
+                const allPermissions = {};
+                modules.forEach(module => {
+                    allPermissions[module.module_id] = {
+                        view: false,
+                        add: false,
+                        edit: false,
+                        delete: false,
+                        all: false
+                    };
+                });
+                setModulePermissions(allPermissions);
+            }
+        }
+    }, [modules, originalAccessRights, formData.roleType]);
 
     const fetchModules = async () => {
         setLoadingModules(true);
@@ -1365,6 +1404,18 @@ const EditRole = ({
 // MAIN ROLE TABLE COMPONENT
 // ============================================================================
 const RoleTable = () => {
+    const navigate = useNavigate();
+
+    // RBAC State
+    const [checkingPermissions, setCheckingPermissions] = useState(true);
+    const [permissions, setPermissions] = useState({
+        canAdd: false,
+        canEdit: false,
+        canDelete: false,
+        hasAccess: false
+    });
+
+    // State management
     const [showAddForm, setShowAddForm] = useState(false);
     const [showEditForm, setShowEditForm] = useState(false);
     const [editRoleId, setEditRoleId] = useState(null);
@@ -1372,6 +1423,54 @@ const RoleTable = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [gridKey, setGridKey] = useState(0);
+
+    // RBAC Check
+    useEffect(() => {
+        const checkAccess = () => {
+            setCheckingPermissions(true);
+
+            const isAdminValue = sessionStorage.getItem('is_admin');
+            if (isAdminValue === 'true' || isAdminValue === true || isAdminValue === '1') {
+                setPermissions({ canAdd: true, canEdit: true, canDelete: true, hasAccess: true });
+                setCheckingPermissions(false);
+                return;
+            }
+
+            const accessRights = sessionStorage.getItem('access_rights');
+
+            if (!accessRights) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Session Expired',
+                    text: 'Please login again',
+                    confirmButtonText: 'OK',
+                    allowOutsideClick: false
+                }).then(() => {
+                    navigate(`${import.meta.env.BASE_URL}login/`);
+                });
+                return;
+            }
+
+            const access = checkModuleAccess(accessRights, MODULE_ID);
+
+            if (!access.hasAccess) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Access Denied',
+                    text: 'You do not have permission to access this module.',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    navigate(`${import.meta.env.BASE_URL}dashboard/`);
+                });
+                return;
+            }
+
+            setPermissions(access);
+            setCheckingPermissions(false);
+        };
+
+        checkAccess();
+    }, [navigate]);
 
     const fetchRoleData = async () => {
         try {
@@ -1437,6 +1536,15 @@ const RoleTable = () => {
     const totalRecords = tableData.length;
 
     const handleAdd = () => {
+        if (!permissions.canAdd) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Permission Denied',
+                text: 'You do not have permission to add roles',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
         setShowAddForm(true);
     };
 
@@ -1467,11 +1575,30 @@ const RoleTable = () => {
     };
 
     const handleEdit = (id) => {
+        if (!permissions.canEdit) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Permission Denied',
+                text: 'You do not have permission to edit roles',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
         setEditRoleId(id);
         setShowEditForm(true);
     };
 
     const handleDelete = async (id) => {
+        if (!permissions.canDelete) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Permission Denied',
+                text: 'You do not have permission to delete roles',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+
         const roleToDelete = tableData.find(item => item.id === id);
         const roleName = roleToDelete ? roleToDelete.roleName : 'this role';
 
@@ -1587,6 +1714,27 @@ const RoleTable = () => {
         ]);
     }, [tableData]);
 
+    // Loading state while checking permissions
+    if (checkingPermissions) {
+        return (
+            <Fragment>
+                <div className="permission-loading" style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minHeight: '400px',
+                    textAlign: 'center'
+                }}>
+                    <div className="spinner-border text-primary" style={{ width: '3rem', height: '3rem' }} role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                    <p className="mt-3">Checking permissions...</p>
+                </div>
+            </Fragment>
+        );
+    }
+
     return (
         <Fragment>
             <style>
@@ -1690,12 +1838,14 @@ const RoleTable = () => {
                                         <span className="badge badge-primary">
                                             Total Records: {totalRecords}
                                         </span>
-                                        <IconButton.IconButton
-                                            variant="primary"
-                                            icon="ri-add-line"
-                                            onClick={handleAdd}
-                                            title="Add New"
-                                        />
+                                        {permissions.canAdd && (
+                                            <IconButton.IconButton
+                                                variant="primary"
+                                                icon="ri-add-line"
+                                                onClick={handleAdd}
+                                                title="Add New"
+                                            />
+                                        )}
                                     </div>
                                 </div>
 
@@ -1722,13 +1872,15 @@ const RoleTable = () => {
                                     <div className="loading-container">
                                         <i className="ri-inbox-line" style={{ fontSize: '48px' }}></i>
                                         <p className="mt-3">No role records found</p>
-                                        <button
-                                            className="btn btn-primary mt-2"
-                                            onClick={handleAdd}
-                                        >
-                                            <i className="ri-add-line me-2"></i>
-                                            Add First Role
-                                        </button>
+                                        {permissions.canAdd && (
+                                            <button
+                                                className="btn btn-primary mt-2"
+                                                onClick={handleAdd}
+                                            >
+                                                <i className="ri-add-line me-2"></i>
+                                                Add First Role
+                                            </button>
+                                        )}
                                     </div>
                                 ) : (
                                     <div id="grid-role-table">
@@ -1768,8 +1920,14 @@ const RoleTable = () => {
                                                     formatter: (cell, row) => {
                                                         const id = row.cells[4].data;
 
-                                                        return html(`
-                                                            <div class="btn-action-group">
+                                                        if (!permissions.canEdit && !permissions.canDelete) {
+                                                            return html(`<span class="text-muted">-</span>`);
+                                                        }
+
+                                                        let buttons = '<div class="btn-action-group">';
+
+                                                        if (permissions.canEdit) {
+                                                            buttons += `
                                                                 <button 
                                                                     class="btn btn-sm btn-info-transparent btn-icon btn-wave" 
                                                                     title="Edit"
@@ -1777,6 +1935,11 @@ const RoleTable = () => {
                                                                 >
                                                                     <i class="ri-edit-line"></i>
                                                                 </button>
+                                                            `;
+                                                        }
+
+                                                        if (permissions.canDelete) {
+                                                            buttons += `
                                                                 <button 
                                                                     class="btn btn-sm btn-danger-transparent btn-icon btn-wave" 
                                                                     title="Delete"
@@ -1784,10 +1947,13 @@ const RoleTable = () => {
                                                                 >
                                                                     <i class="ri-delete-bin-line"></i>
                                                                 </button>
-                                                            </div>
-                                                        `);
+                                                            `;
+                                                        }
+
+                                                        buttons += '</div>';
+                                                        return html(buttons);
                                                     },
-                                                    hidden: false
+                                                    hidden: !permissions.canEdit && !permissions.canDelete
                                                 }
                                             ]}
                                             pagination={{

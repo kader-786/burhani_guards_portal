@@ -1295,7 +1295,7 @@ const MuminTable = () => {
                 confirmButtonText: 'OK',
                 allowOutsideClick: false
             }).then(() => {
-                window.location.href = '/login';
+                navigate(`${import.meta.env.BASE_URL}login/`);
             });
             return;
         }
@@ -1310,7 +1310,7 @@ const MuminTable = () => {
                 confirmButtonText: 'OK',
                 allowOutsideClick: false
             }).then(() => {
-                window.location.href = '/dashboard';
+                navigate(`${import.meta.env.BASE_URL}dashboard/`);
             });
             return;
         }
@@ -1570,7 +1570,8 @@ const MuminTable = () => {
                                                                 </button>
                                                             </div>
                                                         `);
-                                                    }
+                                                    },
+                                                    hidden: !permissions.canDelete
                                                 }
                                             ]}
                                             search={true}

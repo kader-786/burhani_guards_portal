@@ -4,6 +4,7 @@ import { Card, Col, Row } from 'react-bootstrap';
 import Select from 'react-select';
 import Swal from 'sweetalert2';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { checkModuleAccess } from '../../utils/accessControl';
 import '../../styles/shared-styles.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -131,9 +132,17 @@ const MiqaatIncharge = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    // STATE MANAGEMENT
+    // RBAC State
     const [checkingPermissions, setCheckingPermissions] = useState(true);
-    const [permissions, setPermissions] = useState({ canAdd: false, canEdit: false, canDelete: false, hasAccess: false });
+    const [permissions, setPermissions] = useState({
+        canAdd: false,
+        canEdit: false,
+        canDelete: false,
+        hasAccess: false
+    });
+
+    const miqaatName = location.state?.miqaatName || 'Unknown Miqaat';
+    const miqaatId = location.state?.miqaat_id || null;
 
     const [incomingMiqaat, setIncomingMiqaat] = useState(null);
     const [showInfoBanner, setShowInfoBanner] = useState(false);
@@ -324,6 +333,58 @@ const MiqaatIncharge = () => {
         }
     }, [location.state]);
 
+    // RBAC Check
+    useEffect(() => {
+        const checkAccess = () => {
+            setCheckingPermissions(true);
+
+            const isAdminValue = sessionStorage.getItem('is_admin');
+            if (isAdminValue === 'true' || isAdminValue === true || isAdminValue === '1') {
+                setPermissions({ canAdd: true, canEdit: true, canDelete: true, hasAccess: true });
+                setCheckingPermissions(false);
+                fetchInitialData();
+                return;
+            }
+
+            const accessRights = sessionStorage.getItem('access_rights');
+
+            if (!accessRights) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Session Expired',
+                    text: 'Please login again',
+                    confirmButtonText: 'OK',
+                    allowOutsideClick: false
+                }).then(() => {
+                    navigate(`${import.meta.env.BASE_URL}login/`);
+                });
+                return;
+            }
+
+            const access = checkModuleAccess(accessRights, MODULE_ID);
+
+            if (!access.hasAccess) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Access Denied',
+                    text: 'You do not have permission to access this module.',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    const redirectPath = `${import.meta.env.BASE_URL}dashboard/`;
+                    console.log('Redirecting to:', redirectPath);
+                    navigate(redirectPath);
+                });
+                return;
+            }
+
+            setPermissions(access);
+            setCheckingPermissions(false);
+            fetchInitialData(); // Fetch initial data only after permissions are checked
+        };
+
+        checkAccess();
+    }, [navigate]);
+
     useEffect(() => {
         if (incomingMiqaat && miqaatOptions.length > 0) {
             const targetMiqaat = miqaatOptions.find(
@@ -366,7 +427,14 @@ const MiqaatIncharge = () => {
 
         const accessRights = sessionStorage.getItem('access_rights');
         if (!accessRights) {
-            Swal.fire({ icon: 'error', title: 'Session Expired', text: 'Your session has expired. Please log in again.', confirmButtonText: 'OK' }).then(() => { window.location.href = '/login'; });
+            Swal.fire({
+                icon: 'error',
+                title: 'Session Expired',
+                text: 'Your session has expired. Please log in again.',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                navigate(`${import.meta.env.BASE_URL}login/`);
+            });
             return;
         }
 
@@ -390,7 +458,7 @@ const MiqaatIncharge = () => {
         const modulePermissions = checkModuleAccessLocal(accessRights, MODULE_ID);
 
         if (!modulePermissions.hasAccess) {
-            Swal.fire({ icon: 'warning', title: 'Access Denied', text: 'You do not have permission to access this module.', confirmButtonText: 'OK' }).then(() => { window.location.href = '/dashboard'; });
+            Swal.fire({ icon: 'warning', title: 'Access Denied', text: 'You do not have permission to access this module.', confirmButtonText: 'OK' }).then(() => { navigate(`${import.meta.env.BASE_URL}dashboard/`); });
             return;
         }
 

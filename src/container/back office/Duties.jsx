@@ -125,12 +125,16 @@ const MiqaatTeamForm = () => {
         }
         const accessRights = sessionStorage.getItem('access_rights');
         if (!accessRights) {
-            Swal.fire({ icon: 'error', title: 'Session Expired', text: 'Your session has expired. Please log in again.', confirmButtonText: 'OK' }).then(() => { window.location.href = '/login'; });
+            Swal.fire({ icon: 'error', title: 'Session Expired', text: 'Your session has expired. Please log in again.', confirmButtonText: 'OK' }).then(() => {
+                navigate(`${import.meta.env.BASE_URL}login/`);
+            });
             return;
         }
         const modulePermissions = checkModuleAccess(accessRights, MODULE_ID);
         if (!modulePermissions.hasAccess) {
-            Swal.fire({ icon: 'warning', title: 'Access Denied', text: 'You do not have permission to access this module.', confirmButtonText: 'OK' }).then(() => { window.location.href = '/dashboard'; });
+            Swal.fire({ icon: 'warning', title: 'Access Denied', text: 'You do not have permission to access this module.', confirmButtonText: 'OK' }).then(() => {
+                navigate(`${import.meta.env.BASE_URL}dashboard/`);
+            });
             return;
         }
         setPermissions(modulePermissions);

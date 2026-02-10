@@ -4,11 +4,26 @@ import Select from 'react-select';
 import { Grid } from 'gridjs-react';
 import 'gridjs/dist/theme/mermaid.css';
 import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
+import { checkModuleAccess } from '../../../utils/accessControl';
 import '../../../styles/shared-styles.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const MODULE_ID = '110';
 
 const AttendanceReport = () => {
+    const navigate = useNavigate();
+
+    // RBAC State
+    const [checkingPermissions, setCheckingPermissions] = useState(true);
+    const [permissions, setPermissions] = useState({
+        canAdd: false,
+        canEdit: false,
+        canDelete: false,
+        hasAccess: false
+    });
+
     const [miqaatOptions, setMiqaatOptions] = useState([]);
     const [selectedMiqaat, setSelectedMiqaat] = useState(null);
     const [selectedAttendeeType, setSelectedAttendeeType] = useState({ value: 'All', label: 'All' });
@@ -119,6 +134,55 @@ const AttendanceReport = () => {
         }
     };
 
+
+    // RBAC Check
+    useEffect(() => {
+        const checkAccess = () => {
+            setCheckingPermissions(true);
+
+            const isAdminValue = sessionStorage.getItem('is_admin');
+            if (isAdminValue === 'true' || isAdminValue === true || isAdminValue === '1') {
+                setPermissions({ canAdd: true, canEdit: true, canDelete: true, hasAccess: true });
+                setCheckingPermissions(false);
+                return;
+            }
+
+            const accessRights = sessionStorage.getItem('access_rights');
+
+            if (!accessRights) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Session Expired',
+                    text: 'Please login again',
+                    confirmButtonText: 'OK',
+                    allowOutsideClick: false
+                }).then(() => {
+                    navigate(`${import.meta.env.BASE_URL}login/`);
+                });
+                return;
+            }
+
+            const access = checkModuleAccess(accessRights, MODULE_ID);
+
+            if (!access.hasAccess) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Access Denied',
+                    text: 'You do not have permission to access this module.',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    navigate(`${import.meta.env.BASE_URL}dashboard/`);
+                });
+                return;
+            }
+
+            setPermissions(access);
+            setCheckingPermissions(false);
+        };
+
+        checkAccess();
+    }, [navigate]);
+
     useEffect(() => {
         fetchAllMiqaats();
     }, []);
@@ -173,6 +237,27 @@ const AttendanceReport = () => {
             zIndex: 1000
         })
     };
+
+    // Loading state while checking permissions
+    if (checkingPermissions) {
+        return (
+            <Fragment>
+                <div className="permission-loading" style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minHeight: '400px',
+                    textAlign: 'center'
+                }}>
+                    <div className="spinner-border text-primary" style={{ width: '3rem', height: '3rem' }} role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                    <p className="mt-3">Checking permissions...</p>
+                </div>
+            </Fragment>
+        );
+    }
 
     return (
         <Fragment>
