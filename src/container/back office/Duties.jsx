@@ -626,8 +626,8 @@ const MiqaatTeamForm = () => {
 
         // Check for duplicate teams
         const duplicateTeams = formData.team.filter(team =>
-            pendingDuties.some(duty => duty.team_id === team.value) ||
-            savedDuties.some(duty => duty.team_id === team.value)
+            pendingDuties.some(duty => duty.team_id === team.value && duty.location_id === location.value) ||
+            savedDuties.some(duty => duty.team_id === team.value && duty.location_id === location.value)
         );
 
         if (duplicateTeams.length > 0) {

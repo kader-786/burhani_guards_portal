@@ -1578,13 +1578,13 @@ const EditMiqaat = ({
         if (!formData.hijriEndDate) newErrors.hijriEndDate = 'Hijri End Date is required';
 
         // Validate Start Date & Time >= Current Date & Time
-        if (formData.startDate && formData.startTime) {
-            const startDateTime = new Date(`${formData.startDate}T${formData.startTime}`);
-            const currentDateTime = new Date();
-            if (startDateTime < currentDateTime) {
-                newErrors.startDate = 'Start Date-Time must be greater than or equal to Current Date-Time';
-            }
-        }
+        // if (formData.startDate && formData.startTime) {
+        //     const startDateTime = new Date(`${formData.startDate}T${formData.startTime}`);
+        //     const currentDateTime = new Date();
+        //     if (startDateTime < currentDateTime) {
+        //         newErrors.startDate = 'Start Date-Time must be greater than or equal to Current Date-Time';
+        //     }
+        // }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
