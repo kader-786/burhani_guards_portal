@@ -599,7 +599,7 @@ const MiqaatIncharge = () => {
         }
     };
 
-    const fetchTeamMembersForIncharge = async (teamId, miqaatId) => {
+    const fetchTeamMembersForIncharge = async (teamId, miqaatId, locationId = null) => {
         setLoadingMembers(true);
 
         try {
@@ -607,7 +607,7 @@ const MiqaatIncharge = () => {
             const response = await fetch(`${API_BASE_URL}/Incharge/GetTeamMembersForIncharge`, {
                 method: 'POST',
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
-                body: JSON.stringify({ team_id: teamId, miqaat_id: miqaatId })
+                body: JSON.stringify({ team_id: teamId, miqaat_id: miqaatId, location_id: locationId })
             });
             if (response.ok) {
                 const result = await response.json();
@@ -780,7 +780,7 @@ const MiqaatIncharge = () => {
         if (errors.team) setErrors(prev => ({ ...prev, team: '' }));
 
         if (selectedOption?.value && formData.miqaat?.value) {
-            fetchTeamMembersForIncharge(selectedOption.value, formData.miqaat.value);
+            fetchTeamMembersForIncharge(selectedOption.value, formData.miqaat.value, formData.location?.value || null);
         }
     };
 
@@ -789,7 +789,12 @@ const MiqaatIncharge = () => {
         if (errors.location) setErrors(prev => ({ ...prev, location: '' }));
         if (errors.reportingTime) setErrors(prev => ({ ...prev, reportingTime: '' }));
 
-        // The useEffect will handle the rest automatically
+        // Re-fetch members filtered by the newly selected location
+        if (selectedOption?.value && formData.team?.value && formData.miqaat?.value) {
+            fetchTeamMembersForIncharge(formData.team.value, formData.miqaat.value, selectedOption.value);
+        }
+
+        // The useEffect will handle reporting time automatically
     };
 
     const handleMemberChange = (selectedOption) => {
@@ -926,7 +931,7 @@ const MiqaatIncharge = () => {
                         }));
 
                         if (formData.team?.value && formData.miqaat?.value) {
-                            fetchTeamMembersForIncharge(formData.team.value, formData.miqaat.value);
+                            fetchTeamMembersForIncharge(formData.team.value, formData.miqaat.value, formData.location?.value || null);
                         }
                     }
 
@@ -934,7 +939,7 @@ const MiqaatIncharge = () => {
                     Swal.fire({
                         icon: 'warning',
                         title: 'Duplicate Entry',
-                        text: 'This member is already an incharge for this miqaat',
+                        text: 'This member is already an incharge for this location in this miqaat',
                         confirmButtonText: 'OK'
                     });
                 } else if (resultCode === 5) {
@@ -996,7 +1001,7 @@ const MiqaatIncharge = () => {
                 || { value: inchargeDetails.team_id, label: inchargeDetails.team_name };
 
             if (selectedTeam) {
-                await fetchTeamMembersForIncharge(inchargeDetails.team_id, inchargeDetails.miqaat_id);
+                await fetchTeamMembersForIncharge(inchargeDetails.team_id, inchargeDetails.miqaat_id, inchargeDetails.location_id || null);
             }
 
             // Handle reporting time
@@ -1082,7 +1087,7 @@ const MiqaatIncharge = () => {
 
                 // Refresh members list
                 if (formData.team?.value && formData.miqaat?.value) {
-                    fetchTeamMembersForIncharge(formData.team.value, formData.miqaat.value);
+                    fetchTeamMembersForIncharge(formData.team.value, formData.miqaat.value, formData.location?.value || null);
                 }
 
                 // The useEffect will automatically update the reporting time state
