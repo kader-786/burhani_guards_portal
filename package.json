@@ -35,7 +35,8 @@
     "redux": "^5.0.1",
     "sass": "^1.83.4",
     "simplebar-react": "^3.2.6",
-    "sweetalert2": "^11.26.10"
+    "sweetalert2": "^11.26.10",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
