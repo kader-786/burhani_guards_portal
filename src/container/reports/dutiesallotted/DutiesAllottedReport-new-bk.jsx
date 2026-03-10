@@ -38,14 +38,14 @@
 
 //     // ── RBAC check ────────────────────────────────────────────────────────────
 //     useEffect(() => {
-//         const isAdminValue = sessionStorage.getItem('is_admin');
+//         const isAdminValue = appStorage.getItem('is_admin');
 //         if (isAdminValue === 'true' || isAdminValue === true || isAdminValue === '1') {
 //             setPermissions({ canAdd: true, canEdit: true, canDelete: true, hasAccess: true });
 //             setCheckingPermissions(false);
 //             return;
 //         }
 
-//         const accessRights = sessionStorage.getItem('access_rights');
+//         const accessRights = appStorage.getItem('access_rights');
 //         if (!accessRights) {
 //             Swal.fire({
 //                 icon: 'error', title: 'Session Expired',
@@ -73,7 +73,7 @@
 //         const fetchAllMiqaats = async () => {
 //             setLoadingMiqaat(true);
 //             try {
-//                 const token = sessionStorage.getItem('access_token');
+//                 const token = appStorage.getItem('access_token');
 //                 if (!token) { toast.error('Authentication token not found. Please login again.'); return; }
 
 //                 const response = await fetch(`${API_BASE_URL}/Miqaat/GetActiveOrLiveMiqaat`, {
@@ -111,7 +111,7 @@
 //         setTableData([]);
 //         setSummary(null);
 //         try {
-//             const token = sessionStorage.getItem('access_token');
+//             const token = appStorage.getItem('access_token');
 //             const body = { miqaat_id: selectedMiqaat.value };
 //             if (jamiaatId !== null && jamiaatId !== undefined) {
 //                 body.jamiaat_id = jamiaatId;
@@ -464,14 +464,14 @@ const DutiesAllottedReport = ({ moduleId, jamiaatId, title }) => {
 
     // ── RBAC check ────────────────────────────────────────────────────────────
     useEffect(() => {
-        const isAdminValue = sessionStorage.getItem('is_admin');
+        const isAdminValue = appStorage.getItem('is_admin');
         if (isAdminValue === 'true' || isAdminValue === true || isAdminValue === '1') {
             setPermissions({ canAdd: true, canEdit: true, canDelete: true, hasAccess: true });
             setCheckingPermissions(false);
             return;
         }
 
-        const accessRights = sessionStorage.getItem('access_rights');
+        const accessRights = appStorage.getItem('access_rights');
         if (!accessRights) {
             Swal.fire({
                 icon: 'error', title: 'Session Expired',
@@ -499,7 +499,7 @@ const DutiesAllottedReport = ({ moduleId, jamiaatId, title }) => {
         const fetchAllMiqaats = async () => {
             setLoadingMiqaat(true);
             try {
-                const token = sessionStorage.getItem('access_token');
+                const token = appStorage.getItem('access_token');
                 if (!token) { toast.error('Authentication token not found. Please login again.'); return; }
 
                 const response = await fetch(`${API_BASE_URL}/Miqaat/GetActiveOrLiveMiqaat`, {
@@ -537,7 +537,7 @@ const DutiesAllottedReport = ({ moduleId, jamiaatId, title }) => {
         setTableData([]);
         setSummary(null);
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
             const body = { miqaat_id: selectedMiqaat.value };
             if (jamiaatId !== null && jamiaatId !== undefined) {
                 body.jamiaat_id = jamiaatId;

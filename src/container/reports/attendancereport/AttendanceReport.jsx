@@ -42,7 +42,7 @@
 //     const fetchAllMiqaats = async () => {
 //         setLoadingMiqaat(true);
 //         try {
-//             const token = sessionStorage.getItem('access_token');
+//             const token = appStorage.getItem('access_token');
 //             if (!token) {
 //                 toast.error('Authentication token not found. Please login again.');
 //                 return;
@@ -88,7 +88,7 @@
 
 //         setLoading(true);
 //         try {
-//             const token = sessionStorage.getItem('access_token');
+//             const token = appStorage.getItem('access_token');
 
 //             const requestBody = {
 //                 miqaat_id: selectedMiqaat.value
@@ -140,14 +140,14 @@
 //         const checkAccess = () => {
 //             setCheckingPermissions(true);
 
-//             const isAdminValue = sessionStorage.getItem('is_admin');
+//             const isAdminValue = appStorage.getItem('is_admin');
 //             if (isAdminValue === 'true' || isAdminValue === true || isAdminValue === '1') {
 //                 setPermissions({ canAdd: true, canEdit: true, canDelete: true, hasAccess: true });
 //                 setCheckingPermissions(false);
 //                 return;
 //             }
 
-//             const accessRights = sessionStorage.getItem('access_rights');
+//             const accessRights = appStorage.getItem('access_rights');
 
 //             if (!accessRights) {
 //                 Swal.fire({
@@ -511,6 +511,7 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { checkModuleAccess } from '../../../utils/accessControl';
 import '../../../styles/shared-styles.css';
+import appStorage from '../../../utils/storage';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const MODULE_ID = '110';
@@ -545,7 +546,7 @@ const AttendanceReport = () => {
     const fetchAllMiqaats = async () => {
         setLoadingMiqaat(true);
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
             if (!token) {
                 toast.error('Authentication token not found. Please login again.');
                 return;
@@ -591,7 +592,7 @@ const AttendanceReport = () => {
 
         setLoading(true);
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
 
             const requestBody = {
                 miqaat_id: selectedMiqaat.value
@@ -684,14 +685,14 @@ const AttendanceReport = () => {
         const checkAccess = () => {
             setCheckingPermissions(true);
 
-            const isAdminValue = sessionStorage.getItem('is_admin');
+            const isAdminValue = appStorage.getItem('is_admin');
             if (isAdminValue === 'true' || isAdminValue === true || isAdminValue === '1') {
                 setPermissions({ canAdd: true, canEdit: true, canDelete: true, hasAccess: true });
                 setCheckingPermissions(false);
                 return;
             }
 
-            const accessRights = sessionStorage.getItem('access_rights');
+            const accessRights = appStorage.getItem('access_rights');
 
             if (!accessRights) {
                 Swal.fire({

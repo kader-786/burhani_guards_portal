@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { checkModuleAccess } from '../../../utils/accessControl';
 import '../../../styles/shared-styles.css';
 import StandardModal from '../../../components/StandardModal';
+import appStorage from '../../../utils/storage';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -79,7 +80,7 @@ const AddVenue = ({
 
     const fetchVenueTypes = async () => {
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
             const response = await fetch(`${API_BASE_URL}/Venue/GetAllVenueTypes`, {
                 method: 'GET',
                 headers: {
@@ -101,7 +102,7 @@ const AddVenue = ({
 
     const fetchJamiaats = async () => {
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
             const response = await fetch(`${API_BASE_URL}/Venue/GetAllJamiaats`, {
                 method: 'GET',
                 headers: {
@@ -123,7 +124,7 @@ const AddVenue = ({
 
     const fetchJamaats = async (jamiaatId) => {
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
             const response = await fetch(`${API_BASE_URL}/Venue/GetAllJamaatsByJamiaat`, {
                 method: 'POST',
                 headers: {
@@ -240,7 +241,7 @@ const AddVenue = ({
         setIsLoading(true);
 
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
 
             if (!token) {
                 throw new Error('Authentication token not found. Please login again.');
@@ -812,7 +813,7 @@ const EditVenue = ({
 
     const fetchVenueTypes = async () => {
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
             const response = await fetch(`${API_BASE_URL}/Venue/GetAllVenueTypes`, {
                 method: 'GET',
                 headers: {
@@ -834,7 +835,7 @@ const EditVenue = ({
 
     const fetchJamiaats = async () => {
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
             const response = await fetch(`${API_BASE_URL}/Venue/GetAllJamiaats`, {
                 method: 'GET',
                 headers: {
@@ -856,7 +857,7 @@ const EditVenue = ({
 
     const fetchJamaats = async (jamiaatId) => {
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
             const response = await fetch(`${API_BASE_URL}/Venue/GetAllJamaatsByJamiaat`, {
                 method: 'POST',
                 headers: {
@@ -880,7 +881,7 @@ const EditVenue = ({
     const fetchVenueData = async () => {
         setLoadingVenueData(true);
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
 
             if (!token) {
                 Swal.fire({
@@ -1106,7 +1107,7 @@ const EditVenue = ({
         setIsLoading(true);
 
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
 
             if (!token) {
                 Swal.fire({
@@ -1727,7 +1728,7 @@ const VenueTable = () => {
     const checkAccess = () => {
         setCheckingPermissions(true);
 
-        const isAdminValue = sessionStorage.getItem('is_admin');
+        const isAdminValue = appStorage.getItem('is_admin');
 
         if (isAdminValue === 'true' || isAdminValue === true || isAdminValue === '1') {
             setPermissions({
@@ -1741,7 +1742,7 @@ const VenueTable = () => {
             return;
         }
 
-        const accessRights = sessionStorage.getItem('access_rights');
+        const accessRights = appStorage.getItem('access_rights');
 
         if (!accessRights) {
             Swal.fire({
@@ -1781,7 +1782,7 @@ const VenueTable = () => {
             setLoading(true);
             setError(null);
 
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
 
             if (!accessToken) {
                 throw new Error('Access token not found. Please login again.');
@@ -1917,7 +1918,7 @@ const VenueTable = () => {
         }
 
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
 
             if (!accessToken) {
                 throw new Error('Access token not found. Please login again.');

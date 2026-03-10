@@ -13,6 +13,7 @@ import { checkModuleAccess } from '../../../utils/accessControl';
 import '../../../styles/shared-styles.css';
 import StandardModal from '../../../components/StandardModal';
 import { useNavigate } from 'react-router-dom';
+import appStorage from '../../../utils/storage';
 
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -378,7 +379,7 @@ const AddMiqaat = ({
 
     const fetchMiqaatTypes = async () => {
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             if (!accessToken) return;
             const response = await fetch(`${API_BASE_URL}/Miqaat/GetAllMiqaatTypes`, {
                 method: 'GET',
@@ -395,7 +396,7 @@ const AddMiqaat = ({
 
     const fetchJamiaat = async () => {
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             if (!accessToken) return;
             const response = await fetch(`${API_BASE_URL}/Team/GetAllJamiaats`, {
                 method: 'GET',
@@ -413,7 +414,7 @@ const AddMiqaat = ({
     const fetchVenues = async () => {
         setLoadingVenues(true);
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             if (!accessToken) return;
             const response = await fetch(`${API_BASE_URL}/Venue/GetAllVenues`, {
                 method: 'GET',
@@ -436,7 +437,7 @@ const AddMiqaat = ({
     const fetchSourceMiqaats = async () => {
         setLoadingSourceMiqaats(true);
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             if (!accessToken) return;
 
             const response = await fetch(`${API_BASE_URL}/Miqaat/GetAllMiqaat`, {
@@ -469,7 +470,7 @@ const AddMiqaat = ({
     const fetchMiqaatGroups = async () => {
         setLoadingMiqaatGroups(true);
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             if (!accessToken) return;
 
             const response = await fetch(`${API_BASE_URL}/Miqaat/GetMiqaatGroups`, {
@@ -501,7 +502,7 @@ const AddMiqaat = ({
     const fetchJamaatByJamiaat = async (jamiaatId) => {
         try {
             setLoadingJamaat(true);
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             const response = await fetch(`${API_BASE_URL}/Miqaat/GetJamaatsByJamiaat`, {
                 method: 'POST',
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
@@ -721,7 +722,7 @@ const AddMiqaat = ({
         if (!validateForm()) return;
         setLoading(true);
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             if (!accessToken) throw new Error('Access token not found. Please login again.');
 
             const startDateTime = `${formData.startDate}T${formData.startTime}:00`;
@@ -1307,7 +1308,7 @@ const EditMiqaat = ({
 
     const fetchMiqaatTypes = async () => {
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             const response = await fetch(`${API_BASE_URL}/Miqaat/GetAllMiqaatTypes`, {
                 headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${accessToken}` }
             });
@@ -1322,7 +1323,7 @@ const EditMiqaat = ({
 
     const fetchJamiaat = async () => {
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             const response = await fetch(`${API_BASE_URL}/Team/GetAllJamiaats`, {
                 headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${accessToken}` }
             });
@@ -1338,7 +1339,7 @@ const EditMiqaat = ({
     const fetchVenues = async () => {
         setLoadingVenues(true);
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             const response = await fetch(`${API_BASE_URL}/Venue/GetAllVenues`, {
                 method: 'GET',
                 headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${accessToken}` }
@@ -1360,7 +1361,7 @@ const EditMiqaat = ({
     const fetchMiqaatGroups = async () => {
         setLoadingMiqaatGroups(true);
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             if (!accessToken) return;
 
             const response = await fetch(`${API_BASE_URL}/Miqaat/GetMiqaatGroups`, {
@@ -1392,7 +1393,7 @@ const EditMiqaat = ({
     const fetchJamaatByJamiaat = async (jamiaatId) => {
         try {
             setLoadingJamaat(true);
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             const response = await fetch(`${API_BASE_URL}/Miqaat/GetJamaatsByJamiaat`, {
                 method: 'POST',
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
@@ -1423,7 +1424,7 @@ const EditMiqaat = ({
     const fetchMiqaatData = async () => {
         setLoadingMiqaatData(true);
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
             const response = await fetch(`${API_BASE_URL}/Miqaat/GetMiqaatById`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -1600,7 +1601,7 @@ const EditMiqaat = ({
 
         setLoading(true);
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             const startDateTime = `${formData.startDate}T${formData.startTime}:00`;
             const endDateTime = `${formData.endDate}T${formData.endTime}:00`;
 
@@ -1969,7 +1970,7 @@ const MiqaatTable = () => {
     const checkAccess = () => {
         setCheckingPermissions(true);
 
-        const isAdminValue = sessionStorage.getItem('is_admin');
+        const isAdminValue = appStorage.getItem('is_admin');
 
         if (isAdminValue === 'true' || isAdminValue === true || isAdminValue === '1') {
             setPermissions({
@@ -1983,7 +1984,7 @@ const MiqaatTable = () => {
             return;
         }
 
-        const accessRights = sessionStorage.getItem('access_rights');
+        const accessRights = appStorage.getItem('access_rights');
 
         if (!accessRights) {
             Swal.fire({
@@ -2022,7 +2023,7 @@ const MiqaatTable = () => {
         try {
             setLoading(true);
             setError(null);
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             if (!accessToken) throw new Error('Access token not found. Please login again.');
 
             const response = await fetch(`${API_BASE_URL}/Miqaat/GetAllMiqaat`, {
@@ -2136,7 +2137,7 @@ const MiqaatTable = () => {
 
         if (result.isConfirmed) {
             try {
-                const accessToken = sessionStorage.getItem('access_token');
+                const accessToken = appStorage.getItem('access_token');
                 const response = await fetch(`${API_BASE_URL}/Miqaat/DeleteMiqaat`, {
                     method: 'DELETE',
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },

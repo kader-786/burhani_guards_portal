@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { LocalStorageBackup } from '../components/common/switcher/switcherdata';
 import { ThemeChanger } from "../redux/action";
 import bgmi from "../assets/images/burhaniguards_logo1.png";
+import appStorage from '../utils/storage';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Login = ({ ThemeChanger }) => {
@@ -15,56 +16,56 @@ const Login = ({ ThemeChanger }) => {
         "username": "",
         "password": "",
     });
-    
+
     const { username, password } = data;
-    
+
     const changeHandler = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
         setError("");
     };
-    
+
     const navigate = useNavigate();
-    
+
     const routeChange = () => {
         const path = `${import.meta.env.BASE_URL}dashboard`;
         navigate(path);
     };
 
-    // Function to store user data in sessionStorage
+    // Function to store user data in appStorage (localStorage with deployment prefix)
     const storeUserSession = (userData, tokens) => {
         // Store only required user fields
-        sessionStorage.setItem('its_id', userData.its_id?.toString() || '');
-        sessionStorage.setItem('full_name', userData.full_name || '');
-        sessionStorage.setItem('team_id', userData.team_id?.toString() || '');
-        sessionStorage.setItem('position_id', userData.position_id?.toString() || '');
-        sessionStorage.setItem('jamaat_id', userData.jamaat_id?.toString() || '');
-        sessionStorage.setItem('jamaat_name', userData.jamaat_name || '');
-        sessionStorage.setItem('role_id', userData.role_id?.toString() || '');
-        sessionStorage.setItem('is_admin', userData.is_admin?.toString() || 'false');
-        sessionStorage.setItem('access_rights', userData.access_rights || '');
-        
+        appStorage.setItem('its_id', userData.its_id?.toString() || '');
+        appStorage.setItem('full_name', userData.full_name || '');
+        appStorage.setItem('team_id', userData.team_id?.toString() || '');
+        appStorage.setItem('position_id', userData.position_id?.toString() || '');
+        appStorage.setItem('jamaat_id', userData.jamaat_id?.toString() || '');
+        appStorage.setItem('jamaat_name', userData.jamaat_name || '');
+        appStorage.setItem('role_id', userData.role_id?.toString() || '');
+        appStorage.setItem('is_admin', userData.is_admin?.toString() || 'false');
+        appStorage.setItem('access_rights', userData.access_rights || '');
+
         // Store access token
-        sessionStorage.setItem('access_token', tokens.access_token || '');
-        
+        appStorage.setItem('access_token', tokens.access_token || '');
+
         // Calculate and store expiry time (current time + expires_in seconds)
         const expiryTime = Date.now() + (tokens.expires_in * 1000);
-        sessionStorage.setItem('session_expiry', expiryTime.toString());
-        
-        sessionStorage.setItem('isLoggedIn', 'true');
+        appStorage.setItem('session_expiry', expiryTime.toString());
+
+        appStorage.setItem('isLoggedIn', 'true');
     };
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        
+
         // Validation
         if (!username || !password) {
             setError("Please enter both username and password");
             return;
         }
-        
+
         setLoading(true);
         setError("");
-        
+
         try {
             const response = await fetch(
                 `${API_BASE_URL}/Login/CheckLogin`,
@@ -80,32 +81,32 @@ const Login = ({ ThemeChanger }) => {
                     }),
                 }
             );
-            
+
             const result = await response.json();
-            
+
             console.log('Login Response:', result);
-            
+
             // Check if login was successful
             if (response.ok && result.success) {
-                
+
                 // === AUTHORIZATION CHECK ===
                 const userRoleId = result.data?.role_id?.toString();
-                
+
                 // Allow ONLY role_id 1 OR 2
                 if (userRoleId === '1' || userRoleId === '2') {
                     // Authorized: Store user data and tokens in sessionStorage
                     storeUserSession(result.data, result.tokens);
-                    
+
                     // Navigate to dashboard
                     routeChange();
                 } else {
                     // Not Authorized: Show error and DO NOT store session
                     setError("Not Authorized: You do not have permission to access this application.");
-                    
+
                     // Safety clear just in case
-                    sessionStorage.clear();
+                    appStorage.clear();
                 }
-                
+
             } else {
                 // Handle error response
                 setError(result.message || "Login failed. Please check your credentials.");
@@ -120,25 +121,25 @@ const Login = ({ ThemeChanger }) => {
 
     useEffect(() => {
         LocalStorageBackup(ThemeChanger);
-        
+
         // If already logged in and session valid, redirect to dashboard
-        const isLoggedIn = sessionStorage.getItem('isLoggedIn');
-        const sessionExpiry = sessionStorage.getItem('session_expiry');
-        const storedRoleId = sessionStorage.getItem('role_id');
-        
+        const isLoggedIn = appStorage.getItem('isLoggedIn');
+        const sessionExpiry = appStorage.getItem('session_expiry');
+        const storedRoleId = appStorage.getItem('role_id');
+
         // Check if role is either 1 or 2 during auto-login check
         const isAuthorizedRole = storedRoleId === '1' || storedRoleId === '2';
-        
+
         if (isLoggedIn && sessionExpiry && isAuthorizedRole) {
             const currentTime = Date.now();
             const expiryTime = parseInt(sessionExpiry, 10);
-            
+
             if (currentTime < expiryTime) {
                 routeChange();
             }
         } else if (isLoggedIn) {
             // If logged in but role is invalid or session expired, clear it
-            sessionStorage.clear();
+            appStorage.clear();
         }
     }, []);
 
@@ -158,7 +159,7 @@ const Login = ({ ThemeChanger }) => {
                                     <div className="row gy-3">
                                         {err && <Alert variant="danger">{err}</Alert>}
                                         <Col xl={12}>
-                                            <Form.Control 
+                                            <Form.Control
                                                 size="lg"
                                                 placeholder="ITS ID"
                                                 name="username"
@@ -171,21 +172,21 @@ const Login = ({ ThemeChanger }) => {
                                         </Col>
                                         <Col xl={12} className="mb-2">
                                             <InputGroup>
-                                                <Form.Control 
-                                                    size="lg" 
-                                                    className="form-control" 
-                                                    placeholder="Password" 
-                                                    name="password" 
-                                                    type={passwordshow1 ? 'text' : 'password'} 
-                                                    value={password} 
-                                                    onChange={changeHandler} 
-                                                    required 
+                                                <Form.Control
+                                                    size="lg"
+                                                    className="form-control"
+                                                    placeholder="Password"
+                                                    name="password"
+                                                    type={passwordshow1 ? 'text' : 'password'}
+                                                    value={password}
+                                                    onChange={changeHandler}
+                                                    required
                                                     disabled={loading}
                                                 />
-                                                <Button 
-                                                    variant='light' 
-                                                    className="btn btn-light" 
-                                                    type="button" 
+                                                <Button
+                                                    variant='light'
+                                                    className="btn btn-light"
+                                                    type="button"
                                                     onClick={() => setpasswordshow1(!passwordshow1)}
                                                     id="button-addon2"
                                                     disabled={loading}
@@ -195,10 +196,10 @@ const Login = ({ ThemeChanger }) => {
                                             </InputGroup>
                                         </Col>
                                         <Col xl={12} className="d-grid mt-2">
-                                            <Button 
-                                                variant='primary' 
+                                            <Button
+                                                variant='primary'
                                                 type="submit"
-                                                size='lg' 
+                                                size='lg'
                                                 className="btn"
                                                 disabled={loading}
                                             >

@@ -4,7 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { MenuItems } from '../sidebar/sidemenu/sidemenu';
 import { connect } from "react-redux";
 import { ThemeChanger } from "../../../redux/action";
-import {clearSession} from "../../../firebase/authGuard";
+import { clearSession } from "../../../firebase/authGuard";
+import appStorage from "../../../utils/storage";
 import personLogo from "../../../assets/images/avatar1.png"
 import bgmi from "../../../assets/images/burhaniguards_logo.png"
 
@@ -29,18 +30,18 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
     const [fullName, setFullName] = useState("");
     const [its_id, setits_id] = useState("");
 
-   useEffect(() => {
-    const name = sessionStorage.getItem("full_name");
-    const its_id = sessionStorage.getItem("its_id")
-     if (name) {
-      setFullName(name);
-      setits_id(its_id)
-     }
+    useEffect(() => {
+        const name = appStorage.getItem("full_name");
+        const its_id = appStorage.getItem("its_id")
+        if (name) {
+            setFullName(name);
+            setits_id(its_id)
+        }
     }, []);
 
     const handleLogout = () => {
-         clearSession();          
-         window.location.href = `${import.meta.env.BASE_URL}firebase/login`;
+        clearSession();
+        window.location.href = `${import.meta.env.BASE_URL}firebase/login`;
     };
 
     // ///****fullscreeen */
@@ -127,7 +128,7 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
 
 
 
-	const SwithcerClass = (selector) => document.getElementsByClassName(selector);
+    const SwithcerClass = (selector) => document.getElementsByClassName(selector);
 
     const Switchericon = () => {
         const offcanvasEnd = SwithcerClass("offcanvas-end")[0];
@@ -422,30 +423,30 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
     useEffect(() => {
         const intervalId1 = setInterval(() => {
             setDate(new Date());
-        }, 1000 * 60 * 60 * 24); 
-    
+        }, 1000 * 60 * 60 * 24);
+
         const intervalId = setInterval(() => {
-            setTime(new Date()); 
+            setTime(new Date());
         }, 1000);
-    
+
         const clickHandler = (event) => {
             if (searchResultRef.current && !searchResultRef.current.contains(event.target)) {
                 searchResultRef.current.classList.add("d-none");
             }
         };
-    
+
         document.addEventListener("click", clickHandler);
-		window.addEventListener("scroll", handleScroll);
-    
+        window.addEventListener("scroll", handleScroll);
+
         return () => {
             document.removeEventListener("click", clickHandler);
-		   window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener("scroll", handleScroll);
             clearInterval(intervalId);
             clearInterval(intervalId1);
         };
     }, []);
 
-    
+
     //offcanvas right
     const [showr, setShowr] = useState(false);
 
@@ -464,15 +465,15 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
     const handleShow = () => setShow(true);
 
     const headerRef = useRef(null);
-	const [isSticky, setIsSticky] = useState(false);
+    const [isSticky, setIsSticky] = useState(false);
 
-	const handleScroll = () => {
-		if (window.scrollY > 30) {
-			setIsSticky(true);
-		} else {
-			setIsSticky(false);
-		}
-	};
+    const handleScroll = () => {
+        if (window.scrollY > 30) {
+            setIsSticky(true);
+        } else {
+            setIsSticky(false);
+        }
+    };
 
     return (
         <Fragment>
@@ -552,8 +553,8 @@ const Header = ({ local_varaiable, ThemeChanger }) => {
                                 </div>
                             </Dropdown.Menu>
                         </Dropdown>
-                
-                        
+
+
                     </div>
                 </div>
 

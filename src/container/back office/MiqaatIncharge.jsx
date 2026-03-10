@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { checkModuleAccess } from '../../utils/accessControl';
 import '../../styles/shared-styles.css';
+import appStorage from '../../utils/storage';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const MODULE_ID = '111';
@@ -338,7 +339,7 @@ const MiqaatIncharge = () => {
         const checkAccess = () => {
             setCheckingPermissions(true);
 
-            const isAdminValue = sessionStorage.getItem('is_admin');
+            const isAdminValue = appStorage.getItem('is_admin');
             if (isAdminValue === 'true' || isAdminValue === true || isAdminValue === '1') {
                 setPermissions({ canAdd: true, canEdit: true, canDelete: true, hasAccess: true });
                 setCheckingPermissions(false);
@@ -346,7 +347,7 @@ const MiqaatIncharge = () => {
                 return;
             }
 
-            const accessRights = sessionStorage.getItem('access_rights');
+            const accessRights = appStorage.getItem('access_rights');
 
             if (!accessRights) {
                 Swal.fire({
@@ -416,7 +417,7 @@ const MiqaatIncharge = () => {
 
     const checkAccess = () => {
         setCheckingPermissions(true);
-        const isAdminValue = sessionStorage.getItem('is_admin');
+        const isAdminValue = appStorage.getItem('is_admin');
 
         if (isAdminValue === 'true' || isAdminValue === true || isAdminValue === '1') {
             setPermissions({ canAdd: true, canEdit: true, canDelete: true, hasAccess: true });
@@ -425,7 +426,7 @@ const MiqaatIncharge = () => {
             return;
         }
 
-        const accessRights = sessionStorage.getItem('access_rights');
+        const accessRights = appStorage.getItem('access_rights');
         if (!accessRights) {
             Swal.fire({
                 icon: 'error',
@@ -488,7 +489,7 @@ const MiqaatIncharge = () => {
     const fetchMiqaatOptions = async () => {
         setLoadingMiqaat(true);
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             const response = await fetch(`${API_BASE_URL}/Duty/GetListOfActiveMiqaat`, {
                 method: 'GET',
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` }
@@ -510,7 +511,7 @@ const MiqaatIncharge = () => {
     const fetchJamiaatOptions = async () => {
         setLoadingJamiaat(true);
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             const response = await fetch(`${API_BASE_URL}/Team/GetAllJamiaats`, {
                 method: 'GET',
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` }
@@ -535,7 +536,7 @@ const MiqaatIncharge = () => {
     const fetchTeamOptions = async (jamiaatId = null) => {
         setLoadingTeams(true);
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             let url, method, body;
 
             if (jamiaatId) {
@@ -576,7 +577,7 @@ const MiqaatIncharge = () => {
         setLoadingLocations(true);
         setFormData(prev => ({ ...prev, location: null }));
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             const response = await fetch(`${API_BASE_URL}/Duty/GetLocationsByVenue`, {
                 method: 'POST',
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
@@ -603,7 +604,7 @@ const MiqaatIncharge = () => {
         setLoadingMembers(true);
 
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             const response = await fetch(`${API_BASE_URL}/Incharge/GetTeamMembersForIncharge`, {
                 method: 'POST',
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
@@ -633,7 +634,7 @@ const MiqaatIncharge = () => {
     const fetchInchargesByMiqaat = async (miqaatId) => {
         setLoadingGrid(true);
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             const response = await fetch(`${API_BASE_URL}/Incharge/GetInchargesByMiqaat`, {
                 method: 'POST',
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
@@ -666,7 +667,7 @@ const MiqaatIncharge = () => {
 
     const fetchInchargeById = async (guardDutyId) => {
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             const response = await fetch(`${API_BASE_URL}/Incharge/GetInchargeById`, {
                 method: 'POST',
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
@@ -686,7 +687,7 @@ const MiqaatIncharge = () => {
     const fetchMiqaatInfo = async (miqaatId) => {
         try {
             setLoadingMiqaatInfo(true);
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             if (!accessToken) {
                 console.error('Access token not found');
                 return;
@@ -854,7 +855,7 @@ const MiqaatIncharge = () => {
 
         setLoading(true);
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             let response, apiEndpoint, requestBody;
 
             // Prepare reporting_time for API
@@ -1062,7 +1063,7 @@ const MiqaatIncharge = () => {
         if (!result.isConfirmed) return;
 
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             const response = await fetch(`${API_BASE_URL}/Incharge/DeleteIncharge`, {
                 method: 'DELETE',
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },

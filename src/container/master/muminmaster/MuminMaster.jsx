@@ -9,6 +9,7 @@ import Select from 'react-select';
 import Swal from 'sweetalert2';
 import { checkModuleAccess } from '../../../utils/accessControl';
 import '../../../styles/shared-styles.css';
+import appStorage from '../../../utils/storage';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -188,7 +189,7 @@ const AddMumin = ({
     const fetchAllRoles = async () => {
         setLoadingRoles(true);
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
             if (!token) {
                 setLoadingRoles(false);
                 return;
@@ -221,7 +222,7 @@ const AddMumin = ({
     const fetchAllPositions = async () => {
         setLoadingPositions(true);
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
             if (!token) {
                 setLoadingPositions(false);
                 return;
@@ -254,7 +255,7 @@ const AddMumin = ({
     const fetchAllJamiaats = async () => {
         setLoadingJamiaats(true);
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
             if (!token) {
                 setLoadingJamiaats(false);
                 return;
@@ -289,7 +290,7 @@ const AddMumin = ({
         setJamaatOptions([]);
 
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
             if (!token) {
                 setLoadingJamaats(false);
                 return;
@@ -325,7 +326,7 @@ const AddMumin = ({
         setTeamOptions([]);
 
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
             if (!token) {
                 setLoadingTeams(false);
                 return;
@@ -363,7 +364,7 @@ const AddMumin = ({
         setProfileImage(null);
 
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
             if (!token) return;
 
             const response = await fetch(`${API_BASE_URL}/ITS-API/HandlerE1`, {
@@ -393,7 +394,7 @@ const AddMumin = ({
 
     const checkMuminInDB = async (itsId) => {
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
             if (!token) return null;
 
             const response = await fetch(`${API_BASE_URL}/Mumin/GetMuminById`, {
@@ -734,7 +735,7 @@ const AddMumin = ({
         setLoading(true);
 
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
             if (!token) throw new Error('Authentication token not found. Please login again.');
 
             const payload = {
@@ -1271,7 +1272,7 @@ const MuminTable = () => {
     const checkAccess = () => {
         setCheckingPermissions(true);
 
-        const isAdminValue = sessionStorage.getItem('is_admin');
+        const isAdminValue = appStorage.getItem('is_admin');
 
         if (isAdminValue === 'true' || isAdminValue === true || isAdminValue === '1') {
             setPermissions({
@@ -1285,7 +1286,7 @@ const MuminTable = () => {
             return;
         }
 
-        const accessRights = sessionStorage.getItem('access_rights');
+        const accessRights = appStorage.getItem('access_rights');
 
         if (!accessRights) {
             Swal.fire({
@@ -1325,7 +1326,7 @@ const MuminTable = () => {
             setLoading(true);
             setError(null);
 
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             if (!accessToken) {
                 throw new Error('Access token not found. Please login again.');
             }
@@ -1415,7 +1416,7 @@ const MuminTable = () => {
 
         if (result.isConfirmed) {
             try {
-                const token = sessionStorage.getItem('access_token');
+                const token = appStorage.getItem('access_token');
                 const response = await fetch(`${API_BASE_URL}/Mumin/DeleteMumin`, {
                     method: 'DELETE',
                     headers: {

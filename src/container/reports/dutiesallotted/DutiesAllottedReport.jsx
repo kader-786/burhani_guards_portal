@@ -46,14 +46,14 @@
 
 // //     // ── RBAC check ────────────────────────────────────────────────────────────
 // //     useEffect(() => {
-// //         const isAdminValue = sessionStorage.getItem('is_admin');
+// //         const isAdminValue = appStorage.getItem('is_admin');
 // //         if (isAdminValue === 'true' || isAdminValue === true || isAdminValue === '1') {
 // //             setPermissions({ canAdd: true, canEdit: true, canDelete: true, hasAccess: true });
 // //             setCheckingPermissions(false);
 // //             return;
 // //         }
 
-// //         const accessRights = sessionStorage.getItem('access_rights');
+// //         const accessRights = appStorage.getItem('access_rights');
 // //         if (!accessRights) {
 // //             Swal.fire({
 // //                 icon: 'error', title: 'Session Expired',
@@ -81,7 +81,7 @@
 // //         const fetchAllMiqaats = async () => {
 // //             setLoadingMiqaat(true);
 // //             try {
-// //                 const token = sessionStorage.getItem('access_token');
+// //                 const token = appStorage.getItem('access_token');
 // //                 if (!token) { toast.error('Authentication token not found. Please login again.'); return; }
 
 // //                 const response = await fetch(`${API_BASE_URL}/Miqaat/GetActiveOrLiveMiqaat`, {
@@ -118,7 +118,7 @@
 // //         setLoading(true);
 // //         setTableData([]);
 // //         try {
-// //             const token = sessionStorage.getItem('access_token');
+// //             const token = appStorage.getItem('access_token');
 // //             const body = { miqaat_id: selectedMiqaat.value };
 // //             if (jamiaatId !== null && jamiaatId !== undefined) {
 // //                 body.jamiaat_id = jamiaatId;
@@ -160,7 +160,7 @@
 // //         setSelectedRow({ duty_id: row.duty_id, team_id: row.team_id });
 
 // //         try {
-// //             const token = sessionStorage.getItem('access_token');
+// //             const token = appStorage.getItem('access_token');
 // //             const response = await fetch(`${API_BASE_URL}/Reports/GetDutiesAllottedDrilldown`, {
 // //                 method: 'POST',
 // //                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -574,14 +574,14 @@
 
 //     // ── RBAC check ────────────────────────────────────────────────────────────
 //     useEffect(() => {
-//         const isAdminValue = sessionStorage.getItem('is_admin');
+//         const isAdminValue = appStorage.getItem('is_admin');
 //         if (isAdminValue === 'true' || isAdminValue === true || isAdminValue === '1') {
 //             setPermissions({ canAdd: true, canEdit: true, canDelete: true, hasAccess: true });
 //             setCheckingPermissions(false);
 //             return;
 //         }
 
-//         const accessRights = sessionStorage.getItem('access_rights');
+//         const accessRights = appStorage.getItem('access_rights');
 //         if (!accessRights) {
 //             Swal.fire({
 //                 icon: 'error', title: 'Session Expired',
@@ -609,7 +609,7 @@
 //         const fetchAllMiqaats = async () => {
 //             setLoadingMiqaat(true);
 //             try {
-//                 const token = sessionStorage.getItem('access_token');
+//                 const token = appStorage.getItem('access_token');
 //                 if (!token) { toast.error('Authentication token not found. Please login again.'); return; }
 
 //                 const response = await fetch(`${API_BASE_URL}/Miqaat/GetActiveOrLiveMiqaat`, {
@@ -646,7 +646,7 @@
 //         setLoading(true);
 //         setTableData([]);
 //         try {
-//             const token = sessionStorage.getItem('access_token');
+//             const token = appStorage.getItem('access_token');
 //             const body = { miqaat_id: selectedMiqaat.value };
 //             if (jamiaatId !== null && jamiaatId !== undefined) {
 //                 body.jamiaat_id = jamiaatId;
@@ -689,7 +689,7 @@
 //         setDrilldownMeta({ teamName: row.team_name || '', locationName: row.location_name || 'N/A' });
 
 //         try {
-//             const token = sessionStorage.getItem('access_token');
+//             const token = appStorage.getItem('access_token');
 //             const response = await fetch(`${API_BASE_URL}/Reports/GetDutiesAllottedDrilldown`, {
 //                 method: 'POST',
 //                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -1148,6 +1148,7 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { checkModuleAccess } from '../../../utils/accessControl';
 import '../../../styles/shared-styles.css';
+import appStorage from '../../../utils/storage';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -1190,14 +1191,14 @@ const DutiesAllottedReport = ({ moduleId, jamiaatId, title }) => {
 
     // ── RBAC check ────────────────────────────────────────────────────────────
     useEffect(() => {
-        const isAdminValue = sessionStorage.getItem('is_admin');
+        const isAdminValue = appStorage.getItem('is_admin');
         if (isAdminValue === 'true' || isAdminValue === true || isAdminValue === '1') {
             setPermissions({ canAdd: true, canEdit: true, canDelete: true, hasAccess: true });
             setCheckingPermissions(false);
             return;
         }
 
-        const accessRights = sessionStorage.getItem('access_rights');
+        const accessRights = appStorage.getItem('access_rights');
         if (!accessRights) {
             Swal.fire({
                 icon: 'error', title: 'Session Expired',
@@ -1225,7 +1226,7 @@ const DutiesAllottedReport = ({ moduleId, jamiaatId, title }) => {
         const fetchAllMiqaats = async () => {
             setLoadingMiqaat(true);
             try {
-                const token = sessionStorage.getItem('access_token');
+                const token = appStorage.getItem('access_token');
                 if (!token) { toast.error('Authentication token not found. Please login again.'); return; }
 
                 const response = await fetch(`${API_BASE_URL}/Miqaat/GetActiveOrLiveMiqaat`, {
@@ -1263,7 +1264,7 @@ const DutiesAllottedReport = ({ moduleId, jamiaatId, title }) => {
         setTableData([]);
         setTotalAssignedDirect(null);
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
             const body = { miqaat_id: selectedMiqaat.value };
             if (jamiaatId !== null && jamiaatId !== undefined) {
                 body.jamiaat_id = jamiaatId;
@@ -1307,7 +1308,7 @@ const DutiesAllottedReport = ({ moduleId, jamiaatId, title }) => {
         setDrilldownMeta({ teamName: row.team_name || '', locationName: row.location_name || 'N/A' });
 
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
             const response = await fetch(`${API_BASE_URL}/Reports/GetDutiesAllottedDrilldown`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -1345,7 +1346,7 @@ const DutiesAllottedReport = ({ moduleId, jamiaatId, title }) => {
         setDrilldownMeta({ teamName: 'All', locationName: 'All' });
 
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
             const body = { miqaat_id: selectedMiqaat.value };
             if (jamiaatId !== null && jamiaatId !== undefined) {
                 body.jamiaat_id = jamiaatId;

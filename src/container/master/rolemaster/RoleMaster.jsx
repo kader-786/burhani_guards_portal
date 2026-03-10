@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { checkModuleAccess } from '../../../utils/accessControl';
 import '../../../styles/shared-styles.css';
 import StandardModal from '../../../components/StandardModal';
+import appStorage from '../../../utils/storage';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const MODULE_ID = '106';
@@ -44,7 +45,7 @@ const AddRole = ({
     const fetchModules = async () => {
         setLoadingModules(true);
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
 
             if (!accessToken) {
                 console.error('Access token not found');
@@ -219,7 +220,7 @@ const AddRole = ({
         setLoading(true);
 
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
 
             if (!accessToken) {
                 throw new Error('Access token not found. Please login again.');
@@ -669,7 +670,7 @@ const EditRole = ({
     const fetchModules = async () => {
         setLoadingModules(true);
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
 
             if (!accessToken) {
                 console.error('Access token not found');
@@ -724,7 +725,7 @@ const EditRole = ({
     const fetchRoleData = async (id) => {
         setLoadingRoleData(true);
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
 
             if (!token) {
                 Swal.fire({
@@ -983,7 +984,7 @@ const EditRole = ({
         setLoading(true);
 
         try {
-            const token = sessionStorage.getItem('access_token');
+            const token = appStorage.getItem('access_token');
 
             if (!token) {
                 Swal.fire({
@@ -1429,14 +1430,14 @@ const RoleTable = () => {
         const checkAccess = () => {
             setCheckingPermissions(true);
 
-            const isAdminValue = sessionStorage.getItem('is_admin');
+            const isAdminValue = appStorage.getItem('is_admin');
             if (isAdminValue === 'true' || isAdminValue === true || isAdminValue === '1') {
                 setPermissions({ canAdd: true, canEdit: true, canDelete: true, hasAccess: true });
                 setCheckingPermissions(false);
                 return;
             }
 
-            const accessRights = sessionStorage.getItem('access_rights');
+            const accessRights = appStorage.getItem('access_rights');
 
             if (!accessRights) {
                 Swal.fire({
@@ -1477,7 +1478,7 @@ const RoleTable = () => {
             setLoading(true);
             setError(null);
 
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
 
             if (!accessToken) {
                 throw new Error('Access token not found. Please login again.');
@@ -1618,7 +1619,7 @@ const RoleTable = () => {
         }
 
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
 
             if (!accessToken) {
                 throw new Error('Access token not found. Please login again.');

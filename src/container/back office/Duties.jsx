@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { checkModuleAccess } from '../../utils/accessControl';
 import '../../styles/shared-styles.css';
+import appStorage from '../../utils/storage';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const MODULE_ID = '108';
@@ -117,13 +118,13 @@ const MiqaatTeamForm = () => {
 
     const checkAccess = () => {
         setCheckingPermissions(true);
-        const isAdminValue = sessionStorage.getItem('is_admin');
+        const isAdminValue = appStorage.getItem('is_admin');
         if (isAdminValue === 'true' || isAdminValue === true || isAdminValue === '1') {
             setPermissions({ canAdd: true, canEdit: true, canDelete: true, hasAccess: true });
             setCheckingPermissions(false);
             return;
         }
-        const accessRights = sessionStorage.getItem('access_rights');
+        const accessRights = appStorage.getItem('access_rights');
         if (!accessRights) {
             Swal.fire({ icon: 'error', title: 'Session Expired', text: 'Your session has expired. Please log in again.', confirmButtonText: 'OK' }).then(() => {
                 navigate(`${import.meta.env.BASE_URL}login/`);
@@ -181,7 +182,7 @@ const MiqaatTeamForm = () => {
     const fetchMiqaatOptions = async () => {
         try {
             setLoadingMiqaat(true);
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             if (!accessToken) { console.error('Access token not found'); return; }
             const response = await fetch(`${API_BASE_URL}/Duty/GetListOfActiveMiqaat`, {
                 method: 'GET',
@@ -209,7 +210,7 @@ const MiqaatTeamForm = () => {
     const fetchJamiaatOptions = async () => {
         try {
             setLoadingJamiaat(true);
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             if (!accessToken) { console.error('Access token not found'); return; }
             const response = await fetch(`${API_BASE_URL}/Team/GetAllJamiaats`, {
                 method: 'GET',
@@ -235,7 +236,7 @@ const MiqaatTeamForm = () => {
     const fetchTeamOptions = async (jamiaatId = null) => {
         try {
             setLoadingTeam(true);
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             if (!accessToken) { console.error('Access token not found'); return; }
 
             let url, method, body;
@@ -314,7 +315,7 @@ const MiqaatTeamForm = () => {
     const fetchLocationsByVenue = async (venueId, miqaatId) => {
         try {
             setLoadingLocations(true);
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             if (!accessToken) { console.error('Access token not found'); return; }
             const response = await fetch(`${API_BASE_URL}/Duty/GetLocationsWithIncharges`, {
                 method: 'POST',
@@ -341,7 +342,7 @@ const MiqaatTeamForm = () => {
     const fetchTeamCount = async (teamId) => {
         try {
             setLoadingTeamCount(true);
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             if (!accessToken) { console.error('Access token not found'); return; }
             const response = await fetch(`${API_BASE_URL}/Duty/GetTeamCountByTeam`, {
                 method: 'POST',
@@ -378,7 +379,7 @@ const MiqaatTeamForm = () => {
     const fetchRemainingQuota = async (miqaatId) => {
         try {
             setLoadingRemainingQuota(true);
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             if (!accessToken) { console.error('Access token not found'); return; }
             const response = await fetch(`${API_BASE_URL}/Duty/GetRemainingQuotaByMiqaat`, {
                 method: 'POST',
@@ -404,7 +405,7 @@ const MiqaatTeamForm = () => {
     const fetchSavedDutiesByMiqaat = async (miqaatId) => {
         try {
             setLoadingSavedDuties(true);
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             if (!accessToken) { console.error('Access token not found'); return; }
             const response = await fetch(`${API_BASE_URL}/Duty/GetDutiesByMiqaat`, {
                 method: 'POST',
@@ -433,7 +434,7 @@ const MiqaatTeamForm = () => {
     const fetchMiqaatInfo = async (miqaatId) => {
         try {
             setLoadingMiqaatInfo(true);
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             if (!accessToken) { console.error('Access token not found'); return; }
 
             const response = await fetch(`${API_BASE_URL}/Miqaat/GetMiqaatById`, {
@@ -823,7 +824,7 @@ const MiqaatTeamForm = () => {
         setLoading(true);
 
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             if (!accessToken) {
                 throw new Error('Access token not found. Please login again.');
             }
@@ -971,7 +972,7 @@ const MiqaatTeamForm = () => {
         setLoading(true);
 
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             if (!accessToken) {
                 throw new Error('Access token not found. Please login again.');
             }
@@ -1166,7 +1167,7 @@ const MiqaatTeamForm = () => {
         setLoading(true);
 
         try {
-            const accessToken = sessionStorage.getItem('access_token');
+            const accessToken = appStorage.getItem('access_token');
             if (!accessToken) {
                 throw new Error('Access token not found. Please login again.');
             }
