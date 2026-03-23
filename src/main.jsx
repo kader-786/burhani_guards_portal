@@ -76,6 +76,10 @@ import DutiesAllottedBackoffice from './container/reports/dutiesallotted/DutiesA
 import DutiesAllottedMumbai from './container/reports/dutiesallotted/DutiesAllottedMumbai.jsx';
 import DutiesAllottedMarol from './container/reports/dutiesallotted/DutiesAllottedMarol.jsx';
 import DutiesAllottedMumbra from './container/reports/dutiesallotted/DutiesAllottedMumbra.jsx';
+import DutyChart from './container/reports/dutychart/DutyChart.jsx';
+import InchargeAttendanceReport from './container/reports/inchargeattendancereport/InchargeAttendanceReport.jsx';
+import DutiesSummaryReportBackoffice from './container/reports/dutiessummaryreport/dutiessummaryreport-backoffice.jsx';
+import InchargeDutiesSummaryReport from './container/reports/inchargeduteissummaryreport/inchargedutiessummaryreport.jsx';
 
 window.global = window; // Polyfill for global
 
@@ -105,6 +109,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path={`${import.meta.env.BASE_URL}reports/dutiesallotedmumbai`} element={<DutiesAllottedMumbai />} />
           <Route path={`${import.meta.env.BASE_URL}reports/dutiesallotedmarol`} element={<DutiesAllottedMarol />} />
           <Route path={`${import.meta.env.BASE_URL}reports/dutiesallotedmumbra`} element={<DutiesAllottedMumbra />} />
+          <Route path={`${import.meta.env.BASE_URL}reports/dutychart`} element={<DutyChart />} />
+          <Route path={`${import.meta.env.BASE_URL}reports/inchargeattendancereport`} element={<InchargeAttendanceReport />} />
+          {/* <Route path={`${import.meta.env.BASE_URL}reports/dutiessummaryreport`} element={<DutiesSummaryReport />} /> */}
+          <Route path={`${import.meta.env.BASE_URL}reports/dutiessummaryreport`} element={<DutiesSummaryReportBackoffice />} />
+          <Route path={`${import.meta.env.BASE_URL}reports/inchargedutiessummaryreport`} element={<InchargeDutiesSummaryReport />} />
         </Route>
 
         {/* Public Routes - Error Pages */}

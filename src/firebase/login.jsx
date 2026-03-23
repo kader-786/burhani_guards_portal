@@ -6,6 +6,7 @@ import { LocalStorageBackup } from '../components/common/switcher/switcherdata';
 import { ThemeChanger } from "../redux/action";
 import bgmi from "../assets/images/burhaniguards_logo1.png";
 import appStorage from '../utils/storage';
+import { fetchAndBuildMenu, saveMenuToStorage } from '../utils/menuService';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Login = ({ ThemeChanger }) => {
@@ -94,8 +95,20 @@ const Login = ({ ThemeChanger }) => {
 
                 // Allow ONLY role_id 1 OR 2
                 if (userRoleId === '1' || userRoleId === '2') {
-                    // Authorized: Store user data and tokens in sessionStorage
+                    // Authorized: Store user data and tokens
                     storeUserSession(result.data, result.tokens);
+
+                    // Fetch and cache the dynamic menu for this role
+                    try {
+                        const menuItems = await fetchAndBuildMenu(
+                            result.data.role_id,
+                            result.tokens.access_token
+                        );
+                        saveMenuToStorage(menuItems);
+                    } catch (menuErr) {
+                        // Non-fatal — sidebar falls back to the static MenuItems
+                        console.warn('Menu fetch failed, using static fallback:', menuErr);
+                    }
 
                     // Navigate to dashboard
                     routeChange();

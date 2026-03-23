@@ -5,12 +5,15 @@ import { ThemeChanger } from "../../../redux/action";
 import store from "../../../redux/store";
 import SimpleBar from "simplebar-react";
 import { MenuItems } from "./sidemenu/sidemenu";
+import { loadMenuFromStorage } from "../../../utils/menuService";
 import Menuloop from "./menuloop";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import bgLogo from "../../../assets/images/burhaniguards_logo1.png";
 
 const Sidebar = ({ local_varaiable, ThemeChanger }) => {
 
-	const [menuitems, setMenuitems] = useState(MenuItems);
+	// Load from storage (set on login) → fall back to static array if nothing cached
+	const [menuitems, setMenuitems] = useState(() => loadMenuFromStorage() || MenuItems);
 
 	function closeMenuFn() {
 		const closeMenuRecursively = (items) => {
@@ -19,7 +22,7 @@ const Sidebar = ({ local_varaiable, ThemeChanger }) => {
 				closeMenuRecursively(item.children);
 			});
 		};
-		closeMenuRecursively(MenuItems);
+		closeMenuRecursively(menuitems);
 		setMenuitems((arr) => [...arr]);
 	}
 
@@ -56,7 +59,7 @@ const Sidebar = ({ local_varaiable, ThemeChanger }) => {
 			window.removeEventListener("scroll", handleScroll);
 		};
 	}, []);
-	
+
 
 	const location = useLocation()
 
@@ -202,7 +205,7 @@ const Sidebar = ({ local_varaiable, ThemeChanger }) => {
 
 					if (item.active) {
 						closeOtherMenus(MENUITEMS, item);
-					} 
+					}
 					else {
 						if (theme.dataVerticalStyle == "doublemenu") {
 							ThemeChanger({ ...theme, toggled: "double-menu-close" });
@@ -314,7 +317,7 @@ const Sidebar = ({ local_varaiable, ThemeChanger }) => {
 			}
 
 			setAncestorsActive(MenuItems, parent);
-		} 
+		}
 		else {
 			if (theme.dataVerticalStyle == "doublemenu") {
 				ThemeChanger({ ...theme, toggled: "double-menu-close" });
@@ -322,100 +325,105 @@ const Sidebar = ({ local_varaiable, ThemeChanger }) => {
 
 		}
 	}
-  
+
 	const setMenuUsingUrl = (currentPath) => {
-	  let hasParent = false;
-	  const setSubmenuRecursively = (items) => {
-		items?.forEach((item) => {
-		  if (item.path === currentPath) {
-			setSubmenu(null, item);
-		  }
-		  if (item.children) setSubmenuRecursively(item.children);
-		});
-	  };
-	  setSubmenuRecursively(MenuItems);
+		const setSubmenuRecursively = (items) => {
+			items?.forEach((item) => {
+				if (item.path === currentPath) {
+					setSubmenu(null, item);
+				}
+				if (item.children) setSubmenuRecursively(item.children);
+			});
+		};
+		setSubmenuRecursively(menuitems);
 	};
-  
+
 	useEffect(() => {
-	  const currentPath = location.pathname.endsWith("/") ? location.pathname.slice(0, -1) : location.pathname;
-  
-	  if (currentPath !== previousUrl) {
-		setMenuUsingUrl(currentPath);
-		setPreviousUrl(currentPath);
-	  }
+		const currentPath = location.pathname.endsWith("/") ? location.pathname.slice(0, -1) : location.pathname;
+
+		if (currentPath !== previousUrl) {
+			setMenuUsingUrl(currentPath);
+			setPreviousUrl(currentPath);
+		}
 	}, [location.pathname]);
-  
-  
+
+
 	const findParent = (items, targetObject) => {
-	  for (const item of items) {
-		if (item.children && item.children.includes(targetObject)) {
-		  return item;
+		for (const item of items) {
+			if (item.children && item.children.includes(targetObject)) {
+				return item;
+			}
+			if (item.children) {
+				const parent = findParent(item.children, targetObject);
+				if (parent) return parent;
+			}
 		}
-		if (item.children) {
-		  const parent = findParent(item.children, targetObject);
-		  if (parent) return parent;
-		}
-	  }
-	  return null;
+		return null;
 	};
-  
+
+	// Helper: render icon — supports both iconClass (string, dynamic) and icon (JSX, static fallback)
+	const renderIcon = (item) => {
+		if (item.iconClass) return <span className='side-menu__icon'><i className={item.iconClass} /></span>;
+		if (item.icon) return <span className='side-menu__icon'>{item.icon}</span>;
+		return null;
+	};
+
 	const closeOtherMenus = (items, targetObject) => {
-	  items.forEach(item => {
-		if (item !== targetObject) {
-		  item.active = false;
-		  if (item.children) closeOtherMenus(item.children, targetObject);
-		}
-	  });
+		items.forEach(item => {
+			if (item !== targetObject) {
+				item.active = false;
+				if (item.children) closeOtherMenus(item.children, targetObject);
+			}
+		});
 	};
-  
+
 	let hasParent = false;
 	let hasParentLevel = 0;
 
 	const setMenuAncestorsActive = (targetObject) => {
-	  const parent = findParent(MenuItems, targetObject);
-	  const theme = store.getState();
-	  if (parent) {
-		if (hasParentLevel > 2) {
-			hasParent = true;
+		// IMPORTANT: use menuitems (live state), NOT the static MenuItems import.
+		// When the menu comes from storage the items are new objects, so
+		// findParent(MenuItems, ...) would always return null and the parent
+		// would stay collapsed after removeActiveOtherMenus cleared it.
+		const parent = findParent(menuitems, targetObject);
+		const theme = store.getState();
+		if (parent) {
+			if (hasParentLevel > 2) {
+				hasParent = true;
+			}
+			parent.active = true;
+			parent.selected = true;
+			setMenuAncestorsActive(parent);
 		}
-		parent.active = true;
-		parent.selected = true;
-		setMenuAncestorsActive(parent);
-	  } 
-	//   else if (!hasParent) {
-	// 	if (theme.dataVerticalStyle == "doublemenu") {
-	// 		ThemeChanger({ ...theme, toggled: "double-menu-close" });
-	// 	}
-	// }
-	};
-  
-	const removeActiveOtherMenus = (item) => {
-	  if (Array.isArray(item)) {
-		item.forEach(val => {
-		  val.active = false;
-		  val.selected = false;
-		});
-	  } else {
-		item.active = false;
-		item.selected = false;
-		if (item.children) removeActiveOtherMenus(item.children);
-	  }
 	};
 
-	
+	const removeActiveOtherMenus = (item) => {
+		if (Array.isArray(item)) {
+			item.forEach(val => {
+				val.active = false;
+				val.selected = false;
+			});
+		} else {
+			item.active = false;
+			item.selected = false;
+			if (item.children) removeActiveOtherMenus(item.children);
+		}
+	};
+
+
 	function switcherArrowFn() {
-		
+
 		// Used to remove is-expanded class and remove class on clicking arrow buttons
 		function slideClick() {
 			const slide = document.querySelectorAll(".slide");
 			const slideMenu = document.querySelectorAll(".slide-menu");
-			
+
 			slide.forEach((element) => {
 				if (element.classList.contains("is-expanded")) {
 					element.classList.remove("is-expanded");
 				}
 			});
-			
+
 			slideMenu.forEach((element) => {
 				if (element.classList.contains("open")) {
 					element.classList.remove("open");
@@ -423,10 +431,10 @@ const Sidebar = ({ local_varaiable, ThemeChanger }) => {
 				}
 			});
 		}
-		
+
 		slideClick();
 	}
-	
+
 	const menuNav = slidesArrow(".main-menu");
 	const mainContainer1 = slidesArrow(".main-sidebar");
 	const slideRightButton = slidesArrow("#slide-right");
@@ -553,16 +561,27 @@ const Sidebar = ({ local_varaiable, ThemeChanger }) => {
 		<Fragment>
 			<div id="responsive-overlay" ref={overlayRef} onClick={() => { menuClose(); }}></div>
 			<aside ref={sidebarRef} className={`app-sidebar ${isSticky ? "sticky-pin" : ""}`} id="sidebar" onMouseOver={() => Onhover()} onMouseLeave={() => Outhover()}>
-				
+
+				{/* Sidebar brand — logo + text side by side */}
+				<div className="main-sidebar-header">
+					<Link to={`${import.meta.env.BASE_URL}dashboard`} className="sidebar-brand">
+						<img src={bgLogo} className="sidebar-brand-logo" alt="Burhani Guards" style={{ width: '50px', height: '50px', objectFit: 'contain', flexShrink: 0 }} />
+						{/* Show text only when sidebar is expanded or being hovered in icon-overlay mode */}
+						{/* {(local_varaiable?.toggled !== 'icon-overlay-close' || local_varaiable?.iconOverlay === 'open') && (
+							<span className="sidebar-brand-name" style={{ fontSize: '1.1rem', fontWeight: 900, whiteSpace: 'nowrap', letterSpacing: '0.01em' }}>Burhani Guards</span>
+						)} */}
+					</Link>
+				</div>
+
 				<SimpleBar ref={mainContainerRef} className="main-sidebar" id="sidebar-scroll" style={{ height: "100%" }}>
 					<nav className="main-menu-container nav nav-pills flex-column sub-open">
-						
-						
+
+
 						<div className="slide-left" id="slide-left" onClick={() => slideLeft()}><svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24"
-						height="24" viewBox="0 0 24 24"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path></svg>
+							height="24" viewBox="0 0 24 24"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path></svg>
 						</div>
 						<ul className="main-menu" ref={menuNavRef} >
-							{MenuItems.map((levelone) => (
+							{menuitems.map((levelone) => (
 								<Fragment key={levelone.id || levelone.title}>
 									<li className={`${levelone.menutitle ? "slide__category" : ""}  
 									                ${levelone.type === "link" ? "slide" : ""}
@@ -572,16 +591,16 @@ const Sidebar = ({ local_varaiable, ThemeChanger }) => {
 										{levelone.type === "link" ?
 											<Link to={levelone.path + "/"} className={`side-menu__item ${levelone.selected ? "active" : ""}`}>
 												{localStorage.aziralayout === "horizontal" ? (
-													<span className='side-menu__icon'>{levelone.icon}</span>
+													renderIcon(levelone)
 												) : (
 													localStorage.aziraverticalstyles === "doublemenu" ? (
 														<div className="" >
 															<OverlayTrigger placement={localStorage.azirartl ? "left" : "right"} overlay={<Tooltip>{levelone.title}</Tooltip>}>
-																<span className='side-menu__icon'>{levelone.icon}</span>
+																{renderIcon(levelone)}
 															</OverlayTrigger>
 														</div>
 													) : (
-														<span className='side-menu__icon'>{levelone.icon}</span>
+														renderIcon(levelone)
 													)
 												)}
 												<span className="side-menu__label">{levelone.title}</span> </Link>
@@ -594,7 +613,7 @@ const Sidebar = ({ local_varaiable, ThemeChanger }) => {
 								</Fragment>
 							))}
 						</ul>
-						<div className="slide-right" id="slide-right"onClick={() => slideRight()}>
+						<div className="slide-right" id="slide-right" onClick={() => slideRight()}>
 							<svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24"><path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path></svg>
 						</div>
 					</nav>

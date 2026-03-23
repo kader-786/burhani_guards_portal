@@ -3,21 +3,29 @@ import { Fragment, useRef } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-function Menuloop({ MENUITEMS, toggleSidemenu, level, HoverToggleInnerMenuFn}) {
+function Menuloop({ MENUITEMS, toggleSidemenu, level, HoverToggleInnerMenuFn }) {
 
 	return (
 		<Fragment>
 
 			<Link to="#!" className={`side-menu__item ${MENUITEMS?.selected ? "active" : ""}`} onClick={(event) => { event.preventDefault(); toggleSidemenu(event, MENUITEMS); }} onMouseEnter={(event) => HoverToggleInnerMenuFn(event, MENUITEMS)}>
 
-				{((level <= 1) && MENUITEMS.icon) && (
+				{((level <= 1) && (MENUITEMS.icon || MENUITEMS.iconClass)) && (
 					(typeof localStorage !== "undefined" && localStorage.aziraverticalstyles === "doublemenu" && localStorage.aziralayout !== "horizontal") ? (
 
 						<OverlayTrigger placement={localStorage.azirartl ? "left" : "right"} overlay={<Tooltip>{MENUITEMS.title}</Tooltip>}>
-							<span className='side-menu__icon'>{MENUITEMS.icon}</span>
+							<span className='side-menu__icon'>
+								{MENUITEMS.iconClass
+									? <i className={MENUITEMS.iconClass} />
+									: MENUITEMS.icon}
+							</span>
 						</OverlayTrigger>
 					) : (
-						<span className='side-menu__icon'>{MENUITEMS.icon}</span>
+						<span className='side-menu__icon'>
+							{MENUITEMS.iconClass
+								? <i className={MENUITEMS.iconClass} />
+								: MENUITEMS.icon}
+						</span>
 					)
 				)}
 
