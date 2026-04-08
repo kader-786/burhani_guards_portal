@@ -344,16 +344,30 @@ const MemberLavazam = () => {
                     gap: 8px;
                 }
                 .ml-page-header .header-text i { font-size: 20px; }
+                .badge-submitted {
+                    background: #ffe5d0; color: #fd7e14;
+                    padding: 6px 12px; border-radius: 4px;
+                    font-size: 14px; font-weight: 500;
+                }
                 .badge-primary {
                     background: #0d6efd; color: #fff;
                     padding: 6px 12px; border-radius: 4px;
                     font-size: 14px; font-weight: 500;
                 }
-                .badge-warning-custom {
-                    background: #fd7e14; color: #fff;
-                    padding: 6px 12px; border-radius: 4px;
-                    font-size: 14px; font-weight: 500;
+                .button-row {
+                    display: flex; gap: 15px; margin-top: 20px;
+                    justify-content: center; align-items: center;
                 }
+                .save-button {
+                    height: 38px; padding: 0 35px;
+                    background: #28a745; border: none; border-radius: 8px;
+                    color: #fff; font-weight: 500; font-size: 14px;
+                    cursor: pointer; transition: all .2s;
+                    display: inline-flex; align-items: center;
+                    gap: 8px; white-space: nowrap; justify-content: center;
+                }
+                .save-button:hover:not(:disabled) { background: #218838; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(40,167,69,.3); }
+                .save-button:disabled { opacity: .6; cursor: not-allowed; }
                 .ml-filter-row {
                     display: flex;
                     gap: 16px;
@@ -432,24 +446,15 @@ const MemberLavazam = () => {
                                     <div className="d-flex gap-2 align-items-center flex-wrap">
                                         {members.length > 0 && (
                                             <>
-                                                <span className="badge badge-primary">
-                                                    Pending: {totalCount}
+                                                <span className="badge badge-submitted">
+                                                    Submitted: {totalCount}
                                                 </span>
                                                 {checkedCount > 0 && (
-                                                    <span className="badge badge-warning-custom">
+                                                    <span className="badge badge-primary">
                                                         Selected: {checkedCount}
                                                     </span>
                                                 )}
                                             </>
-                                        )}
-                                        {permissions.canAdd && members.length > 0 && (
-                                            <button
-                                                className="btn btn-primary btn-sm"
-                                                onClick={handleSave}
-                                                disabled={isSaving || !hasChanges}
-                                            >
-                                                <i className="ri-checkbox-circle-line me-1"></i>Confirm Selected
-                                            </button>
                                         )}
                                     </div>
                                 </div>
@@ -500,57 +505,73 @@ const MemberLavazam = () => {
                                         <p className="mt-3">No pending records for this team</p>
                                     </div>
                                 ) : (
-                                    <div style={{ overflowX: 'auto' }}>
-                                        <table className="ml-member-table">
-                                            <thead>
-                                                <tr>
-                                                    <th style={{ width: '40px' }}>
-                                                        <input
-                                                            type="checkbox"
-                                                            checked={selectAll}
-                                                            onChange={(e) => handleSelectAll(e.target.checked)}
-                                                            disabled={isSaving || !permissions.canAdd}
-                                                            title="Select All"
-                                                        />
-                                                    </th>
-                                                    <th style={{ width: '40px' }}>Sr</th>
-                                                    <th style={{ width: '120px' }}>ITS ID</th>
-                                                    <th>Full Name</th>
-                                                    <th style={{ width: '140px' }}>Mobile</th>
-                                                    <th style={{ width: '70px' }}>Age</th>
-                                                    <th style={{ width: '80px' }}>Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {members.map((member, index) => (
-                                                    <tr
-                                                        key={member.member_lavazam_id}
-                                                        className={member.isChecked ? 'is-selected' : ''}
-                                                    >
-                                                        <td>
+                                    <>
+                                        <div style={{ overflowX: 'auto' }}>
+                                            <table className="ml-member-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th style={{ width: '40px' }}>
                                                             <input
                                                                 type="checkbox"
-                                                                checked={member.isChecked}
-                                                                onChange={() => handleToggleMember(member.its_id)}
+                                                                checked={selectAll}
+                                                                onChange={(e) => handleSelectAll(e.target.checked)}
                                                                 disabled={isSaving || !permissions.canAdd}
+                                                                title="Select All"
                                                             />
-                                                        </td>
-                                                        <td>{index + 1}</td>
-                                                        <td>{member.its_id}</td>
-                                                        <td>{member.full_name}</td>
-                                                        <td>{member.mobile}</td>
-                                                        <td>{member.age}</td>
-                                                        <td>
-                                                            {member.isChecked
-                                                                ? <span className="badge bg-success" style={{ fontSize: '11px' }}>Confirm</span>
-                                                                : <span className="badge bg-warning text-dark" style={{ fontSize: '11px' }}>Pending</span>
-                                                            }
-                                                        </td>
+                                                        </th>
+                                                        <th style={{ width: '40px' }}>Sr</th>
+                                                        <th style={{ width: '120px' }}>ITS ID</th>
+                                                        <th>Full Name</th>
+                                                        <th style={{ width: '140px' }}>Mobile</th>
+                                                        <th style={{ width: '70px' }}>Age</th>
+                                                        <th style={{ width: '80px' }}>Status</th>
                                                     </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                                </thead>
+                                                <tbody>
+                                                    {members.map((member, index) => (
+                                                        <tr
+                                                            key={member.member_lavazam_id}
+                                                            className={member.isChecked ? 'is-selected' : ''}
+                                                        >
+                                                            <td>
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={member.isChecked}
+                                                                    onChange={() => handleToggleMember(member.its_id)}
+                                                                    disabled={isSaving || !permissions.canAdd}
+                                                                />
+                                                            </td>
+                                                            <td>{index + 1}</td>
+                                                            <td>{member.its_id}</td>
+                                                            <td>{member.full_name}</td>
+                                                            <td>{member.mobile}</td>
+                                                            <td>{member.age}</td>
+                                                            <td>
+                                                                <span style={{
+                                                                    color: '#fd7e14', background: '#ffe5d0',
+                                                                    padding: '2px 10px', borderRadius: '20px',
+                                                                    fontSize: '12px', fontWeight: '600'
+                                                                }}>Submitted</span>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        {/* ---- SAVE BUTTON (below table) ---- */}
+                                        {permissions.canAdd && (
+                                            <div className="button-row">
+                                                <button
+                                                    className="save-button"
+                                                    onClick={handleSave}
+                                                    disabled={isSaving || !hasChanges}
+                                                >
+                                                    <i className="ri-save-line"></i>Save
+                                                </button>
+                                            </div>
+                                        )}
+                                    </>
                                 )}
 
                             </Card.Body>

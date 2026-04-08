@@ -57,6 +57,7 @@ const ModalStyles = () => (
             .spinner-border { width: 2.5rem; height: 2.5rem; border-width: 0.25em; }
             .section-divider { margin: 20px 0 15px 0; padding: 10px 0; border-top: 2px solid #e9ecef; border-bottom: 1px solid #e9ecef; }
             .section-title { font-size: 15px; font-weight: 600; color: #0d6efd; margin: 0; display: flex; align-items: center; gap: 8px; }
+            .badge-primary { background: #0d6efd; color: #fff; padding: 6px 12px; border-radius: 4px; font-size: 14px; font-weight: 500; }
             .badge-existing { background-color: #0dcaf0; color: #000; font-weight: 500; padding: 3px 8px; font-size: 11px; border-radius: 4px; margin-left: 8px; }
             .badge-deleted { background-color: #dc3545; color: #fff; font-weight: 500; padding: 3px 8px; font-size: 11px; border-radius: 4px; margin-left: 8px; }
             .badge-manual { background-color: #198754; color: #fff; font-weight: 500; padding: 3px 8px; font-size: 11px; border-radius: 4px; margin-left: 8px; }
