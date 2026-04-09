@@ -31,28 +31,28 @@ const exportToExcel = (rows, columns, filename) => {
 
 // ── Drilldown table columns (all 22 fields) ───────────────────────────────────
 const MODAL_COLUMNS = [
-    { label: 'SR',             key: '_sr' },
-    { label: 'ITS ID',         key: 'its_id' },
-    { label: 'Full Name',      key: 'full_name' },
-    { label: 'Prefix',         key: 'prefix' },
-    { label: 'Age',            key: 'age' },
-    { label: 'Gender',         key: 'gender' },
+    { label: 'SR', key: '_sr' },
+    { label: 'ITS ID', key: 'its_id' },
+    { label: 'Full Name', key: 'full_name' },
+    { label: 'Prefix', key: 'prefix' },
+    { label: 'Age', key: 'age' },
+    { label: 'Gender', key: 'gender' },
     { label: 'Marital Status', key: 'marital_status' },
-    { label: 'Misaq',          key: 'misaq' },
-    { label: 'Category',       key: 'category' },
-    { label: 'Organization',   key: 'organization' },
-    { label: 'Email',          key: 'email' },
-    { label: 'Mobile',         key: 'mobile' },
-    { label: 'WhatsApp',       key: 'whatsapp_mobile' },
-    { label: 'Address',        key: 'address' },
-    { label: 'Jamaat',         key: 'jamaat' },
-    { label: 'Jamiaat',        key: 'jamiaat' },
-    { label: 'Nationality',    key: 'nationality' },
-    { label: 'Vatan',          key: 'vatan' },
-    { label: 'City',           key: 'city' },
-    { label: 'Country',        key: 'country' },
-    { label: 'Team',           key: 'team_name' },
-    { label: 'Position',       key: 'position_name' },
+    { label: 'Misaq', key: 'misaq' },
+    // { label: 'Category',       key: 'category' },
+    { label: 'Organization', key: 'organization' },
+    { label: 'Email', key: 'email' },
+    { label: 'Mobile', key: 'mobile' },
+    { label: 'WhatsApp', key: 'whatsapp_mobile' },
+    { label: 'Address', key: 'address' },
+    { label: 'Jamaat', key: 'jamaat' },
+    { label: 'Jamiaat', key: 'jamiaat' },
+    { label: 'Nationality', key: 'nationality' },
+    { label: 'Vatan', key: 'vatan' },
+    { label: 'City', key: 'city' },
+    { label: 'Country', key: 'country' },
+    { label: 'Team', key: 'team_name' },
+    { label: 'Position', key: 'position_name' },
 ];
 
 
@@ -212,7 +212,7 @@ const MembersReport = () => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
                 body: JSON.stringify({
-                    team_id:    teamId   ?? null,
+                    team_id: teamId ?? null,
                     jamiaat_id: selectedJamiaat?.value ?? null,
                 })
             });
@@ -239,9 +239,9 @@ const MembersReport = () => {
         if (!dataRows.length) { toast.warning('No data to export'); return; }
 
         const columns = [
-            { label: 'SR',      key: '_sr' },
+            { label: 'SR', key: '_sr' },
             { label: 'Jamiaat', key: 'jamiaat_name' },
-            { label: 'Team',    key: 'team_name' },
+            { label: 'Team', key: 'team_name' },
             { label: 'Members', key: 'member_count' },
         ];
         const rows = dataRows.map((r, i) => ({ ...r, _sr: i + 1 }));
@@ -274,7 +274,7 @@ const MembersReport = () => {
             '&:hover': { borderColor: '#adb5bd' }
         }),
         placeholder: base => ({ ...base, color: '#6c757d', fontSize: '15px' }),
-        singleValue:  base => ({ ...base, fontSize: '15px' }),
+        singleValue: base => ({ ...base, fontSize: '15px' }),
         dropdownIndicator: base => ({ ...base, color: '#0d6efd', '&:hover': { color: '#0b5ed7' } }),
         menu: base => ({ ...base, zIndex: 1000 })
     };
@@ -372,8 +372,8 @@ const MembersReport = () => {
                                 {totalRow && (
                                     <Row className="mb-4">
                                         {[
-                                            { label: 'Total Teams',   value: dataRows.length,          color: '#6c757d', bg: '#e9ecef', icon: 'ri-team-line' },
-                                            { label: 'Total Members', value: totalRow.member_count,    color: '#0d6efd', bg: '#cfe2ff', icon: 'ri-group-line' },
+                                            { label: 'Total Teams', value: dataRows.length, color: '#6c757d', bg: '#e9ecef', icon: 'ri-team-line' },
+                                            { label: 'Total Members', value: totalRow.member_count, color: '#0d6efd', bg: '#cfe2ff', icon: 'ri-group-line' },
                                         ].map(({ label, value, color, bg, icon }) => (
                                             <Col md={3} key={label}>
                                                 <Card className="border-0 shadow-sm" style={{ background: bg }}>
@@ -567,7 +567,7 @@ const MembersReport = () => {
                                                 <th style={{ width: '70px' }}>Gender</th>
                                                 <th style={{ width: '110px' }}>Marital Status</th>
                                                 <th style={{ width: '70px' }}>Misaq</th>
-                                                <th style={{ width: '100px' }}>Category</th>
+                                                {/* <th style={{ width: '100px' }}>Category</th> */}
                                                 <th style={{ width: '140px' }}>Organization</th>
                                                 <th style={{ width: '180px' }}>Email</th>
                                                 <th style={{ width: '110px' }}>Mobile</th>
@@ -594,7 +594,7 @@ const MembersReport = () => {
                                                     <td>{member.gender || '-'}</td>
                                                     <td>{member.marital_status || '-'}</td>
                                                     <td>{member.misaq || '-'}</td>
-                                                    <td>{member.category || '-'}</td>
+                                                    {/* <td>{member.category || '-'}</td> */}
                                                     <td>{member.organization || '-'}</td>
                                                     <td>{member.email || '-'}</td>
                                                     <td>{member.mobile || '-'}</td>
