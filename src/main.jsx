@@ -29,6 +29,7 @@ import LavazamMaster from './container/master/lavazammaster/LavazamMaster.jsx';
 import MemberLavazam from './container/back office/MemberLavazam.jsx';
 import BulkUpdate from './container/back office/BulkUpdate.jsx';
 import LavazamReport from './container/reports/lavazamreport/LavazamReport.jsx';
+import MembersReport from './container/reports/membersreport/MembersReport.jsx';
 
 window.global = window; // Polyfill for global
 
@@ -67,6 +68,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path={`${import.meta.env.BASE_URL}backoffice/memberlavazam`} element={<MemberLavazam />} />
           <Route path={`${import.meta.env.BASE_URL}backoffice/bulkupdate`} element={<BulkUpdate />} />
           <Route path={`${import.meta.env.BASE_URL}reports/lavazamreport`} element={<LavazamReport />} />
+          <Route path={`${import.meta.env.BASE_URL}reports/membersreport`} element={<MembersReport />} />
         </Route>
 
         {/* Public Routes - Error Pages */}
